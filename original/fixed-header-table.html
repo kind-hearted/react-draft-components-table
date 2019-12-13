@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="cn">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover">
+    <title>固定表头的表格</title>
+    <style>
+      table {
+        width: 100%;
+        table-layout: fixed;
+        border-spacing: 0;
+      }
+      thead {
+        background: green;
+      }
+      thead th {
+        border-right: 1px solid gray;
+      }
+      tbody td {
+        border-bottom: 1px solid gray;
+      }
+      .real thead {
+        display: none;
+      }
+      .title {
+        background: #2194ff;
+      }
+    </style>
+  </head>
+  <body>
+    <p class="title">单行表头+可滚动</p>
+    <div id="table1">
+      <div class="fixed">
+        <table>
+          <colgroup>
+            <col width="200">
+            <col width="200">
+            <col width="200">
+            <col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>姓名</th>
+              <th>年龄</th>
+              <th>地址</th>
+              <th>备注信息</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div style="height: 500px; overflow: auto;">
+        <table class="real">
+          <colgroup>
+            <col width="200">
+            <col width="200">
+            <col width="200">
+            <col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>姓名</th>
+              <th>年龄</th>
+              <th>地址</th>
+              <th>备注信息</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="title">不可滚动</p>
+    <div id="table2">
+      <div class="fixed">
+        <table>
+          <colgroup>
+            <col width="200">
+            <col width="200">
+            <col width="200">
+            <col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>姓名</th>
+              <th>年龄</th>
+              <th>地址</th>
+              <th>备注信息</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div>
+        <table class="real">
+          <colgroup>
+            <col width="200">
+            <col width="200">
+            <col width="200">
+            <col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>姓名</th>
+              <th>年龄</th>
+              <th>地址</th>
+              <th>备注信息</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="title">多行合并表头+可滚动</p>
+    <div id="table3">
+      <div class="fixed">
+        <table>
+          <colgroup>
+            <col width="200">
+            <col width="200">
+            <col width="200">
+            <col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th rowspan="2">多行合并表头</th>
+              <th colspan="2">年龄</th>
+              <th rowspan="2">备注信息</th>
+            </tr>
+            <tr>
+              <th>年龄</th>
+              <th>地址</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div style="height: 500px; overflow: auto;">
+        <table class="real">
+          <colgroup>
+            <col width="200">
+            <col width="200">
+            <col width="200">
+            <col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th rowspan="2">多行合并表头</th>
+              <th colspan="2">年龄</th>
+              <th rowspan="2">备注信息</th>
+            </tr>
+            <tr>
+              <th>年龄</th>
+              <th>地址</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+            <tr>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+<script>
+  interval();
+  
+  function interval() {
+    setScrollBarWidth('table1');
+    setScrollBarWidth('table2');
+    setScrollBarWidth('table3');
+    
+    $requestAnimationFrame(function () {
+      setTimeout(function () {
+        interval();
+      }, 50);
+    });
+  }
+
+  function $requestAnimationFrame(callback) {
+    if (typeof window.requestAnimationFrame === 'function') {
+      window.requestAnimationFrame(callback);
+    } else {
+      setTimeout(function () {
+        callback();
+      }, 17);
+    }
+  }
+  /** 
+   * 1、多行合并表头可固定
+   * 2、tbody不可滚动时, 没有占位的滚动条列
+   * 3、tbody可滚动时, 需要占位的滚动条列
+  */
+  function setScrollBarWidth(id) {
+    var box = document.getElementById(id);
+    var boxWidth = box.offsetWidth;
+    var tableWidth = box.querySelector('.real').offsetWidth;
+    var fixedThead = box.querySelector('.fixed thead');
+    var fixedColgroup = box.querySelector('colgroup');
+    var fixedCols = fixedColgroup.querySelectorAll('col');
+    var fixedTrs = fixedThead.querySelectorAll('tr');
+    var firstFixedTr = fixedTrs[0];
+    var lastFixedTh = firstFixedTr.children[firstFixedTr.children.length - 1];
+    var lastFixedCol = fixedCols[fixedCols.length - 1];
+    var diffWidth = boxWidth - tableWidth;
+
+    if (diffWidth === 0) {
+      if (lastFixedCol.className === 'scroll') {
+        fixedColgroup.removeChild(lastFixedCol);
+      }
+
+      if (lastFixedTh.className === 'scroll') {
+        firstFixedTr.removeChild(lastFixedTh);
+      }
+    } else {
+      if (lastFixedCol.className === 'scroll') {
+        lastFixedCol.setAttribute('width', String(diffWidth));
+      } else {
+        var col = document.createElement('col');
+        col.className = 'scroll';
+        col.setAttribute('width', String(diffWidth));
+        fixedColgroup.appendChild(col);
+      }
+
+      if (lastFixedTh.className !== 'scroll') {
+        var th = document.createElement('th');
+        th.className = 'scroll';
+        th.setAttribute('rowspan', fixedTrs.length);
+        firstFixedTr.appendChild(th);
+      }
+    }
+  }
+</script>
+</html>

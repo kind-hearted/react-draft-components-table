@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="cn">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover">
+    <title>固定表列的表格</title>
+    <style>
+      table {
+        width: 100%;
+        table-layout: fixed;
+        border-spacing: 0;
+      }
+      thead {
+        background: green;
+      }
+      thead th {
+        border-right: 1px solid gray;
+      }
+      tbody td {
+        border-bottom: 1px solid gray;
+      }
+      .title {
+        background: #2194ff;
+      }
+      .fixed.left {
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: #fff;
+        box-shadow: 6px 0 6px -4px rgba(0,0,0,0.15);
+      }
+      .fixed.right {
+        position: absolute;
+        right: 0;
+        top: 0;
+        background: #fff;
+        box-shadow: -6px 0 6px -4px rgba(0,0,0,0.15);
+      }
+    </style>
+  </head>
+  <body>
+    <p class="title">单行表头+固定首尾第一列</p>
+    <div id="table1" style="position: relative; min-width: 800px;">
+      <div class="fixed left">
+        <table>
+          <colgroup>
+            <col width="200">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>第一列列头</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>第一列</td>
+            </tr>
+            <tr>
+              <td>第一列</td>
+            </tr>
+            <tr>
+              <td>第一列</td>
+            </tr>
+            <tr>
+              <td>第一列</td>
+            </tr>
+            <tr>
+              <td>第一列</td>
+            </tr>
+            <tr>
+              <td>第一列</td>
+            </tr>
+            <tr>
+              <td>第一列</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="fixed right">
+        <table>
+          <colgroup>
+            <col width="100">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>最后一列列头</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>最后一列</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="overflow: auto; width: 100%;">
+        <table class="real" style="min-width: 1000px;">
+          <colgroup>
+            <col width="200">
+            <col width="200">
+            <col width="200">
+            <col>
+            <col width="100">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>第一列列头</th>
+              <th>年龄</th>
+              <th>地址</th>
+              <th>备注信息</th>
+              <th>最后一列列头</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>第一列</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>第一列</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>第一列</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>第一列</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>第一列</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>第一列</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>第一列</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>最后一列</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="title">合并表头+固定首尾第一列</p>
+    <div id="table2" style="position: relative; min-width: 800px;">
+      <div class="fixed left">
+        <table>
+          <colgroup>
+            <col width="200">
+          </colgroup>
+          <thead>
+            <tr>
+              <th rowspan="2">第一列列头</th>
+            </tr>
+            <tr>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td rowspan="2">第一列 1 + 2 行</td>
+            </tr>
+            <tr>
+              <!-- <td>第一列</td> -->
+            </tr>
+            <tr>
+              <td>第一列</td>
+            </tr>
+            <tr>
+              <td>第一列</td>
+            </tr>
+            <tr>
+              <td>第一列</td>
+            </tr>
+            <tr>
+              <td>第一列</td>
+            </tr>
+            <tr>
+              <td>第一列</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="fixed right">
+        <table>
+          <colgroup>
+            <col width="100">
+          </colgroup>
+          <thead>
+            <tr>
+              <th rowspan="2">最后一列列头</th>
+            </tr>
+            <tr>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>最后一列</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="overflow: auto; width: 100%;">
+        <table class="real" style="min-width: 1000px;">
+          <colgroup>
+            <col width="200">
+            <col width="200">
+            <col width="200">
+            <col>
+            <col width="100">
+          </colgroup>
+          <thead>
+            <tr>
+              <th rowspan="2">第一列列头</th>
+              <th>年龄</th>
+              <th>地址</th>
+              <th>备注信息</th>
+              <th rowspan="2">最后一列列头</th>
+            </tr>
+            <tr>
+              <th>年龄</th>
+              <th>地址</th>
+              <th>备注信息</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td rowspan="2">第一列 1 + 2 行</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <!-- <td>第一列</td> -->
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>第一列</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>第一列</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>第一列</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>第一列</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>第一列</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>最后一列</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="title">合并表头+固定首部二列+固定尾部一列</p>
+    <div id="table3" style="position: relative; min-width: 800px;">
+      <div class="fixed left">
+        <table>
+          <colgroup>
+            <col width="200">
+            <col width="100">
+          </colgroup>
+          <thead>
+            <tr>
+              <th rowspan="2">第一列列头</th>
+              <th rowspan="2">第二列列头</th>
+            </tr>
+            <tr>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td rowspan="2">第一列 1 + 2 行</td>
+              <td>第二列1</td>
+            </tr>
+            <tr>
+              <!-- <td>第一列</td> -->
+              <td>第二列2</td>
+            </tr>
+            <tr>
+              <td>第一列3</td>
+              <td>第二列3</td>
+            </tr>
+            <tr>
+              <td>第一列4</td>
+              <td>第二列4</td>
+            </tr>
+            <tr>
+              <td>第一列5</td>
+              <td>第二列5</td>
+            </tr>
+            <tr>
+              <td>第一列6</td>
+              <td>第二列6</td>
+            </tr>
+            <tr>
+              <td>第一列7</td>
+              <td>第二列7</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="fixed right">
+        <table>
+          <colgroup>
+            <col width="100">
+          </colgroup>
+          <thead>
+            <tr>
+              <th rowspan="2">最后一列列头</th>
+            </tr>
+            <tr>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>最后一列</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="overflow: auto; width: 100%;">
+        <table class="real" style="min-width: 1200px;">
+          <colgroup>
+            <col width="200">
+            <col width="100">
+            <col width="200">
+            <col width="200">
+            <col>
+            <col width="100">
+          </colgroup>
+          <thead>
+            <tr>
+              <th rowspan="2">第一列列头</th>
+              <th rowspan="2">第二列列头</th>
+              <th>年龄</th>
+              <th>地址</th>
+              <th>备注信息</th>
+              <th rowspan="2">最后一列列头</th>
+            </tr>
+            <tr>
+              <th>年龄</th>
+              <th>地址</th>
+              <th>备注信息</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td rowspan="2">第一列 1 + 2 行</td>
+              <td>第二列1</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <!-- <td>第一列</td> -->
+              <td>第二列2</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>第一列3</td>
+              <td>第二列3</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>第一列4</td>
+              <td>第二列4</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>第一列5</td>
+              <td>第二列5</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>第一列6</td>
+              <td>第二列6</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>最后一列</td>
+            </tr>
+            <tr>
+              <td>第一列7</td>
+              <td>第二列7</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并</td>
+              <td>表格支持行/列合并，使用 render 里的单元格属性 colSpan 或者 rowSpan 设值为 0 时，设置的表格不会渲染。</td>
+              <td>最后一列</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+  <script>
+    setTableColumn('table1', 5, 1, 1);
+    setTableColumn('table2', 5, 1, 1);
+    setTableColumn('table3', 6, 2, 1);
+
+    var timer = -1;
+    addEvent(window, 'resize', function () {
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        setTableColumn('table1', 5, 1, 1);
+        setTableColumn('table2', 5, 1, 1);
+        setTableColumn('table3', 6, 2, 1);
+      }, 0);
+    });
+
+    function addEvent(target, type, callback) {
+      if (target.addEventListener) {
+        target.addEventListener(type, callback, false);
+      } else if (target.attachEvent) {
+        target.attachEvent('on' + type, callback);
+      }
+    }
+    /** 
+     * 需求
+     * 1、多行合并表头的列
+     * 2、固定左边指定的一列或多列
+     * 3、固定右边指定的一列或多列
+     * 4、同时固定左边+右边的一列或多列
+     * 
+     * 分析
+     * 1、固定的列是一个新的表, 其每行的高度需要和实际的表相同
+     * 2、当实际的表高度发生变化时, 需要重新设置固定列的表行高, 以对齐
+     * 3、固定的列原表格有边框, 如何分割边框?
+     * 
+     * 
+     * 实现
+     * 1、设置固定列所属新表格的宽(需要考虑合并表头的列)
+     * 2、设置固定列所属新表格各行的高(需要考虑合并行的情况), 如果行高固定, 可以不计算行高设置
+    */
+    function setTableColumn(id, columns, leftColumns, rightColumns) {
+      var container = document.getElementById(id);
+      var realTable = container.querySelector('.real');
+
+      setTableSideColumn(realTable, container.querySelector('.fixed.left'), leftColumns, 0);
+      setTableSideColumn(realTable, container.querySelector('.fixed.right'), rightColumns, columns - rightColumns);
+    }
+
+    function setTableSideColumn(real, fixed, columns, index) {
+      var width = 0;
+      var column = 0;
+      var index = index;
+      var realThs = real.querySelector('thead tr').children;
+
+      while (column < columns) {
+        var th = realThs[index];
+        // 合并列的情况
+        var colspan = Number(th.getAttribute('colspan') || 1);
+
+        width += th.offsetWidth;
+
+        column += colspan;
+        index++;
+      }
+
+      fixed.style.width = width + 'px';
+
+      var fixedTrs = fixed.querySelectorAll('tr');
+      var realTrs = real.querySelectorAll('tr');
+
+      for (var i = 0, length = realTrs.length; i < length; i++) {
+        var height = getElementHeight(realTrs[i]);
+        fixedTrs[i].style.height = height + 'px';
+      }
+    }
+
+    function getElementHeight(el) {
+      if (typeof el.getBoundingClientRect === 'function') {
+        return el.getBoundingClientRect().height;
+      }
+
+      return el.offsetHeight;
+    }
+  
+    // 表格后续的更新
+  </script>
+</html>

@@ -20,3 +20,18 @@
 .App-link {
   color: #09d3ac;
 }
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 0;
+}
+thead {
+  background: green;
+}
+thead th {
+  border-right: 1px solid gray;
+}
+tbody td {
+  border-bottom: 1px solid gray;
+}

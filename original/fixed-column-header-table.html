@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="cn">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover">
+    <title>固定表列+表头的表格</title>
+    <style>
+      table {
+        width: 100%;
+        table-layout: fixed;
+        border-spacing: 0;
+        background: #fff;
+      }
+      thead {
+        background: green;
+      }
+      thead th {
+        padding: 12px 8px;
+        border-right: 1px solid #e8e8e8;
+        border-bottom: 1px solid #e8e8e8;
+      }
+      tfoot td,
+      tbody td {
+        padding: 12px 8px;
+        border-right: 1px solid #e8e8e8;
+        border-bottom: 1px solid #e8e8e8;
+      }
+      .container {
+        width: 1000px;
+        position: relative;
+        border: 1px solid red;
+      }
+      .fixed {
+        position: absolute;
+        top: 0px;
+        background: #fff;
+        overflow: hidden;
+        z-index: 10;
+      }
+      .fixed.left {
+        left: 0;
+        box-shadow: 6px 0 6px -4px rgba(0,0,0,0.15);
+      }
+      .fixed.right {
+        right: 0;
+        box-shadow: -6px 0 6px -4px rgba(0,0,0,0.15);
+      }
+      .header-scroll {
+        overflow: hidden;
+      }
+      .real-scroll {
+        position: relative;
+        overflow: hidden;
+      }
+      .scroll-x {
+        overflow: auto; 
+        position: absolute; 
+        bottom: 0; 
+        left: 0; 
+        right: 0; 
+        z-index: 50;
+      }
+    </style>
+  </head>
+  <body>
+    <p>实现方式1: 兼容IE、Firefox、Chrome（移动端水平方向滚动无效，水平方向滚动依赖一个单独的滚动条）</p>
+    <p>TODO: 笔记本浏览器（特别是Safari）支持手势滚动，由于使用的是单独的滚动条，在表格内使用手势，无法滚动</p>
+    <p>水平+竖直方向均出现滚动条</p>
+    <div class="container" id="table1">
+      <!-- 固定表头部分 -->
+      <div class="header-scroll-container" style="overflow: hidden; position: relative;">
+        <!-- 左边固定第一列表头 -->
+        <div class="fixed left">
+          <!-- 计算宽度 -->
+          <table style="width: 200px;">
+            <colgroup>
+              <col width="200">
+            </colgroup>
+            <thead>
+              <!-- 计算行高 -->
+              <tr style="height: 46px;">
+                <th rowspan="2" colspan="1">姓名</th>
+              </tr>
+              <tr style="height: 46px;">
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <!-- 右边固定第一列表头 -->
+        <div class="fixed right">
+          <!-- 计算宽度: 加上可能出现的滚动条 -->
+          <table style="width: 217px;">
+            <colgroup>
+              <col>
+              <col width="17">
+            </colgroup>
+            <thead>
+              <!-- 计算行高 -->
+              <tr style="height: 46px;">
+                <th rowspan="2" colspan="1">备注信息</th>
+                <th rowspan="2" colspan="1"></th>
+              </tr>
+              <tr style="height: 46px;">
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="header-scroll">
+          <!-- 计算宽度: 加上可能出现的滚动条 -->
+          <table style="min-width: 1217px;">
+            <colgroup>
+              <col width="200">
+              <col width="200">
+              <col width="200">
+              <col width="200">
+              <col width="200">
+              <col>
+              <col width="17" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th rowspan="2" colspan="1">姓名</th>
+                <th rowspan="1" colspan="2">年龄+地址</th>
+                <th rowspan="2" colspan="1">电话号码</th>
+                <th rowspan="2" colspan="1">状态</th>
+                <th rowspan="2" colspan="1">备注信息</th>
+                <th rowspan="2" colspan="1"></th>
+              </tr>
+              <tr>
+                <th rowspan="1" colspan="1">年龄</th>
+                <th rowspan="1" colspan="1">地址</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+      <div class="body-scroll-container" style="height: 300px; overflow: hidden;">
+        <div class="real-scroll-inner" style="height: 283px; overflow-x: hidden; overflow-y: auto; position: relative;">
+          <!-- 左边固定第一列 -->
+          <div class="fixed left" style="width: 200px;">
+            <table>
+              <colgroup>
+                <col width="200">
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td>詹姆斯1</td>
+                </tr>
+                <tr>
+                  <td>詹姆斯2</td>
+                </tr>
+                <tr>
+                  <td>詹姆斯3</td>
+                </tr>
+                <tr>
+                  <td>詹姆斯4</td>
+                </tr>
+                <tr>
+                  <td>詹姆斯5</td>
+                </tr>
+                <tr>
+                  <td>詹姆斯6</td>
+                </tr>
+                <tr>
+                  <td>詹姆斯7</td>
+                </tr>
+                <tr>
+                  <td>詹姆斯8</td>
+                </tr>
+                <tr>
+                  <td>詹姆斯9</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- 右边固定第一列 -->
+          <div class="fixed right" style="width: 200px;">
+            <table>
+              <colgroup>
+                <col>
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td>1绰号小皇帝、三旬老汉</td>
+                </tr>
+                <tr>
+                  <td>2绰号小皇帝、三旬老汉</td>
+                </tr>
+                <tr>
+                  <td>3绰号小皇帝、三旬老汉</td>
+                </tr>
+                <tr>
+                  <td>4绰号小皇帝、三旬老汉</td>
+                </tr>
+                <tr>
+                  <td>5绰号小皇帝、三旬老汉</td>
+                </tr>
+                <tr>
+                  <td>6绰号小皇帝、三旬老汉</td>
+                </tr>
+                <tr>
+                  <td>7绰号小皇帝、三旬老汉</td>
+                </tr>
+                <tr>
+                  <td>8绰号小皇帝、三旬老汉</td>
+                </tr>
+                <tr>
+                  <td>9绰号小皇帝、三旬老汉</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- 包裹一个overflow: hidden的div, 隐藏滚动条 -->
+          <div style="overflow: hidden;">
+            <div class="real-scroll" style="overflow: auto; margin-bottom: -17px;">
+              <table class="real" style="min-width: 1200px;">
+                <colgroup>
+                  <col width="200">
+                  <col width="200">
+                  <col width="200">
+                  <col width="200">
+                  <col width="200">
+                  <col>
+                </colgroup>
+                <thead style="display: none;">
+                  <tr>
+                    <th rowspan="2" colspan="1">姓名</th>
+                    <th rowspan="1" colspan="2">年龄+地址</th>
+                    <th rowspan="2" colspan="1">电话号码</th>
+                    <th rowspan="2" colspan="1">状态</th>
+                    <th rowspan="2" colspan="1">备注信息</th>
+                  </tr>
+                  <tr>
+                    <th rowspan="1" colspan="1">年龄</th>
+                    <th rowspan="1" colspan="1">地址</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>詹姆斯1</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>1绰号小皇帝、三旬老汉</td>
+                  </tr>
+                  <tr>
+                    <td>詹姆斯2</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>2绰号小皇帝、三旬老汉</td>
+                  </tr>
+                  <tr>
+                    <td>詹姆斯3</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>3绰号小皇帝、三旬老汉</td>
+                  </tr>
+                  <tr>
+                    <td>詹姆斯4</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>4绰号小皇帝、三旬老汉</td>
+                  </tr>
+                  <tr>
+                    <td>詹姆斯5</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>5绰号小皇帝、三旬老汉</td>
+                  </tr>
+                  <tr>
+                    <td>詹姆斯6</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>6绰号小皇帝、三旬老汉</td>
+                  </tr>
+                  <tr>
+                    <td>詹姆斯7</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>7绰号小皇帝、三旬老汉</td>
+                  </tr>
+                  <tr>
+                    <td>詹姆斯8</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>8绰号小皇帝、三旬老汉</td>
+                  </tr>
+                  <tr>
+                    <td>詹姆斯9</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>9绰号小皇帝、三旬老汉</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-x">
+          <!-- 计算: 计算宽度, 加上滚动条的宽度 -->
+          <div style="min-width: 1217px; height: 1px;"></div>
+        </div>
+      </div>
+    </div>
+    <p>水平方向出现滚动条</p>
+    <div class="container" id="table2">
+      <!-- 固定表头部分 -->
+      <div class="header-scroll-container" style="overflow: hidden; position: relative;">
+        <!-- 左边固定第一列表头 -->
+        <div class="fixed left">
+          <!-- 计算宽度 -->
+          <table style="width: 200px;">
+            <colgroup>
+              <col width="200">
+            </colgroup>
+            <thead>
+              <!-- 计算行高 -->
+              <tr style="height: 46px;">
+                <th rowspan="2" colspan="1">姓名</th>
+              </tr>
+              <tr style="height: 46px;">
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <!-- 右边固定第一列表头 -->
+        <div class="fixed right">
+          <!-- 计算宽度: 加上可能出现的滚动条 -->
+          <table style="width: 200px;">
+            <colgroup>
+              <col>
+            </colgroup>
+            <thead>
+              <!-- 计算行高 -->
+              <tr style="height: 46px;">
+                <th rowspan="2" colspan="1">备注信息</th>
+              </tr>
+              <tr style="height: 46px;">
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="header-scroll">
+          <!-- 滚动条判断: 计算宽度: 加上可能出现的滚动条 -->
+          <table style="min-width: 1217px;">
+            <colgroup>
+              <col width="200">
+              <col width="200">
+              <col width="200">
+              <col width="200">
+              <col width="200">
+              <col>
+              <col width="17" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th rowspan="2" colspan="1">姓名</th>
+                <th rowspan="1" colspan="2">年龄+地址</th>
+                <th rowspan="2" colspan="1">电话号码</th>
+                <th rowspan="2" colspan="1">状态</th>
+                <th rowspan="2" colspan="1">备注信息</th>
+                <th rowspan="2" colspan="1"></th>
+              </tr>
+              <tr>
+                <th rowspan="1" colspan="1">年龄</th>
+                <th rowspan="1" colspan="1">地址</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+      <div class="body-scroll-container" style="height: 300px; overflow: hidden;">
+        <div class="real-scroll-inner" style="height: 283px; overflow-x: hidden; overflow-y: auto; position: relative;">
+          <!-- 左边固定第一列 -->
+          <div class="fixed left" style="width: 200px;">
+            <table>
+              <colgroup>
+                <col width="200">
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td>詹姆斯1</td>
+                </tr>
+                <tr>
+                  <td>詹姆斯2</td>
+                </tr>
+                <tr>
+                  <td>詹姆斯3</td>
+                </tr>
+                <tr>
+                  <td>詹姆斯4</td>
+                </tr>
+                <tr>
+                  <td>詹姆斯5</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- 右边固定第一列 -->
+          <div class="fixed right" style="width: 200px;">
+            <table>
+              <colgroup>
+                <col>
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td>1绰号小皇帝、三旬老汉</td>
+                </tr>
+                <tr>
+                  <td>2绰号小皇帝、三旬老汉</td>
+                </tr>
+                <tr>
+                  <td>3绰号小皇帝、三旬老汉</td>
+                </tr>
+                <tr>
+                  <td>4绰号小皇帝、三旬老汉</td>
+                </tr>
+                <tr>
+                  <td>5绰号小皇帝、三旬老汉</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="overflow: hidden;">
+            <div class="real-scroll" style="overflow: auto; margin-bottom: -17px;">
+              <table class="real" style="min-width: 1200px;">
+                <colgroup>
+                  <col width="200">
+                  <col width="200">
+                  <col width="200">
+                  <col width="200">
+                  <col width="200">
+                  <col>
+                </colgroup>
+                <thead style="display: none;">
+                  <tr>
+                    <th rowspan="2" colspan="1">姓名</th>
+                    <th rowspan="1" colspan="2">年龄+地址</th>
+                    <th rowspan="2" colspan="1">电话号码</th>
+                    <th rowspan="2" colspan="1">状态</th>
+                    <th rowspan="2" colspan="1">备注信息</th>
+                  </tr>
+                  <tr>
+                    <th rowspan="1" colspan="1">年龄</th>
+                    <th rowspan="1" colspan="1">地址</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>詹姆斯1</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>1绰号小皇帝、三旬老汉</td>
+                  </tr>
+                  <tr>
+                    <td>詹姆斯2</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>2绰号小皇帝、三旬老汉</td>
+                  </tr>
+                  <tr>
+                    <td>詹姆斯3</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>3绰号小皇帝、三旬老汉</td>
+                  </tr>
+                  <tr>
+                    <td>詹姆斯4</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>4绰号小皇帝、三旬老汉</td>
+                  </tr>
+                  <tr>
+                    <td>詹姆斯5</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>5绰号小皇帝、三旬老汉</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- 计算: 单独滚动条, 当竖直方向没有滚动条的时候, 设置高度以遮挡real-scroll的滚动条 -->
+        <div class="scroll-x">
+          <!-- 计算: 计算宽度, 加上滚动条的宽度 -->
+          <div style="min-width: 1200px; height: 1px;"></div>
+        </div>
+      </div>
+    </div>
+    <p>竖直方向出现滚动条</p>
+    <div class="container" id="table3" style="width: 1500px;">
+      <!-- 固定表头部分 -->
+      <div class="header-scroll-container" style="overflow: hidden; position: relative;">
+        <!-- 左边固定第一列表头 -->
+        <div class="fixed left">
+          <!-- 计算宽度 -->
+          <table style="width: 200px;">
+            <colgroup>
+              <col width="200">
+            </colgroup>
+            <thead>
+              <!-- 计算行高 -->
+              <tr style="height: 46px;">
+                <th rowspan="2" colspan="1">姓名</th>
+              </tr>
+              <tr style="height: 46px;">
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <!-- 右边固定第一列表头 -->
+        <div class="fixed right">
+          <!-- 计算宽度: 加上可能出现的滚动条 -->
+          <table style="width: 500px;">
+            <colgroup>
+              <col>
+              <col width="17">
+            </colgroup>
+            <thead>
+              <!-- 计算行高 -->
+              <tr style="height: 46px;">
+                <th rowspan="2" colspan="1">备注信息</th>
+                <th rowspan="2" colspan="1"></th>
+              </tr>
+              <tr style="height: 46px;">
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="header-scroll">
+          <!-- 计算宽度: 加上可能出现的滚动条 -->
+          <table style="min-width: 1217px;">
+            <colgroup>
+              <col width="200">
+              <col width="200">
+              <col width="200">
+              <col width="200">
+              <col width="200">
+              <col>
+              <col width="17" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th rowspan="2" colspan="1">姓名</th>
+                <th rowspan="1" colspan="2">年龄+地址</th>
+                <th rowspan="2" colspan="1">电话号码</th>
+                <th rowspan="2" colspan="1">状态</th>
+                <th rowspan="2" colspan="1">备注信息</th>
+                <th rowspan="2" colspan="1"></th>
+              </tr>
+              <tr>
+                <th rowspan="1" colspan="1">年龄</th>
+                <th rowspan="1" colspan="1">地址</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+      <div class="body-scroll-container" style="height: 300px; overflow: hidden;">
+        <div class="real-scroll-inner" style="height: 300px; overflow-x: hidden; overflow-y: auto; position: relative;">
+          <!-- 左边固定第一列 -->
+          <div class="fixed left" style="width: 200px;">
+            <table>
+              <colgroup>
+                <col width="200">
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td>詹姆斯1</td>
+                </tr>
+                <tr>
+                  <td>詹姆斯2</td>
+                </tr>
+                <tr>
+                  <td>詹姆斯3</td>
+                </tr>
+                <tr>
+                  <td>詹姆斯4</td>
+                </tr>
+                <tr>
+                  <td>詹姆斯5</td>
+                </tr>
+                <tr>
+                  <td>詹姆斯6</td>
+                </tr>
+                <tr>
+                  <td>詹姆斯7</td>
+                </tr>
+                <tr>
+                  <td>詹姆斯8</td>
+                </tr>
+                <tr>
+                  <td>詹姆斯9</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- 右边固定第一列 -->
+          <div class="fixed right" style="width: 483px;">
+            <table>
+              <colgroup>
+                <col>
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td>1绰号小皇帝、三旬老汉</td>
+                </tr>
+                <tr>
+                  <td>2绰号小皇帝、三旬老汉</td>
+                </tr>
+                <tr>
+                  <td>3绰号小皇帝、三旬老汉</td>
+                </tr>
+                <tr>
+                  <td>4绰号小皇帝、三旬老汉</td>
+                </tr>
+                <tr>
+                  <td>5绰号小皇帝、三旬老汉</td>
+                </tr>
+                <tr>
+                  <td>6绰号小皇帝、三旬老汉</td>
+                </tr>
+                <tr>
+                  <td>7绰号小皇帝、三旬老汉</td>
+                </tr>
+                <tr>
+                  <td>8绰号小皇帝、三旬老汉</td>
+                </tr>
+                <tr>
+                  <td>9绰号小皇帝、三旬老汉</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="overflow: hidden;">
+            <div class="real-scroll" style="overflow: auto; margin-bottom: -17px;">
+              <table class="real" style="min-width: 1200px;">
+                <colgroup>
+                  <col width="200">
+                  <col width="200">
+                  <col width="200">
+                  <col width="200">
+                  <col width="200">
+                  <col>
+                </colgroup>
+                <thead style="display: none;">
+                  <tr>
+                    <th rowspan="2" colspan="1">姓名</th>
+                    <th rowspan="1" colspan="2">年龄+地址</th>
+                    <th rowspan="2" colspan="1">电话号码</th>
+                    <th rowspan="2" colspan="1">状态</th>
+                    <th rowspan="2" colspan="1">备注信息</th>
+                  </tr>
+                  <tr>
+                    <th rowspan="1" colspan="1">年龄</th>
+                    <th rowspan="1" colspan="1">地址</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>詹姆斯1</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>1绰号小皇帝、三旬老汉</td>
+                  </tr>
+                  <tr>
+                    <td>詹姆斯2</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>2绰号小皇帝、三旬老汉</td>
+                  </tr>
+                  <tr>
+                    <td>詹姆斯3</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>3绰号小皇帝、三旬老汉</td>
+                  </tr>
+                  <tr>
+                    <td>詹姆斯4</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>4绰号小皇帝、三旬老汉</td>
+                  </tr>
+                  <tr>
+                    <td>詹姆斯5</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>5绰号小皇帝、三旬老汉</td>
+                  </tr>
+                  <tr>
+                    <td>詹姆斯6</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>6绰号小皇帝、三旬老汉</td>
+                  </tr>
+                  <tr>
+                    <td>詹姆斯7</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>7绰号小皇帝、三旬老汉</td>
+                  </tr>
+                  <tr>
+                    <td>詹姆斯8</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>8绰号小皇帝、三旬老汉</td>
+                  </tr>
+                  <tr>
+                    <td>詹姆斯9</td>
+                    <td>35</td>
+                    <td>洛杉矶</td>
+                    <td>000000000</td>
+                    <td>MVP候选人</td>
+                    <td>9绰号小皇帝、三旬老汉</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-x">
+          <!-- 计算: 计算宽度, 加上滚动条的宽度 -->
+          <div style="min-width: 1217px; height: 1px;"></div>
+        </div>
+      </div>
+    </div>
+<script>
+connectScrollX('table1');
+connectScrollX('table2');
+connectScrollX('table3');
+/** 
+ * 1、在单独滚动条内滚动的时候, 联动表体+表头
+ * 2、在表体滚动的时候, 联动单独滚动条+表头
+*/
+
+function connectScrollX(id) {
+  var container = document.getElementById(id);
+  var header = container.querySelector('.header-scroll');
+  var real = container.querySelector('.real-scroll');
+  var x = container.querySelector('.scroll-x');
+  var flag = false;
+
+  addEvent(x, 'scroll', function (event) {
+    header.scrollLeft = x.scrollLeft;
+    real.scrollLeft = x.scrollLeft;
+    flag = true;
+  });
+
+  addEvent(real, 'scroll', function () {
+    if (!flag) {
+      header.scrollLeft = real.scrollLeft;
+      x.scrollLeft = real.scrollLeft;
+    }
+
+    flag = false;
+  });
+}
+
+function addEvent(target, type, callback) {
+  if (target.addEventListener) {
+    target.addEventListener(type, callback, false);
+  } else if (target.attachEvent) {
+    target.attachEvent('on' + type, callback);
+  }
+}
+</script>
+  </body>
+</html>
