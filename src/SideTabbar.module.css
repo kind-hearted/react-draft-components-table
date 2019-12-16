@@ -1,0 +1,35 @@
+.tabbar {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100vh;
+}
+.headers {
+  width: 300px;
+  border: 1px solid #dcdee2;
+}
+.header {
+  position: relative;
+  height: 50px;
+  line-height: 50px;
+  padding-left: 40px;
+  cursor: pointer;
+}
+.header.actived {
+  color: #2d8cf0;
+  background: #f0faff;
+}
+.header.actived::after {
+  content: "";
+  display: block;
+  width: 2px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -1px;
+  background: #2d8cf0;
+}
+.bodys {
+  flex: 1;
+  padding: 10px;
+}
