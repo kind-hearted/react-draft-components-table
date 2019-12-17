@@ -28,6 +28,12 @@ function App() {
           <FixedColumnExample></FixedColumnExample>
         </SideTabbarItemBody>
       </SideTabbarItem>
+      <SideTabbarItem name="FixedHeaderColumnExample">
+        <SideTabbarItemHeader>固定表头+表列</SideTabbarItemHeader>
+        <SideTabbarItemBody>
+          固定表头+表列
+        </SideTabbarItemBody>
+      </SideTabbarItem>
     </SideTabbar>
   );
 }
