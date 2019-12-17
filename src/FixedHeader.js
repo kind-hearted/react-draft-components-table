@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 
 /**
- * 固定表头
- * 1、固定表头首先需要两个列表, 
- * 2、能正常处理滚动条的占宽, 
- * 3、保证表头可以对齐表行（如何方便给表头赋值宽度?）
- * 4、表头如何渲染完全取决于用户, 内部相同于复制了一个表头占位显示, 用户无需关心这个表头是如何复制的
- */
+  * 固定表头
+  * 1、固定表头首先需要两个列表
+  * 2、能正常处理滚动条的占宽
+  * 3、保证表头可以对齐表行（如何方便给表头赋值宽度?）
+  * 4、表头如何渲染完全取决于用户, 内部相同于复制了一个表头占位显示, 用户无需关心这个表头是如何复制的
+  */
 
  /**
   * 设计思路
@@ -27,18 +27,21 @@ export const Table = function Table(props) {
   let ElColgroup = null;
   let ElThead = null;
   let ElTbody = null;
+  let ElTfoot = null;
 
-  props.children.forEach(function (child) {
+  React.Children.forEach(props.children, function (child) {
     if (child.type === Colgroup) {
       ElColgroup = child;
     } else if (child.type === Thead) {
       ElThead = child;
     } else if (child.type === Tbody) {
       ElTbody = child;
+    } else if (child.type === Tfoot) {
+      ElTfoot = child;
     }
   });
   // 直接操作DOM，避免使用状态，造成整个table组件的更新，性能差
-  useEffect(() => {
+  useEffect(function setScrollBar() {
     // 计算滚动条的宽度
     const elScrollWidth = elScroll.current.offsetWidth;
     const elTableRealWidth = elTableReal.current.offsetWidth;
@@ -80,16 +83,16 @@ export const Table = function Table(props) {
   return (
     <div>
       <div>
-        <table ref={elTableHeader}>
+        <table {...props} ref={elTableHeader}>
           {ElColgroup}
           {ElThead}
         </table>
       </div>
       <div ref={elScroll} style={{height: '500px', overflow: 'auto'}}>
-        <table ref={elTableReal}>
+        <table {...props} ref={elTableReal}>
           {ElColgroup}
-          {/* {ElThead} */}
           {ElTbody}
+          {ElTfoot}
         </table>
       </div>
     </div>
@@ -97,7 +100,7 @@ export const Table = function Table(props) {
 }
 
 export const Colgroup = function Colgroup(props) {
-  return <colgroup>{props.children}</colgroup>
+  return <colgroup {...props}>{props.children}</colgroup>
 }
 
 export const Col = function Col(props) {
@@ -105,11 +108,14 @@ export const Col = function Col(props) {
 }
 
 export const Thead = function Thead(props) {
-  return <thead>{props.children}</thead>
+  return <thead {...props}>{props.children}</thead>
 }
 
 export const Tbody = function Tbody(props) {
-  return <tbody>{props.children}</tbody>
+  return <tbody {...props}>{props.children}</tbody>
 }
 
+export const Tfoot = function Tbody(props) {
+  return <tfoot {...props}>{props.children}</tfoot>
+}
  

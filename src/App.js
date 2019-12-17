@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import './App.css';
-import FixedHeaderExample from './FixedHeaderExample.js';
 import {
   SideTabbar,
   SideTabbarItem,
   SideTabbarItemHeader,
   SideTabbarItemBody,
 } from './SideTabbar.js';
+import FixedHeaderExample from './FixedHeaderExample.js';
+import FixedColumnExample from './FixedColumnExample.js';
 
 function App() {
   const [activedName, setActivedName] = useState('FixedColumnExample');
@@ -23,7 +24,9 @@ function App() {
       </SideTabbarItem>
       <SideTabbarItem name="FixedColumnExample">
         <SideTabbarItemHeader>固定表列</SideTabbarItemHeader>
-        <SideTabbarItemBody>固定表列内容</SideTabbarItemBody>
+        <SideTabbarItemBody>
+          <FixedColumnExample></FixedColumnExample>
+        </SideTabbarItemBody>
       </SideTabbarItem>
     </SideTabbar>
   );

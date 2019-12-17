@@ -6,6 +6,7 @@
 }
 .headers {
   width: 300px;
+  min-width: 300px;
   border: 1px solid #dcdee2;
 }
 .header {
@@ -32,4 +33,5 @@
 .bodys {
   flex: 1;
   padding: 10px;
+  overflow: hidden;
 }
