@@ -5,6 +5,7 @@ import {
   Col,
   Thead,
   Tbody,
+  Tfoot,
 } from './FixedColumn.js';
 
 export default function (props) {
@@ -102,6 +103,15 @@ export default function (props) {
           <td></td>
         </tr>
       </Tbody>
+      <Tfoot>
+        <tr>
+          <td>汇总</td>
+          <td>10</td>
+          <td>20</td>
+          <td>30</td>
+          <td>40</td>
+        </tr>
+      </Tfoot>
     </Table>
   )
 }

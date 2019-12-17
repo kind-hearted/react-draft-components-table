@@ -29,9 +29,16 @@ table {
 thead {
   background: green;
 }
-thead th {
+tfoot {
+  background: yellow;
+}
+thead th,
+tfoot td {
   border-right: 1px solid gray;
 }
 tbody td {
   border-bottom: 1px solid gray;
+}
+tbody tr:last-child td {
+  border-bottom: 0;
 }

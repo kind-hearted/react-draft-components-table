@@ -33,5 +33,5 @@
 .bodys {
   flex: 1;
   padding: 10px;
-  overflow: hidden;
+  overflow: auto;
 }

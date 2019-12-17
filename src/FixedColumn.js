@@ -269,7 +269,7 @@ export const Table = function Table(props) {
       }
     }
   });
-  // 分别填充表头、表体、表脚
+  // 分别填充表头、表体、表尾
   React.Children.forEach(props.children, function (child) {
     if (child.type === Thead) {
       ElThead = child;
@@ -307,18 +307,18 @@ export const Table = function Table(props) {
     <div className={style.table}>
       <div className={style.left}>
         <table style={{ width: '100%' }} ref={leftTable}>
-          <colgroup>
+          <colgroup {...ElColgroup.props}>
             {LeftCols}
           </colgroup>
-          <thead>
+          <thead {...ElThead.props}>
             {LeftThead}
           </thead>
-          <tbody>
+          <tbody {...ElTbody.props}>
             {LeftTbody}
           </tbody>
           {
             LeftTfoot &&
-            <tfoot>
+            <tfoot {...ElTfoot.props}>
               {LeftTfoot}
             </tfoot>
           }
@@ -326,18 +326,18 @@ export const Table = function Table(props) {
       </div>
       <div className={style.right}>
         <table style={{ width: '100%' }} ref={rightTable}>
-          <colgroup>
+          <colgroup {...ElColgroup.props}>
             {RightCols}
           </colgroup>
-          <thead>
+          <thead {...ElThead.props}>
             {RightThead}
           </thead>
-          <tbody>
+          <tbody {...ElTbody.props}>
             {RightTbody}
           </tbody>
           {
-            RightTfoot && 
-            <tfoot>
+            RightTfoot &&
+            <tfoot {...ElTfoot.props}>
               {RightTfoot}
             </tfoot>
           }

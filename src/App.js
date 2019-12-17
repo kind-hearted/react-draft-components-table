@@ -6,20 +6,20 @@ import {
   SideTabbarItemHeader,
   SideTabbarItemBody,
 } from './SideTabbar.js';
-import FixedHeaderExample from './FixedHeaderExample.js';
+import FixedHeaderFooterExample from './FixedHeaderFooterExample.js';
 import FixedColumnExample from './FixedColumnExample.js';
 
 function App() {
-  const [activedName, setActivedName] = useState('FixedColumnExample');
+  const [activedName, setActivedName] = useState('FixedHeaderFooterExample');
 
   return (
     <SideTabbar key="name" activedName={activedName} onChange={(name) => {
       setActivedName(name);
     }}>
-      <SideTabbarItem name="FixedHeaderExample">
-        <SideTabbarItemHeader>固定表头</SideTabbarItemHeader>
+      <SideTabbarItem name="FixedHeaderFooterExample">
+        <SideTabbarItemHeader>固定表头、表尾</SideTabbarItemHeader>
         <SideTabbarItemBody>
-          <FixedHeaderExample></FixedHeaderExample>
+          <FixedHeaderFooterExample></FixedHeaderFooterExample>
         </SideTabbarItemBody>
       </SideTabbarItem>
       <SideTabbarItem name="FixedColumnExample">
