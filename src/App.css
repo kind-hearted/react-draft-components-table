@@ -33,7 +33,8 @@
   background: yellow;
 }
 .thead th,
-.tfoot td {
+.tfoot td,
+.tbody td {
   border-right: 1px solid gray;
 }
 .tbody td {

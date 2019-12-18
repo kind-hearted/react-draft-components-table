@@ -8,9 +8,10 @@ import {
 } from './SideTabbar.js';
 import FixedHeaderFooterExample from './FixedHeaderFooterExample.js';
 import FixedColumnExample from './FixedColumnExample.js';
+import FixedAllSidesExample from './FixedAllSidesExample.js';
 
 function App() {
-  const [activedName, setActivedName] = useState('FixedColumnExample');
+  const [activedName, setActivedName] = useState('FixedAllSidesExample');
 
   return (
     <SideTabbar key="name" activedName={activedName} onChange={(name) => {
@@ -28,10 +29,10 @@ function App() {
           <FixedColumnExample></FixedColumnExample>
         </SideTabbarItemBody>
       </SideTabbarItem>
-      <SideTabbarItem name="FixedHeaderColumnExample">
+      <SideTabbarItem name="FixedAllSidesExample">
         <SideTabbarItemHeader>固定表头+表列</SideTabbarItemHeader>
         <SideTabbarItemBody>
-          固定表头+表列
+          <FixedAllSidesExample></FixedAllSidesExample>
         </SideTabbarItemBody>
       </SideTabbarItem>
     </SideTabbar>

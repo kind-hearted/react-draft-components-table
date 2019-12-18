@@ -1,0 +1,49 @@
+.left {
+  width: 200px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: #fff;
+  box-shadow: 6px 0 6px -4px rgba(0,0,0,0.15);
+}
+.right {
+  width: 100px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: #fff;
+  box-shadow: -6px 0 6px -4px rgba(0,0,0,0.15);
+}
+.right-scroll-bar {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: #f1f1f1;
+}
+.hide-scroll-bar-wraper {
+  position: relative;
+  /* overflow: hidden; */
+}
+.base-scroll-container {
+  overflow: hidden;
+}
+.base-scroll-outer {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.base-scroll-inner {
+  overflow-y: auto;
+}
+.scroll-x {
+  overflow: auto; 
+  position: absolute; 
+  bottom: 0; 
+  left: 0; 
+  right: 0; 
+  z-index: 50;
+}
+.scroll-x-inner {
+  height: 1px;
+}

@@ -18,11 +18,7 @@ import React, { useEffect, useRef } from 'react';
   * 3、
   */
 const SCROLL_COL_CLASS = 'scroll-bar scroll-bar-' + Date.now();
-const setScrollBar = function (elScroll, elTableReal, fixedTable, type) {
-  // 计算滚动条的宽度
-  const elScrollWidth = elScroll.current.offsetWidth;
-  const elTableRealWidth = elTableReal.current.offsetWidth;
-  const scrollBarWidth = elScrollWidth - elTableRealWidth;
+const setScrollBar = function (scrollBarWidth, fixedTable, type) {
   const colgroup = fixedTable.current.querySelector('colgroup');
   const cols = colgroup.querySelectorAll('col');
   const trs = fixedTable.current.querySelectorAll('tr');
@@ -87,12 +83,16 @@ export const Table = function Table(props) {
   });
   // 直接操作DOM，避免使用状态，造成整个table组件的更新，性能差
   useEffect(function () {
+    const elScrollWidth = elScroll.current.offsetWidth;
+    const elTableRealWidth = elTableReal.current.offsetWidth;
+    const scrollBarWidth = elScrollWidth - elTableRealWidth;
+
     if (ElThead && ElThead.props.fixed === "true") {
-      setScrollBar(elScroll, elTableReal, elTableHeader, 'th');
+      setScrollBar(scrollBarWidth, elTableHeader, 'th');
     }
 
     if (ElTfoot && ElTfoot.props.fixed === "true") {
-      setScrollBar(elScroll, elTableReal, elTableFooter, 'td');
+      setScrollBar(scrollBarWidth, elTableFooter, 'td');
     }
   });
 
