@@ -21,24 +21,24 @@
   color: #09d3ac;
 }
 
-table {
+.table {
   width: 100%;
   table-layout: fixed;
   border-spacing: 0;
 }
-thead {
+.thead {
   background: green;
 }
-tfoot {
+.tfoot {
   background: yellow;
 }
-thead th,
-tfoot td {
+.thead th,
+.tfoot td {
   border-right: 1px solid gray;
 }
-tbody td {
+.tbody td {
   border-bottom: 1px solid gray;
 }
-tbody tr:last-child td {
+.tbody tr:last-child td {
   border-bottom: 0;
 }

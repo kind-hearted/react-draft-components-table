@@ -17,7 +17,7 @@ import React, { useEffect, useRef } from 'react';
   * 2、表头的更新应该和表体的更新分开, 避免更新表头时导致整个表格更新, 性能下降
   * 3、
   */
-const SCROLL_COL_CLASS = 'scroll-' + Date.now();
+const SCROLL_COL_CLASS = 'scroll-bar scroll-bar-' + Date.now();
 const setScrollBar = function (elScroll, elTableReal, fixedTable, type) {
   // 计算滚动条的宽度
   const elScrollWidth = elScroll.current.offsetWidth;
@@ -70,13 +70,19 @@ export const Table = function Table(props) {
 
   React.Children.forEach(props.children, function (child) {
     if (child.type === Colgroup) {
-      ElColgroup = child;
+      ElColgroup = React.cloneElement(child, {
+        className: child.props.className + ' colgroup'
+      });
     } else if (child.type === Thead) {
       ElThead = child;
     } else if (child.type === Tbody) {
-      ElTbody = child;
+      ElTbody = React.cloneElement(child, {
+        className: child.props.className + ' tbody'
+      });;
     } else if (child.type === Tfoot) {
-      ElTfoot = child;
+      ElTfoot = React.cloneElement(child, {
+        className: child.props.className + ' tfoot'
+      });;
     }
   });
   // 直接操作DOM，避免使用状态，造成整个table组件的更新，性能差
@@ -98,20 +104,31 @@ export const Table = function Table(props) {
     }
   }
 
+  filterProps.className = filterProps.className + ' table';
+
   return (
     <div>
       {
         ElThead && ElThead.props.fixed === "true" &&
-        <div>
-          <table {...filterProps} ref={elTableHeader}>
+        <div className="thead">
+          <table {...filterProps} ref={elTableHeader} >
             {ElColgroup}
             {ElThead}
           </table>
         </div>
       }
       <div ref={elScroll} style={{height: props.scrollHeight, overflow: 'auto'}}>
+        {
+          // 不固定的表头，单独生成，因为在Edge浏览器中，会出现各列高度相差1px的情况，样式应该定义在.thead中
+          ElThead && ElThead.props.fixed !== "true" &&
+          <div className="thead">
+            <table {...filterProps} ref={elTableHeader}>
+              {ElColgroup}
+              {ElThead && ElThead.props.fixed !== "true" && ElThead}
+            </table>
+          </div>
+        }
         <table {...filterProps} ref={elTableReal}>
-          {ElThead && ElThead.props.fixed !== "true" && ElThead}
           {ElColgroup}
           {ElTbody}
           {ElTfoot && ElTfoot.props.fixed !== "true" && ElTfoot}
