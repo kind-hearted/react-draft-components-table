@@ -341,7 +341,21 @@ export const Table = function Table(props) {
     const scrollBarWidth = scrollBodyBoxWidth - scrollBodyWidth;
 
     headerRightScrollBar.current.style.width = scrollBarWidth + 'px';
+
+    if (scrollBarWidth === 0) {
+      headerRightScrollBar.current.style.display = 'none';
+    } else {
+      headerRightScrollBar.current.style.display = 'block';
+    }
+
     rightHeader.current.parentElement.style.right = scrollBarWidth + 'px';
+    // 设置底部单独滚动条子元素的宽度
+    scrollBottom.current.children[0].style.width = (baseTable.current.offsetWidth + scrollBarWidth) + 'px';
+    // 设置横向滚动区域的margin bottom为负的滚动条高度，达到隐藏滚动条的目的
+    // 注: 不使用scrollBarWidth，因为scroll body可能不出现滚动条
+    const scrollXBarHeight = scrollHeader.current.offsetHeight - scrollHeader.current.children[0].offsetHeight;
+    scrollHeader.current.style.marginBottom = -1 * scrollXBarHeight + 'px';
+    scrollBody.current.style.marginBottom = -1 * scrollXBarHeight + 'px';
 
     if (BaseThead && BaseThead.props.fixed === "true") {
       setScrollBar(scrollBarWidth, baseHeader, 'th');
@@ -416,12 +430,15 @@ export const Table = function Table(props) {
         {/* 定位一个scroll bar */}
         <div className={style['right-scroll-bar']} ref={headerRightScrollBar}></div>
         {/* 可滚动的base表头。加上可能出现的滚动条 */}
-        <div style={{ overflow: 'auto' }} onScroll={onScrollHeader} ref={scrollHeader}>
-          <div style={{ minWidth: '1200px' }}>
-            <table className="table" ref={baseHeader} style={{ width: '100%' }}>
-              {BaseColgroup}
-              {BaseThead}
-            </table>
+        {/* 包裹一个overflow: hidden的div, 隐藏滚动条 */}
+        <div style={{ overflow: 'hidden' }}>
+          <div style={{ overflow: 'auto' }} onScroll={onScrollHeader} ref={scrollHeader}>
+            <div style={{ minWidth: '1200px' }}>
+              <table className="table" ref={baseHeader} style={{ width: '100%' }}>
+                {BaseColgroup}
+                {BaseThead}
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -459,7 +476,7 @@ export const Table = function Table(props) {
           {/* 包裹一个overflow: hidden的div, 隐藏滚动条 */}
           <div style={{ overflow: 'hidden' }}>
             {/* base-scroll-inner需要设置一个margin-bottom为负的滚动条高度，以便可以隐藏这个滚动条 */}
-            <div className={style['base-scroll-inner']} style={{ marginBottom: '-17px' }} ref={scrollBody} onScroll={onScrollBody}>
+            <div className={style['base-scroll-inner']} ref={scrollBody} onScroll={onScrollBody}>
               <table className="table" style={{ minWidth: '1200px' }} ref={baseTable}>
                 {BaseColgroup}
                 {BaseTbody}
@@ -471,7 +488,7 @@ export const Table = function Table(props) {
         {/* 一个固定在底部的单独滚动条，用来控制左右滚动。Mac上的浏览器可能没有滚动条高度，需要单独设置。 */}
         <div className={style['scroll-x']} onScroll={onScrollBottom} ref={scrollBottom}>
           {/* 计算: 计算宽度, 加上滚动条的宽度 */}
-          <div className={style['scroll-x-inner']} style={{ minWidth: '1217px' }}></div>
+          <div className={style['scroll-x-inner']}></div>
         </div>
       </div>
     </div>
