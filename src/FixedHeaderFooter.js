@@ -107,7 +107,7 @@ export const Table = function Table(props) {
   filterProps.className = [filterProps.className, 'table'].join(' ');
 
   return (
-    <div>
+    <div className="table-box">
       {
         ElThead && ElThead.props.fixed === "true" &&
         <div className="thead">

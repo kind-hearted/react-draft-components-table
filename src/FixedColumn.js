@@ -326,7 +326,7 @@ export const Table = function Table(props) {
   const tableProps = addClassName(props, 'table');
 
   return (
-    <div className={style.table}>
+    <div className={'table-box ' + style.table}>
       <div className={style.left}>
         <table {...tableProps} style={{ width: '100%' }} ref={leftTable}>
           <colgroup {...ElColgroup.props}>

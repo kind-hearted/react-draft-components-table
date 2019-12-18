@@ -10,7 +10,7 @@ import FixedHeaderFooterExample from './FixedHeaderFooterExample.js';
 import FixedColumnExample from './FixedColumnExample.js';
 
 function App() {
-  const [activedName, setActivedName] = useState('FixedHeaderFooterExample');
+  const [activedName, setActivedName] = useState('FixedColumnExample');
 
   return (
     <SideTabbar key="name" activedName={activedName} onChange={(name) => {
