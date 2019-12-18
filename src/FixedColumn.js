@@ -182,22 +182,22 @@ const addClassName = function (props, className) {
 
   return result;
 };
-
+// TODO：公开一个方式，可以让外部告知组件调用setFixedTableRowHeight去更新行高
 export const Table = function Table(props) {
   const leftTable = useRef();
   const baseTable = useRef();
   const rightTable = useRef();
 
   const LeftCols = [];
-  let LeftThead = null;
-  let LeftTbody = null;
-  let LeftTfoot = null;
+  let LeftTheadTrs = null;
+  let LeftTbodyTrs = null;
+  let LeftTfootTrs = null;
   const leftFixedIndexes = [];
 
   const RightCols = [];
-  let RightThead = null;
-  let RightTbody = null;
-  let RightTfoot = null;
+  let RightTheadTrs = null;
+  let RightTbodyTrs = null;
+  let RightTfootTrs = null;
   const rightFixedIndexes = [];
 
   let columns = 0;
@@ -290,22 +290,22 @@ export const Table = function Table(props) {
         className: [child.props.className, 'thead'].join(' ')
       });
       const partTrs = renderFixedPartTrs(leftFixedIndexes, rightFixedIndexes, columns, child);
-      LeftThead = partTrs.Left;
-      RightThead = partTrs.Right;
+      LeftTheadTrs = partTrs.Left;
+      RightTheadTrs = partTrs.Right;
     } else if (child.type === Tbody) {
       ElTbody = React.cloneElement(child, {
         className: [child.props.className, 'tbody'].join(' ')
       });
       const partTrs = renderFixedPartTrs(leftFixedIndexes, rightFixedIndexes, columns, child);
-      LeftTbody = partTrs.Left;
-      RightTbody = partTrs.Right;
+      LeftTbodyTrs = partTrs.Left;
+      RightTbodyTrs = partTrs.Right;
     } else if (child.type === Tfoot) {
       ElTfoot = React.cloneElement(child, {
         className: [child.props.className, 'tfoot'].join(' ')
       });
       const partTrs = renderFixedPartTrs(leftFixedIndexes, rightFixedIndexes, columns, child);
-      LeftTfoot = partTrs.Left;
-      RightTfoot = partTrs.Right;
+      LeftTfootTrs = partTrs.Left;
+      RightTfootTrs = partTrs.Right;
     }
   });
   // 计算设置固定表格的列宽、行高，需要直接操作DOM
@@ -333,15 +333,15 @@ export const Table = function Table(props) {
             {LeftCols}
           </colgroup>
           <thead {...ElThead.props}>
-            {LeftThead}
+            {LeftTheadTrs}
           </thead>
           <tbody {...ElTbody.props}>
-            {LeftTbody}
+            {LeftTbodyTrs}
           </tbody>
           {
-            LeftTfoot &&
+            LeftTfootTrs &&
             <tfoot {...ElTfoot.props}>
-              {LeftTfoot}
+              {LeftTfootTrs}
             </tfoot>
           }
         </table>
@@ -352,15 +352,15 @@ export const Table = function Table(props) {
             {RightCols}
           </colgroup>
           <thead {...ElThead.props}>
-            {RightThead}
+            {RightTheadTrs}
           </thead>
           <tbody {...ElTbody.props}>
-            {RightTbody}
+            {RightTbodyTrs}
           </tbody>
           {
-            RightTfoot &&
+            RightTfootTrs &&
             <tfoot {...ElTfoot.props}>
-              {RightTfoot}
+              {RightTfootTrs}
             </tfoot>
           }
         </table>
