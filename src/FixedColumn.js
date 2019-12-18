@@ -171,6 +171,18 @@ const setFixedTableRowHeight = function (baseTable, leftTable, rightTable, selec
   }
 };
 
+const addClassName = function (props, className) {
+  const result = {};
+
+  for (let key in props) {
+    result[key] = props[key];
+  }
+
+  result.className = [result.className, className].join(' ');
+
+  return result;
+};
+
 export const Table = function Table(props) {
   const leftTable = useRef();
   const baseTable = useRef();
@@ -196,7 +208,9 @@ export const Table = function Table(props) {
   // 先遍历出fixed, 并算出总的列数
   React.Children.forEach(props.children, function (child) {
     if (child.type === Colgroup) {
-      ElColgroup = child;
+      ElColgroup = React.cloneElement(child, {
+        className: [child.props.className, 'colgroup'].join(' ')
+      });
       // 遍历Col, 找出固定的列的索引, 因为有break的操作, 所以没有用React.Children.forEach
       let children = child.props.children;
 
@@ -272,17 +286,23 @@ export const Table = function Table(props) {
   // 分别填充表头、表体、表尾
   React.Children.forEach(props.children, function (child) {
     if (child.type === Thead) {
-      ElThead = child;
+      ElThead = React.cloneElement(child, {
+        className: [child.props.className, 'thead'].join(' ')
+      });
       const partTrs = renderFixedPartTrs(leftFixedIndexes, rightFixedIndexes, columns, child);
       LeftThead = partTrs.Left;
       RightThead = partTrs.Right;
     } else if (child.type === Tbody) {
-      ElTbody = child;
+      ElTbody = React.cloneElement(child, {
+        className: [child.props.className, 'tbody'].join(' ')
+      });
       const partTrs = renderFixedPartTrs(leftFixedIndexes, rightFixedIndexes, columns, child);
       LeftTbody = partTrs.Left;
       RightTbody = partTrs.Right;
     } else if (child.type === Tfoot) {
-      ElTfoot = child;
+      ElTfoot = React.cloneElement(child, {
+        className: [child.props.className, 'tfoot'].join(' ')
+      });
       const partTrs = renderFixedPartTrs(leftFixedIndexes, rightFixedIndexes, columns, child);
       LeftTfoot = partTrs.Left;
       RightTfoot = partTrs.Right;
@@ -303,10 +323,12 @@ export const Table = function Table(props) {
     setFixedTableRowHeight(baseTable, leftTable, rightTable, 'tfoot>tr');
   }));
   // TODO：table、colgroup、thead、tbody、tfoot要拷贝一些props
+  const tableProps = addClassName(props, 'table');
+
   return (
     <div className={style.table}>
       <div className={style.left}>
-        <table style={{ width: '100%' }} ref={leftTable}>
+        <table {...tableProps} style={{ width: '100%' }} ref={leftTable}>
           <colgroup {...ElColgroup.props}>
             {LeftCols}
           </colgroup>
@@ -325,7 +347,7 @@ export const Table = function Table(props) {
         </table>
       </div>
       <div className={style.right}>
-        <table style={{ width: '100%' }} ref={rightTable}>
+        <table {...tableProps} style={{ width: '100%' }} ref={rightTable}>
           <colgroup {...ElColgroup.props}>
             {RightCols}
           </colgroup>
@@ -344,7 +366,7 @@ export const Table = function Table(props) {
         </table>
       </div>
       <div style={{ overflow: 'auto', width: '100%' }}>
-        <table ref={baseTable} {...props}>
+        <table ref={baseTable} {...tableProps}>
           {ElColgroup}
           {ElThead}
           {ElTbody}

@@ -71,18 +71,18 @@ export const Table = function Table(props) {
   React.Children.forEach(props.children, function (child) {
     if (child.type === Colgroup) {
       ElColgroup = React.cloneElement(child, {
-        className: child.props.className + ' colgroup'
+        className: [child.props.className, 'colgroup'].join(' ')
       });
     } else if (child.type === Thead) {
       ElThead = child;
     } else if (child.type === Tbody) {
       ElTbody = React.cloneElement(child, {
-        className: child.props.className + ' tbody'
-      });;
+        className: [child.props.className, 'tbody'].join(' ')
+      });
     } else if (child.type === Tfoot) {
       ElTfoot = React.cloneElement(child, {
-        className: child.props.className + ' tfoot'
-      });;
+        className: [child.props.className, 'tfoot'].join(' ')
+      });
     }
   });
   // 直接操作DOM，避免使用状态，造成整个table组件的更新，性能差
@@ -104,7 +104,7 @@ export const Table = function Table(props) {
     }
   }
 
-  filterProps.className = filterProps.className + ' table';
+  filterProps.className = [filterProps.className, 'table'].join(' ');
 
   return (
     <div>
