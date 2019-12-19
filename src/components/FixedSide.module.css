@@ -40,6 +40,13 @@
   overflow-x: scroll;
   overflow-y: hidden;
 }
+.scroll-x-absoluted {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 15px;
+}
 .scroll-x-inner {
   height: 1px;
 }

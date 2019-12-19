@@ -46,6 +46,12 @@ const setMarginBottom = function (ref, xScrollBarHeight) {
   }
 };
 
+const setPaddingBottom = function (ref, xScrollBarHeight) {
+  if (ref.current) {
+    ref.current.style.paddingBottom = xScrollBarHeight + 'px';
+  }
+};
+
 const renderSideHeader = function (className, ref, cols, trs) {
   return (
     <div className={className}>
@@ -119,6 +125,7 @@ export const Table = function Table(props) {
   } = renderLeftRightFragments(props, Colgroup, Thead, Tbody, Tfoot);
   // 计算设置固定表格的列宽、行高，需要直接操作DOM，避免尺寸变化的属性引起react的更新，影响性能
   let prevScrollBottomBarHeight = 0;
+  let scrollBottomBarIsAbsoluted = false;
   const resize = function () {
     // 计算固定列宽，相加设置容器元素宽度
     const ths = baseHeaderRef.current.querySelector('thead tr').children;
@@ -180,6 +187,20 @@ export const Table = function Table(props) {
     setMarginBottom(scrollHeaderRef, xScrollBarHeight);
     setMarginBottom(scrollBodyRef, xScrollBarHeight);
     setMarginBottom(scrollFooterRef, xScrollBarHeight);
+    // mac电脑上的浏览器，滚动条设置为滑动显示时，滚动条不占宽度，特别处理
+    if (headerDiffWidth > 0 && xScrollBarHeight === 0) {
+      setMarginBottom(scrollHeaderRef, 15);
+      setMarginBottom(scrollBodyRef, 15);
+      setMarginBottom(scrollFooterRef, 15);
+      setPaddingBottom(scrollHeaderRef, 15);
+      setPaddingBottom(scrollBodyRef, 15);
+      setPaddingBottom(scrollFooterRef, 15);
+
+      if (!scrollBottomBarIsAbsoluted) {
+        scrollBottomBarIsAbsoluted = true;
+        scrollBottomRef.current.className = scrollBottomRef.current.className + ' ' + style['scroll-x-absoluted'];
+      }
+    }
   };
   // 一次resize，浏览器可能由有滚动条变为无滚动条，表格变宽，延时再resize一次
   const twiceResize = function () {
@@ -200,7 +221,7 @@ export const Table = function Table(props) {
   useEffect(twiceResize);
 
   let flag = false;
-  const scrollX = function (event, ref1, ref2, ref3) {
+  const scrollX = function (event, ref1, ref2, ref3, scrollBottomRef) {
     if (!flag) {
       const scrollLeft = event.target.scrollLeft;
 
@@ -213,21 +234,25 @@ export const Table = function Table(props) {
       if (ref3.current) {
         ref3.current.scrollLeft = scrollLeft;
       }
+
+      if (scrollBottomBarIsAbsoluted && scrollBottomRef && scrollBottomRef.current) {
+        scrollBottomRef.current.style.display = 'block';
+      }
     }
 
     flag = false;
   };
 
   const onScrollHeader = function (event) {
-    scrollX(event, scrollBottomRef, scrollBodyRef, scrollFooterRef);
+    scrollX(event, scrollBottomRef, scrollBodyRef, scrollFooterRef, scrollBottomRef);
   };
 
   const onScrollBody = function (event) {
-    scrollX(event, scrollHeaderRef, scrollBottomRef, scrollFooterRef);
+    scrollX(event, scrollHeaderRef, scrollBottomRef, scrollFooterRef, scrollBottomRef);
   };
 
   const onScrollFooter = function (event) {
-    scrollX(event, scrollHeaderRef, scrollBodyRef, scrollBottomRef);
+    scrollX(event, scrollHeaderRef, scrollBodyRef, scrollBottomRef, scrollBottomRef);
   };
 
   const onScrollBottom = function (event) {
@@ -344,7 +369,15 @@ export const Table = function Table(props) {
         )
       }
       {/* 一个固定在底部的单独滚动条，用来控制左右滚动。Mac上的浏览器可能没有滚动条高度，需要单独设置。 */}
-      <div className={style['scroll-x']} onScroll={onScrollBottom} ref={scrollBottomRef}>
+      <div className={style['scroll-x']} onScroll={onScrollBottom} onMouseLeave={() => {
+        if (scrollBottomBarIsAbsoluted) {
+          scrollBottomRef.current.style.display = 'none';
+
+          setTimeout(function () {
+            scrollBottomRef.current.style.display = 'block';
+          }, 17);
+        }
+      }} ref={scrollBottomRef}>
         {/* 计算: 计算宽度, 加上滚动条的宽度 */}
         <div className={style['scroll-x-inner']}></div>
       </div>
