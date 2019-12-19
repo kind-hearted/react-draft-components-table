@@ -1,7 +1,21 @@
 function setLeftRightTrsHeight(baseTableRef, leftTableRef, rightTableRef, selector) {
-  const baseTrs = baseTableRef.current.querySelectorAll(selector);
-  const leftTrs = leftTableRef.current.querySelectorAll(selector);
-  const rightTrs = rightTableRef.current.querySelectorAll(selector);
+  let baseTrs = [];
+
+  if (baseTableRef.current) {
+    baseTrs = baseTableRef.current.querySelectorAll(selector);
+  }
+
+  let leftTrs = [];
+
+  if (leftTableRef.current) {
+    leftTrs = leftTableRef.current.querySelectorAll(selector);
+  }
+
+  let rightTrs = [];
+
+  if (rightTableRef.current) {
+    rightTrs = rightTableRef.current.querySelectorAll(selector);
+  }
 
   for (let i = 0, ilen = baseTrs.length; i < ilen; i++) {
     const height = getElementHeight(baseTrs[i]);

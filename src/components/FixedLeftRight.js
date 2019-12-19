@@ -77,7 +77,7 @@ export const Table = function Table(props) {
     setLeftRightTrsHeight(baseTableRef, leftTableRef, rightTableRef, 'thead>tr');
     setLeftRightTrsHeight(baseTableRef, leftTableRef, rightTableRef, 'tbody>tr');
     setLeftRightTrsHeight(baseTableRef, leftTableRef, rightTableRef, 'tfoot>tr');
-  }; 
+  };
   // 计算设置固定表格的列宽、行高，需要直接操作DOM
   useEffect(setFixedTableSize);
   // TODO：table、colgroup、thead、tbody、tfoot要拷贝一些props
