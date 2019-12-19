@@ -6,7 +6,7 @@ import {
   Thead,
   Tbody,
   Tfoot,
-} from './FixedColumn.js';
+} from './components/FixedLeftRight.js';
 
 export default function (props) {
   return (

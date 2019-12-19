@@ -6,7 +6,7 @@ import {
   Thead,
   Tbody,
   Tfoot,
-} from './FixedAllSides.js';
+} from './components/FixedSide.js';
 
 export default function (props) {
   return (

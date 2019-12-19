@@ -6,7 +6,7 @@ import {
   Thead,
   Tbody,
   Tfoot,
-} from './FixedHeaderFooter.js';
+} from './components/FixedTopBottom.js';
 
 export default function (props) {
   return (

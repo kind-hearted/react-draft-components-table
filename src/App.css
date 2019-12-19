@@ -46,3 +46,6 @@
 .tbody tr:last-child td {
   border-bottom: 0;
 }
+.y-scroll-bar {
+  border-left: 1px solid gray;
+}

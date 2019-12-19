@@ -6,33 +6,33 @@ import {
   SideTabbarItemHeader,
   SideTabbarItemBody,
 } from './SideTabbar.js';
-import FixedHeaderFooterExample from './FixedHeaderFooterExample.js';
-import FixedColumnExample from './FixedColumnExample.js';
-import FixedAllSidesExample from './FixedAllSidesExample.js';
+import FixedTopBottomExample from './FixedTopBottomExample.js';
+import FixedLeftRightExample from './FixedLeftRightExample.js';
+import FixedSideExample from './FixedSideExample.js';
 
 function App() {
-  const [activedName, setActivedName] = useState('FixedAllSidesExample');
+  const [activedName, setActivedName] = useState('FixedLeftRightExample');
 
   return (
     <SideTabbar key="name" activedName={activedName} onChange={(name) => {
       setActivedName(name);
     }}>
-      <SideTabbarItem name="FixedHeaderFooterExample">
+      <SideTabbarItem name="FixedTopBottomExample">
         <SideTabbarItemHeader>固定表头、表尾</SideTabbarItemHeader>
         <SideTabbarItemBody>
-          <FixedHeaderFooterExample></FixedHeaderFooterExample>
+          <FixedTopBottomExample></FixedTopBottomExample>
         </SideTabbarItemBody>
       </SideTabbarItem>
-      <SideTabbarItem name="FixedColumnExample">
+      <SideTabbarItem name="FixedLeftRightExample">
         <SideTabbarItemHeader>固定表列</SideTabbarItemHeader>
         <SideTabbarItemBody>
-          <FixedColumnExample></FixedColumnExample>
+          <FixedLeftRightExample></FixedLeftRightExample>
         </SideTabbarItemBody>
       </SideTabbarItem>
-      <SideTabbarItem name="FixedAllSidesExample">
+      <SideTabbarItem name="FixedSideExample">
         <SideTabbarItemHeader>固定表头+表列</SideTabbarItemHeader>
         <SideTabbarItemBody>
-          <FixedAllSidesExample></FixedAllSidesExample>
+          <FixedSideExample></FixedSideExample>
         </SideTabbarItemBody>
       </SideTabbarItem>
     </SideTabbar>
