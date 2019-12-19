@@ -183,6 +183,8 @@ export const Table = function Table(props) {
 
       prevScrollBottomBarHeight = 0;
     }
+    // 设置滚动表体最小高度等于滚动容器高度，避免高度小于滚动高度时，产生空白区域，该空白区域手势滚动无效
+    scrollBodyRef.current.style.minHeight = baseScrollContainerRef.current.offsetHeight + 'px';
     // 设置横向滚动区域的margin bottom为负的滚动条高度，达到隐藏滚动条的目的
     setMarginBottom(scrollHeaderRef, xScrollBarHeight);
     setMarginBottom(scrollBodyRef, xScrollBarHeight);
@@ -368,8 +370,9 @@ export const Table = function Table(props) {
           onScrollFooter,
         )
       }
-      {/* 一个固定在底部的单独滚动条，用来控制左右滚动。Mac上的浏览器可能没有滚动条高度，需要单独设置。 */}
+      {/* 一个固定在底部的单独滚动条，用来控制左右滚动 */}
       <div className={style['scroll-x']} onScroll={onScrollBottom} onMouseLeave={() => {
+        // Mac上的浏览器滚动条定位情况下，鼠标离开先隐藏再显示，避免一直显示滚动条
         if (scrollBottomBarIsAbsoluted) {
           scrollBottomRef.current.style.display = 'none';
 
