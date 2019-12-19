@@ -1,5 +1,5 @@
 .left {
-  width: 200px;
+  min-height: 100%;
   position: absolute;
   left: 0;
   top: 0;
@@ -7,7 +7,7 @@
   box-shadow: 6px 0 6px -4px rgba(0,0,0,0.15);
 }
 .right {
-  width: 100px;
+  min-height: 100%;
   position: absolute;
   right: 0;
   top: 0;
@@ -38,7 +38,8 @@
   overflow-y: auto;
 }
 .scroll-x {
-  overflow: auto; 
+  /* 不能设置overflow auto，IE9及以下会不显示此滚动条 */
+  overflow: scroll; 
   position: absolute; 
   bottom: 0; 
   left: 0; 

@@ -25,31 +25,29 @@ const setScrollBar = function (scrollBarWidth, fixedTable, type) {
   const firstTr = trs[0];
   const lastCell = firstTr.children[firstTr.children.length - 1];
   const lastCol = cols[cols.length - 1];
+  // 判断是否添加过占位列，表格的宽度需要加或减滚动条宽度
+  if (lastCol.className === SCROLL_COL_CLASS) {
+    // 滚动条宽度为0时，删掉添加的占位列
+    if (scrollBarWidth === 0) {
+      if (lastCol.className === SCROLL_COL_CLASS) {
+        colgroup.removeChild(lastCol);
+      }
+  
+      if (lastCell.className === SCROLL_COL_CLASS) {
+        firstTr.removeChild(lastCell);
+      }
+    }
+  } else if (scrollBarWidth > 0) {
+    // 没有滚动占位列并存在滚动条宽度时，动态添加，增加表格的宽度
+    const col = document.createElement('col');
+    col.className = SCROLL_COL_CLASS;
+    col.setAttribute('width', String(scrollBarWidth));
+    colgroup.appendChild(col);
 
-  if (scrollBarWidth === 0) {
-    if (lastCol.className === SCROLL_COL_CLASS) {
-      colgroup.removeChild(lastCol);
-    }
-
-    if (lastCell.className === SCROLL_COL_CLASS) {
-      firstTr.removeChild(lastCell);
-    }
-  } else {
-    if (lastCol.className === SCROLL_COL_CLASS) {
-      lastCol.setAttribute('width', String(scrollBarWidth));
-    } else {
-      const col = document.createElement('col');
-      col.className = SCROLL_COL_CLASS;
-      col.setAttribute('width', String(scrollBarWidth));
-      colgroup.appendChild(col);
-    }
-
-    if (lastCell.className !== SCROLL_COL_CLASS) {
-      const cell = document.createElement(type);
-      cell.className = SCROLL_COL_CLASS;
-      cell.setAttribute('rowspan', trs.length);
-      firstTr.appendChild(cell);
-    }
+    const cell = document.createElement(type);
+    cell.className = SCROLL_COL_CLASS;
+    cell.setAttribute('rowspan', trs.length);
+    firstTr.appendChild(cell);
   }
 };
 

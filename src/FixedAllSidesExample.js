@@ -94,8 +94,50 @@ export default function (props) {
             <td>年龄13</td>
             <td>备注13</td>
           </tr>
+          <tr>
+            <td>姓名14</td>
+            <td>年龄14</td>
+            <td>备注14</td>
+          </tr>
+          <tr>
+            <td>姓名15</td>
+            <td>年龄15</td>
+            <td>备注15</td>
+          </tr>
+          <tr>
+            <td>姓名16</td>
+            <td>年龄16</td>
+            <td>备注16</td>
+          </tr>
         </Tbody>
       </Table>
+      <p>固定表头、第一列：水平 + 竖直方向均无滚动条</p>
+      <Table scrollHeight="300px" style={{minWidth: '1400px'}}>
+        <Colgroup>
+          <Col width="300" fixed="true" />
+          <Col  />
+          <Col width="300" />
+        </Colgroup>
+        <Thead fixed="true">
+          <tr>
+            <th rowSpan="2">姓名</th>
+            <th>年龄</th>
+            <th>备注</th>
+          </tr>
+          <tr>
+            <th>年龄</th>
+            <th>备注</th>
+          </tr>
+        </Thead>
+        <Tbody>
+          <tr>
+            <td rowSpan="2">姓名1 + 2</td>
+            <td>年龄1</td>
+            <td>备注1</td>
+          </tr>
+        </Tbody>
+      </Table>
+    
     </div>
   )
 }

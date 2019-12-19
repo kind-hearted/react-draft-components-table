@@ -13,31 +13,29 @@ const setScrollBar = function (scrollBarWidth, fixedTable, type) {
   const firstTr = trs[0];
   const lastCell = firstTr.children[firstTr.children.length - 1];
   const lastCol = cols[cols.length - 1];
+  // 判断是否添加过占位列，表格的宽度需要加或减滚动条宽度
+  if (lastCol.className === SCROLL_COL_CLASS) {
+    // 滚动条宽度为0时，删掉添加的占位列
+    if (scrollBarWidth === 0) {
+      if (lastCol.className === SCROLL_COL_CLASS) {
+        colgroup.removeChild(lastCol);
+      }
+  
+      if (lastCell.className === SCROLL_COL_CLASS) {
+        firstTr.removeChild(lastCell);
+      }
+    }
+  } else if (scrollBarWidth > 0) {
+    // 没有滚动占位列并存在滚动条宽度时，动态添加，增加表格的宽度
+    const col = document.createElement('col');
+    col.className = SCROLL_COL_CLASS;
+    col.setAttribute('width', String(scrollBarWidth));
+    colgroup.appendChild(col);
 
-  if (scrollBarWidth === 0) {
-    if (lastCol.className === SCROLL_COL_CLASS) {
-      colgroup.removeChild(lastCol);
-    }
-
-    if (lastCell.className === SCROLL_COL_CLASS) {
-      firstTr.removeChild(lastCell);
-    }
-  } else {
-    if (lastCol.className === SCROLL_COL_CLASS) {
-      lastCol.setAttribute('width', String(scrollBarWidth));
-    } else {
-      const col = document.createElement('col');
-      col.className = SCROLL_COL_CLASS;
-      col.setAttribute('width', String(scrollBarWidth));
-      colgroup.appendChild(col);
-    }
-
-    if (lastCell.className !== SCROLL_COL_CLASS) {
-      const cell = document.createElement(type);
-      cell.className = SCROLL_COL_CLASS;
-      cell.setAttribute('rowspan', trs.length);
-      firstTr.appendChild(cell);
-    }
+    const cell = document.createElement(type);
+    cell.className = SCROLL_COL_CLASS;
+    cell.setAttribute('rowspan', trs.length);
+    firstTr.appendChild(cell);
   }
 };
 /**
@@ -190,6 +188,7 @@ export const Table = function Table(props) {
   const baseHeader = useRef();
   const rightHeader = useRef();
   const headerRightScrollBar = useRef();
+  const baseScrollOuter = useRef();
 
   const leftTable = useRef();
   const baseTable = useRef();
@@ -321,7 +320,7 @@ export const Table = function Table(props) {
     }
   });
 
-  // 计算设置固定表格的列宽、行高，需要直接操作DOM
+  // 计算设置固定表格的列宽、行高，需要直接操作DOM，避免尺寸变化的属性引起react的更新，影响性能
   useEffect((function setFixedTableSize() {
     // 计算固定列宽，相加设置容器元素宽度
     const ths = baseHeader.current.querySelector('thead tr').children;
@@ -339,29 +338,41 @@ export const Table = function Table(props) {
     const scrollBodyWidth = scrollBody.current.offsetWidth;
     const scrollBodyBoxWidth = scrollBody.current.parentElement.parentElement.offsetWidth;
     const scrollBarWidth = scrollBodyBoxWidth - scrollBodyWidth;
+    const headerRightScrollBarStyle = headerRightScrollBar.current.style;
 
-    headerRightScrollBar.current.style.width = scrollBarWidth + 'px';
+    headerRightScrollBarStyle.width = scrollBarWidth + 'px';
 
     if (scrollBarWidth === 0) {
-      headerRightScrollBar.current.style.display = 'none';
+      headerRightScrollBarStyle.display = 'none';
     } else {
-      headerRightScrollBar.current.style.display = 'block';
+      headerRightScrollBarStyle.display = 'block';
     }
 
     rightHeader.current.parentElement.style.right = scrollBarWidth + 'px';
-    // 设置底部单独滚动条子元素的宽度
-    scrollBottom.current.children[0].style.width = (baseTable.current.offsetWidth + scrollBarWidth) + 'px';
+    
+    // 设置头部的右侧滚动条
+    if (BaseThead && BaseThead.props.fixed === "true") {
+      setScrollBar(scrollBarWidth, baseHeader, 'th');
+      // 固定表格的宽度等于基础表格的宽度加上滚动条宽度
+      baseHeader.current.style.width = (baseTable.current.offsetWidth + scrollBarWidth) + 'px';
+    }
+    // 根据头部来判断是否需要横向滚动条，因为内容区可能没有内容
+    const headerDiffWidth = baseTable.current.offsetWidth - baseTable.current.parentElement.offsetWidth;
+
+    if (headerDiffWidth > 0) {
+      // 设置底部单独滚动条子元素的宽度
+      scrollBottom.current.children[0].style.width = baseTable.current.offsetWidth + 'px';
+      scrollBottom.current.style.display = 'block';
+      baseScrollOuter.current.style.height = (baseScrollOuter.current.parentElement.offsetHeight - scrollBarWidth) + 'px';
+    } else {
+      scrollBottom.current.style.display = 'none';
+      baseScrollOuter.current.style.height = '100%';
+    }
     // 设置横向滚动区域的margin bottom为负的滚动条高度，达到隐藏滚动条的目的
     // 注: 不使用scrollBarWidth，因为scroll body可能不出现滚动条
     const scrollXBarHeight = scrollHeader.current.offsetHeight - scrollHeader.current.children[0].offsetHeight;
     scrollHeader.current.style.marginBottom = -1 * scrollXBarHeight + 'px';
     scrollBody.current.style.marginBottom = -1 * scrollXBarHeight + 'px';
-
-    if (BaseThead && BaseThead.props.fixed === "true") {
-      setScrollBar(scrollBarWidth, baseHeader, 'th');
-      // TODO：此处会有BUG，加上以后后续再获取baseHeader.current.offsetWidth会变大
-      baseHeader.current.parentElement.style.width = baseHeader.current.offsetWidth + scrollBarWidth + 'px';
-    }
 
     if (BaseTfoot && BaseTfoot.props.fixed === "true") {
       // setScrollBar(scrollBarWidth, baseHeader, 'td');
@@ -433,18 +444,16 @@ export const Table = function Table(props) {
         {/* 包裹一个overflow: hidden的div, 隐藏滚动条 */}
         <div style={{ overflow: 'hidden' }}>
           <div style={{ overflow: 'auto' }} onScroll={onScrollHeader} ref={scrollHeader}>
-            <div style={{ minWidth: '1200px' }}>
-              <table className="table" ref={baseHeader} style={{ width: '100%' }}>
-                {BaseColgroup}
-                {BaseThead}
-              </table>
-            </div>
+            <table className="table" ref={baseHeader} style={{ minWidth: '1200px' }}>
+              {BaseColgroup}
+              {BaseThead}
+            </table>
           </div>
         </div>
       </div>
-      <div className={style['base-scroll-container']} style={{ height: '300px' }}>
+      <div className={style['base-scroll-container']} style={{ height: '200px' }}>
         {/* base-scroll-outer的高需要设为base-scroll-container高度和滚动条高度之差 */}
-        <div className={style['base-scroll-outer']} style={{ height: '283px' }}>
+        <div className={style['base-scroll-outer']} ref={baseScrollOuter} style={{ height: '100%' }}>
           {/* 左边固定第一列表体 */}
           <div className={style.left}>
             <table className="table" style={{ width: '100%' }} ref={leftTable}>
