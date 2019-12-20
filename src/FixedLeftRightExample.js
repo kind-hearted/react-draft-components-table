@@ -7,12 +7,56 @@ import {
   Tbody,
   Tfoot,
 } from './components/FixedLeftRight.js';
+import style from './FixedLeftRightExample.module.css';
 
 export default function (props) {
+  const onMouseOver = function (event) {
+    let target = event.target;
+    let tagName = target.tagName.toLocaleLowerCase();
+
+    while (tagName !== 'tr') {
+      if (event.target === document.body) {
+        break;
+      }
+
+      target = target.parentElement;
+      tagName = target.tagName.toLocaleLowerCase();
+
+      if (tagName === 'tr') {
+        break;
+      }
+    }
+
+    if (tagName === 'tr') {
+      target.className = style.hover;
+    }
+  };
+  const onMouseLeave = function (event) {
+    let target = event.target;
+    let tagName = target.tagName.toLocaleLowerCase();
+
+    while (tagName !== 'tr') {
+      if (event.target === document.body) {
+        break;
+      }
+
+      target = target.parentElement;
+      tagName = target.tagName.toLocaleLowerCase();
+
+      if (tagName === 'tr') {
+        break;
+      }
+    }
+
+    if (tagName === 'tr') {
+      target.className = '';
+    }
+  };
+
   return (
     <div>
       <p>固定两侧第一列（内容宽度大可滚动）</p>
-      <Table style={{minWidth: '1200px'}}>
+      <Table style={{minWidth: '1200px'}} className={style['table-stripe']}>
         <Colgroup>
           <Col width="200" fixed="true" />
           <Col width="200" span="2" />
@@ -116,7 +160,7 @@ export default function (props) {
         </Tfoot>
       </Table>
       <p>固定两侧第一列（内容宽度小无滚动）</p>
-      <Table>
+      <Table className={style['table-stripe']}>
         <Colgroup>
           <Col width="200" fixed="true" />
           <Col width="200" span="2" />
@@ -138,7 +182,7 @@ export default function (props) {
           </tr>
         </Thead>
         <Tbody>
-          <tr>
+          <tr onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
             <td rowSpan="2">第一列1 + 2</td>
             <td>11</td>
             <td></td>
@@ -147,62 +191,62 @@ export default function (props) {
               console.log('点击删除按钮');
             }}>删除1</td>
           </tr>
-          <tr>
+          <tr onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
             <td>12</td>
             <td></td>
             <td></td>
             <td>删除2</td>
           </tr>
-          <tr>
+          <tr onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
             <td>第一列3</td>
             <td>13</td>
             <td></td>
             <td></td>
             <td>删除3</td>
           </tr>
-          <tr>
+          <tr onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
             <td>第一列4</td>
             <td>14</td>
             <td></td>
             <td></td>
             <td>删除4</td>
           </tr>
-          <tr>
+          <tr onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
             <td>第一列5</td>
             <td>15</td>
             <td></td>
             <td></td>
             <td>删除5</td>
           </tr>
-          <tr>
+          <tr onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
             <td>第一列6</td>
             <td>16</td>
             <td></td>
             <td></td>
             <td>删除6</td>
           </tr>
-          <tr>
+          <tr onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
             <td>第一列7</td>
             <td>17</td>
             <td></td>
             <td></td>
             <td>删除7</td>
           </tr>
-          <tr>
+          <tr onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
             <td>第一列8</td>
             <td>18</td>
             <td></td>
             <td></td>
             <td>删除8</td>
           </tr>
-          <tr>
+          <tr onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
             <td>第一列9</td>
             <td>19</td>
             <td></td>
             <td></td>
             <td rowSpan="2">删除9 + 10</td>
           </tr>
-          <tr>
+          <tr onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
             <td>第一列10</td>
             <td>20</td>
             <td></td>

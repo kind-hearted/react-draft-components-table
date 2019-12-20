@@ -12,7 +12,7 @@ export default function (props) {
   return (
     <div>
       <p>固定表头、表尾、第一列：水平 + 竖直方向均出现滚动条</p>
-      <Table scrollHeight="300px" style={{minWidth: '1400px'}}>
+      <Table scrollHeight="200px" style={{minWidth: '1400px'}}>
         <Colgroup>
           <Col width="300" fixed="true" />
           <Col  />
@@ -119,7 +119,7 @@ export default function (props) {
         </Tfoot>
       </Table>
       <p>固定表头、第一列：水平 + 竖直方向均无滚动条</p>
-      <Table scrollHeight="300px" style={{minWidth: '1400px'}}>
+      <Table scrollHeight="200px" style={{minWidth: '1400px'}}>
         <Colgroup>
           <Col width="300" fixed="true" />
           <Col  />
@@ -152,7 +152,7 @@ export default function (props) {
         </Tfoot>
       </Table>
       <p>固定第一列：水平 + 竖直方向均出现滚动条</p>
-      <Table scrollHeight="300px" style={{minWidth: '1400px'}}>
+      <Table scrollHeight="200px" style={{minWidth: '1400px'}}>
         <Colgroup>
           <Col width="300" fixed="true" />
           <Col  />

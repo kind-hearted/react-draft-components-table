@@ -80,7 +80,7 @@ export const Table = function Table(props) {
   };
   // 计算设置固定表格的列宽、行高，需要直接操作DOM
   useEffect(setFixedTableSize);
-  // TODO：table、colgroup、thead、tbody、tfoot要拷贝一些props
+  // TODO：在固定列的行内hover、click等操作，需要关联视觉上的同一行操作，反之依然
   const tableProps = addClassName(props, 'table');
 
   return (

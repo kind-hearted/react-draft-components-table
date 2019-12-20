@@ -52,37 +52,8 @@ const setPaddingBottom = function (ref, xScrollBarHeight) {
   }
 };
 
-const renderSideHeader = function (className, ref, cols, trs) {
-  return (
-    <div className={className}>
-      <table className="table" style={{ width: '100%' }} ref={ref}>
-        <colgroup className="colgroup">
-          {cols}
-        </colgroup>
-        <thead className="thead">
-          {trs}
-        </thead>
-      </table>
-    </div>
-  );
-};
-
-const renderSideFooter = function (className, ref, cols, trs) {
-  return (
-    <div className={className}>
-      <table className="table" style={{ width: '100%' }} ref={ref}>
-        <colgroup className="colgroup">
-          {cols}
-        </colgroup>
-        <tfoot className="tfoot">
-          {trs}
-        </tfoot>
-      </table>
-    </div>
-  );
-};
-
 export const Table = function Table(props) {
+  const scrollHeight = props.scrollHeight;
   const headerRightScrollBarRef = useRef();
   const footerRightScrollBarRef = useRef();
   const baseScrollContainerRef = useRef();
@@ -103,6 +74,16 @@ export const Table = function Table(props) {
   const scrollBodyRef = useRef();
   const scrollFooterRef = useRef();
   const scrollBottomRef = useRef();
+
+  const tableProps = {};
+
+  for (let key in props) {
+    if (key !== 'scrollHeight') {
+      tableProps[key] = props[key];
+    }
+  }
+
+  tableProps.className = [tableProps.className, 'table'].join(' ');
 
   const {
     leftIndexes,
@@ -170,15 +151,26 @@ export const Table = function Table(props) {
       }
 
       if (prevScrollBottomBarHeight === 0) {
+        // 把高度设回没有滚动条之前的值
+        if (scrollHeight) {
+          baseScrollContainerRef.current.style.height = scrollHeight;
+        } else {
+          baseScrollContainerRef.current.style.removeProperty('style');
+        }
+        
         baseScrollContainerRef.current.style.height = (baseScrollContainerRef.current.offsetHeight - scrollBottomBarHeight) + 'px';
       }
 
       prevScrollBottomBarHeight = scrollBottomBarHeight;
     } else {
       scrollBottomRef.current.style.display = 'none';
-
+      // 把高度设回没有滚动条之前的值
       if (prevScrollBottomBarHeight > 0) {
-        baseScrollContainerRef.current.style.height = (baseScrollContainerRef.current.offsetHeight - prevScrollBottomBarHeight) + 'px';
+        if (scrollHeight) {
+          baseScrollContainerRef.current.style.height = scrollHeight;
+        } else {
+          baseScrollContainerRef.current.style.removeProperty('style');
+        }
       }
 
       prevScrollBottomBarHeight = 0;
@@ -204,23 +196,16 @@ export const Table = function Table(props) {
       }
     }
   };
-  // 一次resize，浏览器可能由有滚动条变为无滚动条，表格变宽，延时再resize一次
-  const twiceResize = function () {
-    resize();
-    setTimeout(function () {
-      resize();
-    }, 17);
-  };
 
   let timer = -1;
   window.addEventListener('resize', function () {
     clearTimeout(timer);
     timer = setTimeout(function () {
-      twiceResize();
+      resize();
     }, 30);
   });
   
-  useEffect(twiceResize);
+  useEffect(resize);
 
   let flag = false;
   const scrollX = function (event, ref1, ref2, ref3, scrollBottomRef) {
@@ -260,7 +245,37 @@ export const Table = function Table(props) {
   const onScrollBottom = function (event) {
     scrollX(event, scrollHeaderRef, scrollBodyRef, scrollFooterRef);
   };
-  // TODO：先实现固定表头+固定列，配置的固定表头、表尾后续再做
+
+  const renderSideHeader = function (className, ref, cols, trs) {
+    return (
+      <div className={className}>
+        <table {...tableProps} style={{ width: '100%' }} ref={ref}>
+          <colgroup {...baseColgroup.props}>
+            {cols}
+          </colgroup>
+          <thead {...baseThead.props}>
+            {trs}
+          </thead>
+        </table>
+      </div>
+    );
+  };
+  
+  const renderSideFooter = function (className, ref, cols, trs) {
+    return (
+      <div className={className}>
+        <table {...tableProps} style={{ width: '100%' }} ref={ref}>
+          <colgroup {...baseColgroup.props}>
+            {cols}
+          </colgroup>
+          <tfoot {...baseTfoot.props}>
+            {trs}
+          </tfoot>
+        </table>
+      </div>
+    );
+  };
+
   const renderFixedHeaderOrFooter = function (left, right, body, rightScrollBarRef, scrollRef, tableRef, onScroll) {
     return (
       <div className={style['hide-scroll-bar-wraper']}>
@@ -274,7 +289,7 @@ export const Table = function Table(props) {
         {/* 包裹一个overflow: hidden的div, 隐藏滚动条 */}
         <div style={{ overflow: 'hidden' }}>
           <div style={{ overflow: 'auto' }} onScroll={onScroll} ref={scrollRef}>
-            <table className="table" ref={tableRef} style={{ minWidth: '1200px' }}>
+            <table {...tableProps} ref={tableRef}>
               {baseColgroup}
               {body}
             </table>
@@ -293,6 +308,12 @@ export const Table = function Table(props) {
     throw new Error('必须存在Thead，且Thead的props.fixed = "true"');
   }
 
+  const baseScrollContainerStyle = {};
+
+  if (scrollHeight) {
+    baseScrollContainerStyle.height = scrollHeight;
+  }
+
   return (
     <div className="table-box" style={{ position: 'relative' }}>
       {/* 表头必须固定，且一定存在表头 */}
@@ -307,21 +328,21 @@ export const Table = function Table(props) {
           onScrollHeader,
         )
       }
-      <div className={style['base-scroll-container']} style={{ height: '200px' }} ref={baseScrollContainerRef}>
+      <div className={style['base-scroll-container']} style={baseScrollContainerStyle} ref={baseScrollContainerRef}>
         {/* base-scroll-outer的高需要设为base-scroll-container高度和滚动条高度之差 */}
         <div className={style['base-scroll-outer']} style={{ height: '100%' }}>
           {/* 左边固定第一列表体 */}
           <div className={style.left}>
-            <table className="table" style={{ width: '100%' }} ref={leftBodyRef}>
-              <colgroup className="colgroup">
+            <table  {...tableProps} style={{ width: '100%' }} ref={leftBodyRef}>
+              <colgroup {...baseColgroup.props}>
                 {leftCols}
               </colgroup>
-              <tbody className="tbody">
+              <tbody {...baseTbody.props}>
                 {leftTbodyTrs}
               </tbody>
               {
                 baseTfoot && baseTfoot.props.fixed !== 'true' &&
-                <tfoot className="tfoot">
+                <tfoot {...baseTfoot.props}>
                   {leftTfootTrs}
                 </tfoot>
               }
@@ -329,16 +350,16 @@ export const Table = function Table(props) {
           </div>
           {/* 右边固定第一列表体 */}
           <div className={style.right}>
-            <table className="table" style={{ width: '100%' }} ref={rightBodyRef}>
-              <colgroup className="colgroup">
+            <table {...tableProps} style={{ width: '100%' }} ref={rightBodyRef}>
+              <colgroup {...baseColgroup.props}>
                 {rightCols}
               </colgroup>
-              <tbody className="tbody">
+              <tbody {...baseTbody.props}>
                 {rightTbodyTrs}
               </tbody>
               {
                 baseTfoot && baseTfoot.props.fixed !== 'true' &&
-                <tfoot className="tfoot">
+                <tfoot {...baseTfoot.props}>
                   {rightTfootTrs}
                 </tfoot>
               }
@@ -348,7 +369,7 @@ export const Table = function Table(props) {
           <div style={{ overflow: 'hidden' }}>
             {/* base-scroll-inner需要设置一个margin-bottom为负的滚动条高度，以便可以隐藏这个滚动条 */}
             <div className={style['base-scroll-inner']} ref={scrollBodyRef} onScroll={onScrollBody}>
-              <table className="table" style={{ minWidth: '1200px' }} ref={baseTableRef}>
+              <table {...tableProps} ref={baseTableRef}>
                 {baseColgroup}
                 {baseTbody}
                 {/* 表尾不固定 */}
@@ -371,7 +392,7 @@ export const Table = function Table(props) {
         )
       }
       {/* 一个固定在底部的单独滚动条，用来控制左右滚动 */}
-      <div className={style['scroll-x']} onScroll={onScrollBottom} onMouseLeave={() => {
+      <div className={style['scroll-x']} style={{ display: 'none' }} onScroll={onScrollBottom} onMouseLeave={() => {
         // Mac上的浏览器滚动条定位情况下，鼠标离开先隐藏再显示，避免一直显示滚动条
         if (scrollBottomBarIsAbsoluted) {
           scrollBottomRef.current.style.display = 'none';
