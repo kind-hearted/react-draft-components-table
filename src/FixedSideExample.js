@@ -138,7 +138,7 @@ export default function (props) {
         </Thead>
         <Tbody>
           <tr>
-            <td rowSpan="2">姓名1 + 2</td>
+            <td>姓名1 + 2</td>
             <td>年龄1</td>
             <td>备注1</td>
           </tr>

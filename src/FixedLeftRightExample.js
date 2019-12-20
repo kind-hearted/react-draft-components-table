@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Table,
   Colgroup,
@@ -10,48 +10,7 @@ import {
 import style from './FixedLeftRightExample.module.css';
 
 export default function (props) {
-  const onMouseOver = function (event) {
-    let target = event.target;
-    let tagName = target.tagName.toLocaleLowerCase();
-
-    while (tagName !== 'tr') {
-      if (event.target === document.body) {
-        break;
-      }
-
-      target = target.parentElement;
-      tagName = target.tagName.toLocaleLowerCase();
-
-      if (tagName === 'tr') {
-        break;
-      }
-    }
-
-    if (tagName === 'tr') {
-      target.className = style.hover;
-    }
-  };
-  const onMouseLeave = function (event) {
-    let target = event.target;
-    let tagName = target.tagName.toLocaleLowerCase();
-
-    while (tagName !== 'tr') {
-      if (event.target === document.body) {
-        break;
-      }
-
-      target = target.parentElement;
-      tagName = target.tagName.toLocaleLowerCase();
-
-      if (tagName === 'tr') {
-        break;
-      }
-    }
-
-    if (tagName === 'tr') {
-      target.className = '';
-    }
-  };
+  const [hoverIndex, setHoverIndex] = useState('');
 
   return (
     <div>
@@ -78,7 +37,17 @@ export default function (props) {
           </tr>
         </Thead>
         <Tbody>
-          <tr>
+          <tr className={ hoverIndex === 1 ? style.hover : '' }
+            onMouseEnter={() => {
+              setHoverIndex(1);
+            }}
+            onMouseOut={() => {
+              setHoverIndex('');
+            }}
+            onClick={() => {
+              console.log("点击第1行");
+            }}
+          >
             <td rowSpan="2">第一列1 + 2</td>
             <td>11</td>
             <td></td>
@@ -87,62 +56,152 @@ export default function (props) {
               console.log('点击删除按钮');
             }}>删除1</td>
           </tr>
-          <tr>
+          <tr className={ hoverIndex === 2 ? style.hover : '' }
+            onMouseEnter={() => {
+              setHoverIndex(2);
+            }}
+            onMouseOut={() => {
+              setHoverIndex('');
+            }}
+            onClick={() => {
+              console.log("点击第2行");
+            }}
+          >
             <td>12</td>
             <td></td>
             <td></td>
             <td>删除2</td>
           </tr>
-          <tr>
+          <tr className={ hoverIndex === 3 ? style.hover : '' }
+            onMouseEnter={() => {
+              setHoverIndex(3);
+            }}
+            onMouseOut={() => {
+              setHoverIndex('');
+            }}
+            onClick={() => {
+              console.log("点击第3行");
+            }}
+          >
             <td>第一列3</td>
             <td>13</td>
             <td></td>
             <td></td>
             <td>删除3</td>
           </tr>
-          <tr>
+          <tr className={ hoverIndex === 4 ? style.hover : ''}
+            onMouseEnter={() => {
+              setHoverIndex(4);
+            }}
+            onMouseOut={() => {
+              setHoverIndex('');
+            }}
+            onClick={() => {
+              console.log("点击第4行");
+            }}
+          >
             <td>第一列4</td>
             <td>14</td>
             <td></td>
             <td></td>
             <td>删除4</td>
           </tr>
-          <tr>
+          <tr className={ hoverIndex === 5 ? style.hover : '' }
+            onMouseEnter={() => {
+              setHoverIndex(5);
+            }}
+            onMouseOut={() => {
+              setHoverIndex('');
+            }}
+            onClick={() => {
+              console.log("点击第5行");
+            }}
+          >
             <td>第一列5</td>
             <td>15</td>
             <td></td>
             <td></td>
             <td>删除5</td>
           </tr>
-          <tr>
+          <tr className={ hoverIndex === 6 ? style.hover : '' }
+            onMouseEnter={() => {
+              setHoverIndex(6);
+            }}
+            onMouseOut={() => {
+              setHoverIndex('');
+            }}
+            onClick={() => {
+              console.log("点击第6行");
+            }}
+          >
             <td>第一列6</td>
             <td>16</td>
             <td></td>
             <td></td>
             <td>删除6</td>
           </tr>
-          <tr>
+          <tr className={ hoverIndex === 7 ? style.hover : '' }
+            onMouseEnter={() => {
+              setHoverIndex(7);
+            }}
+            onMouseOut={() => {
+              setHoverIndex('');
+            }}
+            onClick={() => {
+              console.log("点击第7行");
+            }}
+          >
             <td>第一列7</td>
             <td>17</td>
             <td></td>
             <td></td>
             <td>删除7</td>
           </tr>
-          <tr>
+          <tr className={ hoverIndex === 8 ? style.hover : '' }
+            onMouseEnter={() => {
+              setHoverIndex(8);
+            }}
+            onMouseOut={() => {
+              setHoverIndex('');
+            }}
+            onClick={() => {
+              console.log("点击第8行");
+            }}
+          >
             <td>第一列8</td>
             <td>18</td>
             <td></td>
             <td></td>
             <td>删除8</td>
           </tr>
-          <tr>
+          <tr className={ hoverIndex === 9 ? style.hover : '' }
+            onMouseEnter={() => {
+              setHoverIndex(9);
+            }}
+            onMouseOut={() => {
+              setHoverIndex('');
+            }}
+            onClick={() => {
+              console.log("点击第9行");
+            }}
+          >
             <td>第一列9</td>
             <td>19</td>
             <td></td>
             <td></td>
             <td rowSpan="2">删除9 + 10</td>
           </tr>
-          <tr>
+          <tr className={ hoverIndex === 10 ? style.hover : '' }
+            onMouseEnter={() => {
+              setHoverIndex(10);
+            }}
+            onMouseOut={() => {
+              setHoverIndex('');
+            }}
+            onClick={() => {
+              console.log("点击第10行");
+            }}
+          >
             <td>第一列10</td>
             <td>20</td>
             <td></td>
@@ -182,7 +241,7 @@ export default function (props) {
           </tr>
         </Thead>
         <Tbody>
-          <tr onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
+          <tr>
             <td rowSpan="2">第一列1 + 2</td>
             <td>11</td>
             <td></td>
@@ -191,62 +250,62 @@ export default function (props) {
               console.log('点击删除按钮');
             }}>删除1</td>
           </tr>
-          <tr onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
+          <tr>
             <td>12</td>
             <td></td>
             <td></td>
             <td>删除2</td>
           </tr>
-          <tr onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
+          <tr>
             <td>第一列3</td>
             <td>13</td>
             <td></td>
             <td></td>
             <td>删除3</td>
           </tr>
-          <tr onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
+          <tr>
             <td>第一列4</td>
             <td>14</td>
             <td></td>
             <td></td>
             <td>删除4</td>
           </tr>
-          <tr onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
+          <tr>
             <td>第一列5</td>
             <td>15</td>
             <td></td>
             <td></td>
             <td>删除5</td>
           </tr>
-          <tr onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
+          <tr>
             <td>第一列6</td>
             <td>16</td>
             <td></td>
             <td></td>
             <td>删除6</td>
           </tr>
-          <tr onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
+          <tr>
             <td>第一列7</td>
             <td>17</td>
             <td></td>
             <td></td>
             <td>删除7</td>
           </tr>
-          <tr onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
+          <tr>
             <td>第一列8</td>
             <td>18</td>
             <td></td>
             <td></td>
             <td>删除8</td>
           </tr>
-          <tr onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
+          <tr>
             <td>第一列9</td>
             <td>19</td>
             <td></td>
             <td></td>
             <td rowSpan="2">删除9 + 10</td>
           </tr>
-          <tr onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
+          <tr>
             <td>第一列10</td>
             <td>20</td>
             <td></td>

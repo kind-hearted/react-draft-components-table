@@ -66,6 +66,7 @@ export const Table = function Table(props) {
   } = renderLeftRightFragments(props, Colgroup, Thead, Tbody, Tfoot);
 
   const setFixedTableSize = function () {
+    // TODO：放在useEffect执行，频率会非常高，需要优化
     // 计算固定列宽，相加设置容器元素宽度
     const ths = baseTableRef.current.querySelector('thead tr').children;
     const leftTableWidth = computedPartOfTableWidth(ths, leftIndexes);
@@ -80,7 +81,7 @@ export const Table = function Table(props) {
   };
   // 计算设置固定表格的列宽、行高，需要直接操作DOM
   useEffect(setFixedTableSize);
-  // TODO：在固定列的行内hover、click等操作，需要关联视觉上的同一行操作，反之依然
+
   const tableProps = addClassName(props, 'table');
 
   return (

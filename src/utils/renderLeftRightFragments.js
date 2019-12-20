@@ -218,16 +218,24 @@ function renderLeftRightTrs(leftIndexes, rightIndexes, columns, part) {
 
     row++;
   }
+
+  if (trs.length !== children.length) {
+    throw new Error('rowSpan相加的行数和实际渲染行数不一致，请检查。');
+  }
   // 填充固定表的表头
   // 遍历行
   trs.forEach(function (cells, i) {
+    const child = children[i];
     const lefts = [];
 
     leftIndexes.forEach(function (index) {
       lefts.push(cells[index]);
     });
 
-    leftTrs.push(<tr key={i}>{lefts}</tr>);
+    leftTrs.push(React.cloneElement(child, {
+      key: child.key || i,
+      children: lefts
+    }));
 
     const rights = [];
 
@@ -235,7 +243,10 @@ function renderLeftRightTrs(leftIndexes, rightIndexes, columns, part) {
       rights.push(cells[index]);
     });
 
-    rightTrs.push(<tr key={i}>{rights}</tr>);
+    rightTrs.push(React.cloneElement(child, {
+      key: child.key || i,
+      children: rights
+    }));
   });
 
   return { leftTrs, rightTrs };

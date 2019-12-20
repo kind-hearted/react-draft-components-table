@@ -1,6 +1,6 @@
 .table-stripe tbody tr:nth-child(2n) td {
   background-color: #f8f8f9;
 }
-.table-stripe .hover td {
+.table-stripe tbody tr.hover td {
   background-color: #ebf7ff;
 }
