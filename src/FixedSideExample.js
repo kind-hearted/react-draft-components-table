@@ -8,8 +8,10 @@ import {
   Center,
   Tfoot,
 } from './components/FixedSide.js';
+import style from './FixedSideExample.module.css';
 
 export default function (props) {
+  const [hoverIndex, setHoverIndex] = useState('');
   const [data1, setData1] = useState([]);
   const [loading1, setLoading1] = useState(false);
   const [checkboxes1, _setCheckboxes1] = useState({});
@@ -326,7 +328,7 @@ export default function (props) {
           update1(data);
         }, 2000);
       }}>异步请求存在数据</button>
-      <Table scrollHeight="200px" style={{minWidth: '1400px'}}>
+      <Table className={style['table-stripe']} scrollHeight="200px" style={{minWidth: '1400px'}}>
         <Colgroup>
           <Col width="100" fixed="true" />
           <Col width="300" fixed="true" />
@@ -349,8 +351,17 @@ export default function (props) {
           {
             data1.map(function (item, index) {
               return (
-                <tr key={index}>
-                  <td>  
+                <tr key={index} className={ hoverIndex === index ? style.hover : '' }
+                  onMouseEnter={() => {
+                    setHoverIndex(index);
+                  }}
+                  onMouseOut={() => {
+                    setHoverIndex('');
+                  }}
+                  onClick={() => {
+                    console.log('点击第' + (index + 1) + '行');
+                  }}>
+                  <td>
                     <input type="checkbox" checked={checkboxes1[index]} onChange={(event) => {
                       setCheckboxes1Item(index, event.target.checked);
                     }} />
