@@ -155,6 +155,10 @@ function renderLeftRightTrs(leftIndexes, rightIndexes, columns, part) {
   const rightTrs = [];
   let children = part.props.children;
 
+  if (children === undefined || children === null) {
+    return { leftTrs: children, rightTrs: children }
+  }
+
   if (!Array.isArray(children)) {
     children = [children];
   }

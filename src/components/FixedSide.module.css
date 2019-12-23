@@ -1,5 +1,4 @@
 .left {
-  min-height: 100%;
   position: absolute;
   left: 0;
   top: 0;
@@ -7,7 +6,6 @@
   box-shadow: 6px 0 6px -4px rgba(0,0,0,0.15);
 }
 .right {
-  min-height: 100%;
   position: absolute;
   right: 0;
   top: 0;
@@ -25,6 +23,7 @@
   /* overflow: hidden; */
 }
 .base-scroll-container {
+  position: relative;
   overflow: hidden;
 }
 .base-scroll-outer {
@@ -49,4 +48,10 @@
 }
 .scroll-x-inner {
   height: 1px;
+}
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

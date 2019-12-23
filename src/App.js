@@ -11,7 +11,7 @@ import FixedLeftRightExample from './FixedLeftRightExample.js';
 import FixedSideExample from './FixedSideExample.js';
 
 function App() {
-  const [activedName, setActivedName] = useState('FixedLeftRightExample');
+  const [activedName, setActivedName] = useState('FixedSideExample');
 
   return (
     <SideTabbar key="name" activedName={activedName} onChange={(name) => {

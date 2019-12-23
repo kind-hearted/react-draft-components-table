@@ -4,6 +4,7 @@ import setYScrollBar from '../utils/setYScrollBar.js';
 import renderLeftRightFragments from '../utils/renderLeftRightFragments.js';
 import computedPartOfTableWidth from '../utils/computedPartOfTableWidth.js';
 import setLeftRightTrsHeight from '../utils/setLeftRightTrsHeight.js';
+import addClassName from '../utils/addClassName.js';
 /**
   * 固定表头、表尾、表列
   */
@@ -247,6 +248,10 @@ export const Table = function Table(props) {
   };
 
   const renderSideHeader = function (className, ref, cols, trs) {
+    if (trs === null) {
+      return null;
+    }
+
     return (
       <div className={className}>
         <table {...tableProps} style={{ width: '100%' }} ref={ref}>
@@ -262,6 +267,10 @@ export const Table = function Table(props) {
   };
   
   const renderSideFooter = function (className, ref, cols, trs) {
+    if (trs === null) {
+      return null;
+    }
+
     return (
       <div className={className}>
         <table {...tableProps} style={{ width: '100%' }} ref={ref}>
@@ -314,6 +323,14 @@ export const Table = function Table(props) {
     baseScrollContainerStyle.height = scrollHeight;
   }
 
+  let center = null;
+
+  React.Children.forEach(props.children, function (child) {
+    if (child.type === Center) {
+      center = child;
+    }
+  });
+
   return (
     <div className="table-box" style={{ position: 'relative' }}>
       {/* 表头必须固定，且一定存在表头 */}
@@ -329,6 +346,7 @@ export const Table = function Table(props) {
         )
       }
       <div className={style['base-scroll-container']} style={baseScrollContainerStyle} ref={baseScrollContainerRef}>
+        {center}
         {/* base-scroll-outer的高需要设为base-scroll-container高度和滚动条高度之差 */}
         <div className={style['base-scroll-outer']} style={{ height: '100%' }}>
           {/* 左边固定第一列表体 */}
@@ -428,3 +446,9 @@ export const Tbody = function Tbody(props) {
 export const Tfoot = function Tbody(props) {
   return <tfoot {...props}>{props.children}</tfoot>
 }
+
+export const Center = function Center(props) {
+  const nprops = addClassName(props, style['center']);
+  return <div {...nprops}>{props.children}</div>
+}
+
