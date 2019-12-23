@@ -254,7 +254,7 @@ export const Table = function Table(props) {
     }
 
     return (
-      <div className={className}>
+      <div className={className + ' ' + style['fixed-header-z-index']} style={{ width: '0px' }}>
         <table {...tableProps} style={{ width: '100%' }} ref={ref}>
           <colgroup {...baseColgroup.props}>
             {cols}
@@ -273,7 +273,7 @@ export const Table = function Table(props) {
     }
 
     return (
-      <div className={className}>
+      <div className={className + ' ' + style['fixed-footer-z-index']} style={{ width: '0px' }}>
         <table {...tableProps} style={{ width: '100%' }} ref={ref}>
           <colgroup {...baseColgroup.props}>
             {cols}
@@ -298,7 +298,7 @@ export const Table = function Table(props) {
         {/* 可滚动的base表头。加上可能出现的滚动条 */}
         {/* 包裹一个overflow: hidden的div, 隐藏滚动条 */}
         <div style={{ overflow: 'hidden' }}>
-          <div style={{ overflow: 'auto' }} onScroll={onScroll} ref={scrollRef}>
+          <div style={{ overflowX: 'auto', overflowY: 'hidden' }} onScroll={onScroll} ref={scrollRef}>
             <table {...tableProps} ref={tableRef}>
               {baseColgroup}
               {body}

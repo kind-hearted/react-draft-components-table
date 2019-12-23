@@ -4,6 +4,7 @@
   top: 0;
   background: #fff;
   box-shadow: 6px 0 6px -4px rgba(0,0,0,0.15);
+  z-index: 10;
 }
 .right {
   position: absolute;
@@ -11,6 +12,13 @@
   top: 0;
   background: #fff;
   box-shadow: -6px 0 6px -4px rgba(0,0,0,0.15);
+  z-index: 10;
+}
+.fixed-header-z-index {
+  z-index: 30;
+}
+.fixed-footer-z-index {
+  z-index: 20;
 }
 .right-scroll-bar {
   position: absolute;
