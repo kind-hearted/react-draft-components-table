@@ -124,7 +124,7 @@ export const Table = function Table(props) {
           }
         </table>
       </div>
-      <div style={{ overflow: 'auto', width: '100%' }}>
+      <div style={{ overflow: 'auto', width: '100%' }} className={props.scrollClassName}>
         <table ref={baseTableRef} {...tableProps}>
           {baseColgroup}
           {baseThead}

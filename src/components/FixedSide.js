@@ -77,9 +77,10 @@ export const Table = function Table(props) {
   const scrollBottomRef = useRef();
 
   const tableProps = {};
+  const IGNORE_KEYS = ['scrollHeight', 'scrollClassName'];
 
   for (let key in props) {
-    if (key !== 'scrollHeight') {
+    if (IGNORE_KEYS.indexOf(key) === -1) {
       tableProps[key] = props[key];
     }
   }
@@ -348,7 +349,7 @@ export const Table = function Table(props) {
       <div className={style['base-scroll-container']} style={baseScrollContainerStyle} ref={baseScrollContainerRef}>
         {center}
         {/* base-scroll-outer的高需要设为base-scroll-container高度和滚动条高度之差 */}
-        <div className={style['base-scroll-outer']} style={{ height: '100%' }}>
+        <div className={style['base-scroll-outer'] + ' ' + props.scrollClassName} style={{ height: '100%' }}>
           {/* 左边固定第一列表体 */}
           <div className={style.left}>
             <table  {...tableProps} style={{ width: '100%' }} ref={leftBodyRef}>
@@ -386,7 +387,7 @@ export const Table = function Table(props) {
           {/* 包裹一个overflow: hidden的div, 隐藏滚动条 */}
           <div style={{ overflow: 'hidden' }}>
             {/* base-scroll-inner需要设置一个margin-bottom为负的滚动条高度，以便可以隐藏这个滚动条 */}
-            <div className={style['base-scroll-inner']} ref={scrollBodyRef} onScroll={onScrollBody}>
+            <div className={style['base-scroll-inner'] + ' ' + props.scrollClassName} ref={scrollBodyRef} onScroll={onScrollBody}>
               <table {...tableProps} ref={baseTableRef}>
                 {baseColgroup}
                 {baseTbody}
@@ -410,7 +411,7 @@ export const Table = function Table(props) {
         )
       }
       {/* 一个固定在底部的单独滚动条，用来控制左右滚动 */}
-      <div className={style['scroll-x']} style={{ display: 'none' }} onScroll={onScrollBottom} onMouseLeave={() => {
+      <div className={style['scroll-x'] + ' ' + props.scrollClassName} style={{ display: 'none' }} onScroll={onScrollBottom} onMouseLeave={() => {
         // Mac上的浏览器滚动条定位情况下，鼠标离开先隐藏再显示，避免一直显示滚动条
         if (scrollBottomBarIsAbsoluted) {
           scrollBottomRef.current.style.display = 'none';

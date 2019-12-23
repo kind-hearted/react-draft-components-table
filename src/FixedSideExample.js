@@ -55,7 +55,7 @@ export default function (props) {
   return (
     <div>
       <p>固定表头、表尾、第一列：水平 + 竖直方向均出现滚动条</p>
-      <Table scrollHeight="200px" style={{minWidth: '1400px'}}>
+      <Table scrollHeight="200px" style={{minWidth: '1400px'}} scrollClassName="small-scroll-bar">
         <Colgroup>
           <Col width="300" fixed="true" />
           <Col  />
@@ -315,7 +315,7 @@ export default function (props) {
           const data = [];
           let i = 0;
 
-          while(i < 500) {
+          while(i < 200) {
             data.push({
               name: '姓名' + (i + 1),
               age: '年龄' + (i + 1),

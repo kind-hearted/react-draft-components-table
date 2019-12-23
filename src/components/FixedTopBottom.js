@@ -64,9 +64,10 @@ export const Table = function Table(props) {
   useEffect(setTopBottomScrollYBar);
 
   const filterProps = {};
+  const IGNORE_KEYS = ['scrollHeight', 'scrollClassName'];
 
   for (let key in props) {
-    if (key !== 'scrollHeight') {
+    if (IGNORE_KEYS.indexOf(key) === -1) {
       filterProps[key] = props[key];
     }
   }
@@ -84,7 +85,7 @@ export const Table = function Table(props) {
           </table>
         </div>
       }
-      <div ref={scrollRef} style={{height: props.scrollHeight, overflow: 'auto'}}>
+      <div ref={scrollRef} style={{height: props.scrollHeight, overflow: 'auto'}} className={props.scrollClassName}>
         {
           // 不固定的表头，单独生成，因为在Edge浏览器中，会出现各列高度相差1px的情况，样式应该定义在.thead中
           BaseThead && BaseThead.props.fixed !== "true" &&
