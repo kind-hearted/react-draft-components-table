@@ -53,6 +53,7 @@
   right: 0;
   bottom: 0;
   height: 15px;
+  z-index: 40;
 }
 .scroll-x-inner {
   height: 1px;
