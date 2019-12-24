@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import style from './FixedSideColumn.module.css';
+import addClassName from '../utils/addClassName.js';
 import renderLeftRightFragments from '../utils/renderLeftRightFragments.js';
 import computedPartOfTableWidth from '../utils/computedPartOfTableWidth.js';
 import setLeftRightTrsHeight from '../utils/setLeftRightTrsHeight.js';
@@ -28,17 +29,6 @@ import setLeftRightTrsHeight from '../utils/setLeftRightTrsHeight.js';
   * 1、尽量不生成多余的元素
   * 2、减少计算行高的耗时
   */
-const addClassName = function (props, className) {
-  const result = {};
-
-  for (let key in props) {
-    result[key] = props[key];
-  }
-
-  result.className = [result.className, className].join(' ');
-
-  return result;
-};
 // TODO：公开一个方式，可以让外部告知组件调用setLeftRightTrsHeight去更新固定列的行高
 export const Table = function Table(props) {
   const leftTableRef = useRef();

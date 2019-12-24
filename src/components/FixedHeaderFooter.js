@@ -90,9 +90,7 @@ export const Table = function Table(props) {
     if (BaseTfoot && BaseTfoot.props.fixed === "true") {
       footerHeight = footerTableRef.current.offsetHeight;
     }
-    console.log('tableContainerHeight:', tableContainerHeight);
-    console.log('headerHeight:', headerHeight);
-    console.log('footerHeight:', footerHeight);
+
     scrollAreaRef.current.style.height = (tableContainerHeight - headerHeight - footerHeight) + 'px';
   };
   // 直接操作DOM，避免使用状态，造成整个table组件的更新，性能差
