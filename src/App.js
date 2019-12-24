@@ -28,8 +28,8 @@ function App() {
         <SideTabbarItemBody>
           <FixedSideColumnExample></FixedSideColumnExample>
         </SideTabbarItemBody>
-      </SideTabbarItem>
-      <SideTabbarItem name="FixedExample">
+      </SideTabbarItem> */}
+      {/* <SideTabbarItem name="FixedExample">
         <SideTabbarItemHeader>固定表头、表尾+表列</SideTabbarItemHeader>
         <SideTabbarItemBody>
           <FixedExample></FixedExample>

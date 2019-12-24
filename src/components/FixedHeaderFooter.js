@@ -85,7 +85,7 @@ export const Table = function Table(props) {
     }
   };
   const setScrollAreaHeight = function () {
-    const tableContainerHeight = scrollAreaRef.current.parentElement.offsetHeight;
+    const tableContainerHeight = scrollAreaRef.current.parentElement.clientHeight;
     let headerHeight = 0;
     let footerHeight = 0;
 
@@ -119,7 +119,7 @@ export const Table = function Table(props) {
           </table>
         </div>
       }
-      <div ref={scrollAreaRef} className={[commonStyle['overflow-y-auto'], props.scrollBarClassName].join(' ')}>
+      <div ref={scrollAreaRef} className={[commonStyle['overflow-y-auto'], props.scrollBarClassName].join(' ')} style={{ height: '0px' }}>
         {
           // 不固定的表头，单独生成，因为在Edge浏览器中，会出现各列高度相差1px的情况，样式应该定义在.thead中
           BaseThead && BaseThead.props.fixed !== "true" &&
