@@ -21,6 +21,7 @@ export default function (props) {
 
   return (
     <div>
+      <p>说明：可选的固定两侧的列，只可能出现横向滚动条，不会出现纵向滚动条。</p>
       <p>固定两侧第一列（内容宽度大可滚动）</p>
       <TableContainer style={{ width: '800px' }}>
         <Table style={{minWidth: '1200px'}} className={style['table-stripe']}>
