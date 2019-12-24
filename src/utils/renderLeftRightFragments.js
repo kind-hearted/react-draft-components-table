@@ -21,9 +21,7 @@ function renderTableFragments(props, Colgroup, Thead, Tbody, Tfoot) {
   // 先遍历出fixed, 并算出总的列数
   React.Children.forEach(props.children, function (child) {
     if (child.type === Colgroup) {
-      baseColgroup = React.cloneElement(child, {
-        className: [child.props.className, 'colgroup'].join(' ')
-      });
+      baseColgroup = child;
       // 遍历cols, 找出固定的列的索引, 因为有break的操作, 所以没有用React.Children.forEach
       let cols = baseColgroup.props.children;
 
@@ -99,23 +97,17 @@ function renderTableFragments(props, Colgroup, Thead, Tbody, Tfoot) {
   // 分别填充表头、表体、表尾
   React.Children.forEach(props.children, function (child) {
     if (child.type === Thead) {
-      baseThead = React.cloneElement(child, {
-        className: [child.props.className, 'thead'].join(' ')
-      });
+      baseThead = child;
       const result = renderLeftRightTrs(leftIndexes, rightIndexes, columns, child);
       leftTheadTrs = result.leftTrs;
       rightTheadTrs = result.rightTrs;
     } else if (child.type === Tbody) {
-      baseTbody = React.cloneElement(child, {
-        className: [child.props.className, 'tbody'].join(' ')
-      });
+      baseTbody = child;
       const result = renderLeftRightTrs(leftIndexes, rightIndexes, columns, child);
       leftTbodyTrs = result.leftTrs;
       rightTbodyTrs = result.rightTrs;
     } else if (child.type === Tfoot) {
-      baseTfoot = React.cloneElement(child, {
-        className: [child.props.className, 'tfoot'].join(' ')
-      });
+      baseTfoot = child;
       const result = renderLeftRightTrs(leftIndexes, rightIndexes, columns, child);
       leftTfootTrs = result.leftTrs;
       rightTfootTrs = result.rightTrs;
