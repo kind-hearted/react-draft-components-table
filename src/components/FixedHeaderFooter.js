@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import commonStyle from './common.module.css';
-import addClassName from '../utils/addClassName.js';
 import filterProps from '../utils/filterProps.js';
 import setYScrollBar from '../utils/setYScrollBar.js';
+import tableCustomizeProps from '../utils/tableCustomizeProps.js';
+import renderTableContainer from '../utils/renderTableContainer.js';
+import { Stats } from 'fs';
 
 /**
   * 固定表头、表尾
@@ -21,26 +23,8 @@ import setYScrollBar from '../utils/setYScrollBar.js';
   * 2、表头的更新应该和表体的更新分开, 避免更新表头时导致整个表格更新, 性能下降
   * 3、
   */
-const IGNORE_KEYS = ['scrollBarClassName'];
-
 export const TableContainer = function (props) {
-  const tableContainerRef = useRef();
-  let table = null;
-  
-  React.Children.forEach(props.children, function (child, index) {
-    if (child.type === Table) {
-      table = React.cloneElement(child, { scrollBarClassName: props.scrollBarClassName });
-    }
-  });
-
-  let tableContainerProps = addClassName(props, commonStyle['table-container']);
-  tableContainerProps = filterProps(tableContainerProps, IGNORE_KEYS);
-
-  return (
-    <div {...tableContainerProps} ref={tableContainerRef}>
-      {table}
-    </div>
-  )
+  return renderTableContainer(props, Table, Loading, NoData, Fail);
 }
 
 export const Table = function Table(props) {
@@ -79,7 +63,7 @@ export const Table = function Table(props) {
     }
   };
   const setScrollAreaHeight = function () {
-    const tableContainerHeight = scrollAreaRef.current.parentElement.clientHeight;
+    const tableContainerHeight = scrollAreaRef.current.parentElement.parentElement.clientHeight;
     let headerHeight = 0;
     let footerHeight = 0;
 
@@ -100,7 +84,8 @@ export const Table = function Table(props) {
   };
   useEffect(resize);
 
-  const tableProps = filterProps(props, IGNORE_KEYS);
+  const tableProps = filterProps(props, tableCustomizeProps);
+  const status = props.status || 'have-data';
 
   return (
     <React.Fragment>
@@ -113,13 +98,20 @@ export const Table = function Table(props) {
           </table>
         </div>
       }
-      <div ref={scrollAreaRef} className={[commonStyle['overflow-y-auto'], props.scrollBarClassName].join(' ')} style={{ height: '0px' }}>
-        <table {...tableProps} ref={baseTableRef}>
-          {BaseColgroup}
-          {BaseThead && BaseThead.props.fixed !== "true" && BaseThead}
-          {BaseTbody}
-          {BaseTfoot && BaseTfoot.props.fixed !== "true" && BaseTfoot}
-        </table>
+      <div style={{ position: 'relative' }}>
+        <div ref={scrollAreaRef} className={[commonStyle['overflow-y-auto'], props.scrollBarClassName].join(' ')} style={{ height: '0px' }}>
+          <table {...tableProps} ref={baseTableRef}>
+            {BaseColgroup}
+            {BaseThead && BaseThead.props.fixed !== "true" && BaseThead}
+            {BaseTbody}
+            {BaseTfoot && BaseTfoot.props.fixed !== "true" && BaseTfoot}
+          </table>
+        </div>
+        <div className={commonStyle['full-mask']} style={{ display: status !== 'have-data' ? 'block' : 'none' }}>
+          {status === 'loading' && props.Loading}
+          {status === 'no-data' && props.NoData}
+          {status === 'fail' && props.Fail}
+        </div>
       </div>
       {
         BaseTfoot && BaseTfoot.props.fixed === "true" &&
@@ -167,9 +159,13 @@ export const Td = function Td(props) {
 }
 
 export const Loading = function Loading(props) {
-  return <div></div>
+  return <div {...props}>{props.children}</div>
 }
 
 export const NoData = function NoData(props) {
-  return <div></div>
+  return <div {...props}>{props.children}</div>
+}
+
+export const Fail = function Fail(props) {
+  return <div {...props}>{props.children}</div>
 }
