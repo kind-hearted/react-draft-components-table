@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import style from './Fixed.module.css';
 import setYScrollBar from '../utils/setYScrollBar.js';
-import renderLeftRightFragments from '../utils/renderLeftRightFragments.js';
+import renderSideFragments from '../utils/renderSideFragments.js';
 import computedPartOfTableWidth from '../utils/computedPartOfTableWidth.js';
 import setLeftRightTrsHeight from '../utils/setLeftRightTrsHeight.js';
 import addClassName from '../utils/addClassName.js';
@@ -105,7 +105,7 @@ export const Table = function Table(props) {
     baseThead,
     baseTbody,
     baseTfoot,
-  } = renderLeftRightFragments(props, Colgroup, Thead, Tbody, Tfoot);
+  } = renderSideFragments(props, Colgroup, Thead, Tbody, Tfoot);
   // 计算设置固定表格的列宽、行高，需要直接操作DOM，避免尺寸变化的属性引起react的更新，影响性能
   let prevScrollBottomBarHeight = 0;
   let scrollBottomBarIsAbsoluted = false;

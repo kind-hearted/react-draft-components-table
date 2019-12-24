@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import commonStyle from './common.module.css';
 import style from './FixedSideColumn.module.css';
-import renderLeftRightFragments from '../utils/renderLeftRightFragments.js';
+import renderSideFragments from '../utils/renderSideFragments.js';
 import computedPartOfTableWidth from '../utils/computedPartOfTableWidth.js';
 import setLeftRightTrsHeight from '../utils/setLeftRightTrsHeight.js';
 import filterProps from '../utils/filterProps.js';
@@ -83,7 +83,7 @@ export const Table = function Table(props) {
     baseThead,
     baseTbody,
     baseTfoot,
-  } = renderLeftRightFragments(props, Colgroup, Thead, Tbody, Tfoot);
+  } = renderSideFragments(props, Colgroup, Thead, Tbody, Tfoot);
 
   const setFixedTableSize = function () {
     // TODO：放在useEffect执行，频率会非常高，需要优化
@@ -154,6 +154,12 @@ export const Table = function Table(props) {
         </table>
       </div>
       {renderSide([style.right, commonStyle['right-shadow'], 'right-shadow'], rightTableRef, rightCols, rightTheadTrs, rightTbodyTrs, rightTfootTrs)}
+      {
+        (props.Loading || props.NoData || props.Fail) && 
+        <div >
+
+        </div>
+      }
     </React.Fragment>
   )
 }
