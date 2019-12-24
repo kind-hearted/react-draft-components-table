@@ -107,11 +107,15 @@ export const Table = function Table(props) {
             {BaseTfoot && BaseTfoot.props.fixed !== "true" && BaseTfoot}
           </table>
         </div>
-        <div className={commonStyle['full-mask']} style={{ display: status !== 'have-data' ? 'block' : 'none' }}>
-          {status === 'loading' && props.Loading}
-          {status === 'no-data' && props.NoData}
-          {status === 'fail' && props.Fail}
-        </div>
+        {/* 组件外传入Loading、NoData、Fail其中一个时，才显示full-mask */}
+        {
+          (props.Loading || props.NoData || props.Fail) && 
+          <div className={commonStyle['full-mask']} style={{ display: status !== 'have-data' ? 'block' : 'none' }}>
+            {status === 'loading' && props.Loading}
+            {status === 'no-data' && props.NoData}
+            {status === 'fail' && props.Fail}
+          </div>
+        }
       </div>
       {
         BaseTfoot && BaseTfoot.props.fixed === "true" &&
