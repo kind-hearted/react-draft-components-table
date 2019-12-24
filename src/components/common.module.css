@@ -23,3 +23,15 @@
   bottom: 0;
   z-index: 1000;
 }
+
+.left-shadow {
+  box-shadow: 6px 0 6px -4px rgba(0,0,0,0.15);
+}
+
+.right-shadow {
+  box-shadow: -6px 0 6px -4px rgba(0,0,0,0.15);
+}
+
+.no-shadow {
+  box-shadow: none;
+}

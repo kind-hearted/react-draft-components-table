@@ -20,11 +20,11 @@ function setLeftRightTrsHeight(baseTableRef, leftTableRef, rightTableRef, select
   for (let i = 0, ilen = baseTrs.length; i < ilen; i++) {
     const height = getElementHeight(baseTrs[i]);
 
-    if (leftTrs[i]) {
+    if (leftTrs[i] && leftTrs[i].offsetHeight !== height) {
       leftTrs[i].style.height = height + 'px';
     }
 
-    if (rightTrs[i]) {
+    if (rightTrs[i] && rightTrs[i].offsetHeight !== height) {
       rightTrs[i].style.height = height + 'px';
     }
   }

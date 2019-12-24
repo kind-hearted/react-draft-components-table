@@ -21,10 +21,7 @@
   color: #09d3ac;
 }
 
-.table-box {
-  border: 1px solid gray;
-}
-.table {
+table {
   width: 100%;
   table-layout: fixed;
   border-spacing: 0;

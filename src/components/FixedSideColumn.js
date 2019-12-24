@@ -1,9 +1,12 @@
 import React, { useEffect, useRef } from 'react';
+import commonStyle from './common.module.css';
 import style from './FixedSideColumn.module.css';
-import addClassName from '../utils/addClassName.js';
 import renderLeftRightFragments from '../utils/renderLeftRightFragments.js';
 import computedPartOfTableWidth from '../utils/computedPartOfTableWidth.js';
 import setLeftRightTrsHeight from '../utils/setLeftRightTrsHeight.js';
+import filterProps from '../utils/filterProps.js';
+import tableCustomizeProps from '../utils/tableCustomizeProps.js';
+import renderTableContainer from '../utils/renderTableContainer.js';
 /**
   * 固定两侧表列（一列或连续的多列）
   * 1、固定一侧的列需要单独的列表, 每行的高度需要和实际的表相同
@@ -34,6 +37,29 @@ export const TableContainer = function (props) {
   return renderTableContainer(props, Table, Loading, NoData, Fail);
 }
 
+const noShadowClassName = ' ' + commonStyle['no-shadow'];
+const addNoShadow = function (ref) {
+  if (ref.current) {
+    const element = ref.current.parentElement;
+    let className = element.className;
+
+    if (className.indexOf(noShadowClassName) === -1) {
+      element.className = className + noShadowClassName;
+    }
+  }
+};
+
+const removeNoShadow = function (ref) {
+  if (ref.current) {
+    const element = ref.current.parentElement;
+    let className = element.className;
+
+    if (className.indexOf(noShadowClassName) > -1) {
+      element.className = className.replace(noShadowClassName, '');
+    }
+  }
+};
+
 export const Table = function Table(props) {
   const leftTableRef = useRef();
   const baseTableRef = useRef();
@@ -61,6 +87,10 @@ export const Table = function Table(props) {
 
   const setFixedTableSize = function () {
     // TODO：放在useEffect执行，频率会非常高，需要优化
+    // 计算行高，设置各行高度, 表格内部可能会嵌套表格, 所以选择器需要唯一
+    setLeftRightTrsHeight(baseTableRef, leftTableRef, rightTableRef, 'thead>tr');
+    setLeftRightTrsHeight(baseTableRef, leftTableRef, rightTableRef, 'tbody>tr');
+    setLeftRightTrsHeight(baseTableRef, leftTableRef, rightTableRef, 'tfoot>tr');
     // 计算固定列宽，相加设置容器元素宽度
     const ths = baseTableRef.current.querySelector('thead tr').children;
     const leftTableWidth = computedPartOfTableWidth(ths, leftIndexes);
@@ -68,57 +98,54 @@ export const Table = function Table(props) {
 
     const rightTableWidth = computedPartOfTableWidth(ths, rightIndexes);
     rightTableRef.current.parentElement.style.width = rightTableWidth + 'px';
-    // 计算行高，设置各行高度, 表格内部可能会嵌套表格, 所以选择器需要唯一
-    setLeftRightTrsHeight(baseTableRef, leftTableRef, rightTableRef, 'thead>tr');
-    setLeftRightTrsHeight(baseTableRef, leftTableRef, rightTableRef, 'tbody>tr');
-    setLeftRightTrsHeight(baseTableRef, leftTableRef, rightTableRef, 'tfoot>tr');
   };
   // 计算设置固定表格的列宽、行高，需要直接操作DOM
   useEffect(setFixedTableSize);
 
-  const tableProps = addClassName(props, 'table');
-
-  return (
-    <div className={'table-box ' + style.table}>
-      <div className={style.left}>
-        <table {...tableProps} style={{ width: '100%' }} ref={leftTableRef}>
+  const tableProps = filterProps(props, tableCustomizeProps);
+  const renderSide = function (classNames, ref, cols, theadTrs, tbodyTrs, tfootTrs) {
+    return (
+      <div className={classNames.join(' ')}>
+        <table {...tableProps} style={{ width: '100%' }} ref={ref}>
           <colgroup {...baseColgroup.props}>
-            {leftCols}
+            {cols}
           </colgroup>
           <thead {...baseThead.props}>
-            {leftTheadTrs}
+            {theadTrs}
           </thead>
           <tbody {...baseTbody.props}>
-            {leftTbodyTrs}
+            {tbodyTrs}
           </tbody>
           {
             leftTfootTrs &&
             <tfoot {...baseTfoot.props}>
-              {leftTfootTrs}
+              {tfootTrs}
             </tfoot>
           }
         </table>
       </div>
-      <div className={style.right}>
-        <table {...tableProps} style={{ width: '100%' }} ref={rightTableRef}>
-          <colgroup {...baseColgroup.props}>
-            {rightCols}
-          </colgroup>
-          <thead {...baseThead.props}>
-            {rightTheadTrs}
-          </thead>
-          <tbody {...baseTbody.props}>
-            {rightTbodyTrs}
-          </tbody>
-          {
-            rightTfootTrs &&
-            <tfoot {...baseTfoot.props}>
-              {rightTfootTrs}
-            </tfoot>
-          }
-        </table>
-      </div>
-      <div style={{ overflow: 'auto', width: '100%' }} className={props.scrollClassName}>
+    )
+  };
+
+  return (
+    <React.Fragment>
+      {renderSide([style.left, commonStyle['left-shadow'], 'left-shadow', commonStyle['no-shadow']], leftTableRef, leftCols, leftTheadTrs, leftTbodyTrs, leftTfootTrs)}
+      <div className={[commonStyle['overflow-x-auto'], props.scrollBarClassName].join(' ')} onScroll={(event) => {
+        const target = event.target;
+        const maxScrollLeft = target.scrollWidth - target.offsetWidth;
+        const scrollLeft = target.scrollLeft;
+
+        if (scrollLeft === 0) {
+          addNoShadow(leftTableRef);
+          removeNoShadow(rightTableRef);
+        } else if (scrollLeft === maxScrollLeft) {
+          removeNoShadow(leftTableRef);
+          addNoShadow(rightTableRef);
+        } else {
+          removeNoShadow(leftTableRef);
+          removeNoShadow(rightTableRef);
+        }
+      }}>
         <table ref={baseTableRef} {...tableProps}>
           {baseColgroup}
           {baseThead}
@@ -126,7 +153,8 @@ export const Table = function Table(props) {
           {baseTfoot}
         </table>
       </div>
-    </div>
+      {renderSide([style.right, commonStyle['right-shadow'], 'right-shadow'], rightTableRef, rightCols, rightTheadTrs, rightTbodyTrs, rightTfootTrs)}
+    </React.Fragment>
   )
 }
 

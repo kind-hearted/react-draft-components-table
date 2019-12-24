@@ -30,7 +30,7 @@ function renderTableContainer(props, Table, Loading, NoData, Fail) {
     Fail: fail
   });
 
-  let tableContainerProps = addClassName(props, commonStyle['table-container']);
+  let tableContainerProps = addClassName(props, 'table-container ' + commonStyle['table-container']);
   tableContainerProps = filterProps(tableContainerProps, tableCustomizeProps);
 
   return (

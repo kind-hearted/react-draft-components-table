@@ -89,7 +89,7 @@ export const Table = function Table(props) {
     <React.Fragment>
       {
         BaseThead && BaseThead.props.fixed === "true" &&
-        <div className="thead">
+        <div className="header">
           <table {...tableProps} ref={headerTableRef} >
             {BaseColgroup}
             {BaseThead}
