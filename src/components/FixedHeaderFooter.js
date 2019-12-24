@@ -56,19 +56,13 @@ export const Table = function Table(props) {
 
   React.Children.forEach(props.children, function (child) {
     if (child.type === Colgroup) {
-      BaseColgroup = React.cloneElement(child, {
-        className: [child.props.className, 'colgroup'].join(' ')
-      });
+      BaseColgroup = child;
     } else if (child.type === Thead) {
       BaseThead = child;
     } else if (child.type === Tbody) {
-      BaseTbody = React.cloneElement(child, {
-        className: [child.props.className, 'tbody'].join(' ')
-      });
+      BaseTbody = child;
     } else if (child.type === Tfoot) {
-      BaseTfoot = React.cloneElement(child, {
-        className: [child.props.className, 'tfoot'].join(' ')
-      });
+      BaseTfoot = child;
     }
   });
   const setHeaderFooterYScrollBar = function () {
@@ -96,7 +90,9 @@ export const Table = function Table(props) {
     if (BaseTfoot && BaseTfoot.props.fixed === "true") {
       footerHeight = footerTableRef.current.offsetHeight;
     }
-
+    console.log('tableContainerHeight:', tableContainerHeight);
+    console.log('headerHeight:', headerHeight);
+    console.log('footerHeight:', footerHeight);
     scrollAreaRef.current.style.height = (tableContainerHeight - headerHeight - footerHeight) + 'px';
   };
   // 直接操作DOM，避免使用状态，造成整个table组件的更新，性能差
@@ -120,18 +116,9 @@ export const Table = function Table(props) {
         </div>
       }
       <div ref={scrollAreaRef} className={[commonStyle['overflow-y-auto'], props.scrollBarClassName].join(' ')} style={{ height: '0px' }}>
-        {
-          // 不固定的表头，单独生成，因为在Edge浏览器中，会出现各列高度相差1px的情况，样式应该定义在.thead中
-          BaseThead && BaseThead.props.fixed !== "true" &&
-          <div className="header">
-            <table {...tableProps} ref={headerTableRef}>
-              {BaseColgroup}
-              {BaseThead}
-            </table>
-          </div>
-        }
         <table {...tableProps} ref={baseTableRef}>
           {BaseColgroup}
+          {BaseThead && BaseThead.props.fixed !== "true" && BaseThead}
           {BaseTbody}
           {BaseTfoot && BaseTfoot.props.fixed !== "true" && BaseTfoot}
         </table>

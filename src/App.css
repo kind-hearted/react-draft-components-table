@@ -29,22 +29,26 @@
   table-layout: fixed;
   border-spacing: 0;
 }
-.thead {
+/* .thead, */
+thead {
   background: green;
 }
-.tfoot {
+tfoot {
   background: yellow;
 }
-.thead th,
-.tfoot td,
-.tbody td {
+thead th,
+tfoot td,
+tbody td {
   border-right: 1px solid gray;
 }
-.tbody td {
+tbody td {
   border-bottom: 1px solid gray;
 }
-.tbody tr:last-child td {
+tbody tr:last-child td {
   border-bottom: 0;
+}
+tfoot tr {
+  height: 24px;
 }
 .y-scroll-bar {
   border-left: 1px solid gray;

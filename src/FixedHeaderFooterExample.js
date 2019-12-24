@@ -17,7 +17,8 @@ export default function (props) {
 
   return (
     <div>
-      <p>说明：可选的固定表头、表尾，只可能出现纵向滚动条，不会出现横向滚动条</p>
+      <p>说明：可选的固定表头、表尾，只可能出现纵向滚动条，不会出现横向滚动条。</p>
+      <p>注意：代码实现时使用了offsetHeight（整数）计算固定表头、表尾的高度，在Edge、IE浏览器下，避免表头、表尾高度出现小数，出现小数后，底部边框会被挡住。</p>
       <p>固定表头+表尾(内容溢出有滚动)</p>
       <TableContainer style={{ height: '350px' }} scrollBarClassName="small-scroll-bar">
         <Table className="table">
