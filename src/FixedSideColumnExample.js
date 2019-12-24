@@ -18,12 +18,14 @@ import style from './FixedSideColumnExample.module.css';
 
 export default function (props) {
   const [hoverIndex, setHoverIndex] = useState('');
+  const [data1, setData1] = useState([]);
+  const [status1, setStatus1] = useState('no-data');
 
   return (
     <div>
       <p>说明：可选的固定两侧的列，只可能出现横向滚动条，不会出现纵向滚动条。</p>
       <p>固定两侧第一列（内容宽度大可滚动）</p>
-      <TableContainer style={{ width: '800px' }}>
+      <TableContainer style={{ width: '800px' }} status={status1}>
         <Table style={{minWidth: '1200px'}} className={style['table-stripe']}>
           <Colgroup>
             <Col width="200" fixed="true" />
@@ -46,187 +48,31 @@ export default function (props) {
             </Tr>
           </Thead>
           <Tbody>
-            <Tr className={ hoverIndex === 1 ? style.hover : '' }
-              onMouseEnter={() => {
-                setHoverIndex(1);
-              }}
-              onMouseOut={() => {
-                setHoverIndex('');
-              }}
-              onClick={() => {
-                console.log("点击第1行");
-              }}
-            >
-              <Td rowSpan="2">第一列1 + 2</Td>
-              <Td>11</Td>
-              <Td>地址1</Td>
-              <Td>备注1</Td>
-              <Td onClick={() => {
-                console.log('点击删除按钮');
-              }}>删除1</Td>
-            </Tr>
-            <Tr className={ hoverIndex === 2 ? style.hover : '' }
-              onMouseEnter={() => {
-                setHoverIndex(2);
-              }}
-              onMouseOut={() => {
-                setHoverIndex('');
-              }}
-              onClick={() => {
-                console.log("点击第2行");
-              }}
-            >
-              <Td>12</Td>
-              <Td>地址2</Td>
-              <Td>备注2</Td>
-              <Td>删除2</Td>
-            </Tr>
-            <Tr className={ hoverIndex === 3 ? style.hover : '' }
-              onMouseEnter={() => {
-                setHoverIndex(3);
-              }}
-              onMouseOut={() => {
-                setHoverIndex('');
-              }}
-              onClick={() => {
-                console.log("点击第3行");
-              }}
-            >
-              <Td>第一列3</Td>
-              <Td>13</Td>
-              <Td>地址3</Td>
-              <Td>备注3</Td>
-              <Td>删除3</Td>
-            </Tr>
-            <Tr className={ hoverIndex === 4 ? style.hover : ''}
-              onMouseEnter={() => {
-                setHoverIndex(4);
-              }}
-              onMouseOut={() => {
-                setHoverIndex('');
-              }}
-              onClick={() => {
-                console.log("点击第4行");
-              }}
-            >
-              <Td>第一列4</Td>
-              <Td>14</Td>
-              <Td>地址4</Td>
-              <Td>备注4</Td>
-              <Td>删除4</Td>
-            </Tr>
-            <Tr className={ hoverIndex === 5 ? style.hover : '' }
-              onMouseEnter={() => {
-                setHoverIndex(5);
-              }}
-              onMouseOut={() => {
-                setHoverIndex('');
-              }}
-              onClick={() => {
-                console.log("点击第5行");
-              }}
-            >
-              <Td>第一列5</Td>
-              <Td>15</Td>
-              <Td>地址5</Td>
-              <Td>备注5</Td>
-              <Td>删除5</Td>
-            </Tr>
-            <Tr className={ hoverIndex === 6 ? style.hover : '' }
-              onMouseEnter={() => {
-                setHoverIndex(6);
-              }}
-              onMouseOut={() => {
-                setHoverIndex('');
-              }}
-              onClick={() => {
-                console.log("点击第6行");
-              }}
-            >
-              <Td>第一列6</Td>
-              <Td>16</Td>
-              <Td>地址6</Td>
-              <Td>备注6</Td>
-              <Td>删除6</Td>
-            </Tr>
-            <Tr className={ hoverIndex === 7 ? style.hover : '' }
-              onMouseEnter={() => {
-                setHoverIndex(7);
-              }}
-              onMouseOut={() => {
-                setHoverIndex('');
-              }}
-              onClick={() => {
-                console.log("点击第7行");
-              }}
-            >
-              <Td>第一列7</Td>
-              <Td>17</Td>
-              <Td>地址7</Td>
-              <Td>备注7</Td>
-              <Td>删除7</Td>
-            </Tr>
-            <Tr className={ hoverIndex === 8 ? style.hover : '' }
-              onMouseEnter={() => {
-                setHoverIndex(8);
-              }}
-              onMouseOut={() => {
-                setHoverIndex('');
-              }}
-              onClick={() => {
-                console.log("点击第8行");
-              }}
-            >
-              <Td>第一列8</Td>
-              <Td>18</Td>
-              <Td>地址8</Td>
-              <Td>备注8</Td>
-              <Td>删除8</Td>
-            </Tr>
-            <Tr className={ hoverIndex === 9 ? style.hover : '' }
-              onMouseEnter={() => {
-                setHoverIndex(9);
-              }}
-              onMouseOut={() => {
-                setHoverIndex('');
-              }}
-              onClick={() => {
-                console.log("点击第9行");
-              }}
-            >
-              <Td>第一列9</Td>
-              <Td>19</Td>
-              <Td>地址9</Td>
-              <Td>备注9</Td>
-              <Td rowSpan="2">删除9 + 10</Td>
-            </Tr>
-            <Tr className={ hoverIndex === 10 ? style.hover : '' }
-              onMouseEnter={() => {
-                setHoverIndex(10);
-              }}
-              onMouseOut={() => {
-                setHoverIndex('');
-              }}
-              onClick={() => {
-                console.log("点击第10行");
-              }}
-            >
-              <Td>第一列10</Td>
-              <Td>20</Td>
-              <Td>地址10</Td>
-              <Td>备注10</Td>
-            </Tr>
+            {
+              data1.map(function (item, index) {
+                return (
+                  <Tr className={ hoverIndex === index ? style.hover : '' }
+                    onMouseEnter={() => {
+                      setHoverIndex(index);
+                    }}
+                    onMouseOut={() => {
+                      setHoverIndex('');
+                    }}
+                    onClick={() => {
+                      console.log('点击第' + (index + 1) + '行');
+                    }}>
+                    <Td>第一列{index + 1}</Td>
+                    <Td>{10 + index + 1}</Td>
+                    <Td>地址{index + 1}</Td>
+                    <Td>备注{index + 1}</Td>
+                    <Td>删除{index + 1}</Td>
+                  </Tr>
+                )
+              })
+            }
           </Tbody>
-          <Tfoot>
-            <Tr>
-              <Td>汇总</Td>
-              <Td>10</Td>
-              <Td>20</Td>
-              <Td>30</Td>
-              <Td>40</Td>
-            </Tr>
-          </Tfoot>
         </Table>
+        <NoData style={{ textAlign: 'center', height: '100px', lineHeight: '100px' }}>无数据</NoData>
       </TableContainer>
       {/* <p>固定两侧第一列（内容宽度小无滚动）</p>
       <Table className={style['table-stripe']}>

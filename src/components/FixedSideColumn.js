@@ -60,10 +60,14 @@ const removeNoShadow = function (ref) {
   }
 };
 
+const PLACEHOLDER_TR_CLASSNAME = 'placeholder-tr-' + Date.now();
+
 export const Table = function Table(props) {
+  const status = props.status || 'have-data';
   const leftTableRef = useRef();
   const baseTableRef = useRef();
   const rightTableRef = useRef();
+  const fullMaskRef = useRef();
 
   const {
     leftIndexes,
@@ -99,8 +103,57 @@ export const Table = function Table(props) {
     const rightTableWidth = computedPartOfTableWidth(ths, rightIndexes);
     rightTableRef.current.parentElement.style.width = rightTableWidth + 'px';
   };
+  const setFullMaskPosition = function () {
+    if (fullMaskRef.current) {
+      const table = baseTableRef.current;
+      let theadHeight = 0;
+
+      if (baseThead) {
+        theadHeight = table.querySelector('thead').offsetHeight;
+      }
+
+      const fullMaskStyle = fullMaskRef.current.style;
+      fullMaskStyle.top = theadHeight + 'px';
+    }
+  };
+  const fillPlaceholderTr = function () {
+    if (fullMaskRef.current && status !== 'have-data') {
+      const table = baseTableRef.current;
+      const scrollBarHeight = table.parentElement.offsetHeight - table.offsetHeight;
+      const fullMaskEl = fullMaskRef.current;
+      const contentHeight = fullMaskEl.children[0].offsetHeight;
+      const tbody = baseTableRef.current.querySelector('tbody');
+      const trs = tbody.children || [];
+
+      for (let i = 0, ilen = trs; i < ilen; i++) {
+        if (trs[i].className === PLACEHOLDER_TR_CLASSNAME) {
+          tbody.removeChild(trs[i]);
+          break;
+        }
+      }
+
+      const tbodyHeight = tbody.offsetHeight;
+      
+      if (contentHeight > tbodyHeight) {
+        const tr = document.createElement('tr');
+
+        tr.className = PLACEHOLDER_TR_CLASSNAME;
+        tr.style.height = (contentHeight - tbodyHeight) + 'px';
+
+        tbody.appendChild(tr);
+      }
+
+      fullMaskRef.current.style.bottom = scrollBarHeight + 'px';
+    }
+  };
+
+  const resize = function () {
+    setFixedTableSize();
+    setFullMaskPosition();
+    fillPlaceholderTr();
+  };
   // 计算设置固定表格的列宽、行高，需要直接操作DOM
-  useEffect(setFixedTableSize);
+  useEffect(resize);
 
   const tableProps = filterProps(props, tableCustomizeProps);
   const renderSide = function (classNames, ref, cols, theadTrs, tbodyTrs, tfootTrs) {
@@ -156,8 +209,10 @@ export const Table = function Table(props) {
       {renderSide([style.right, commonStyle['right-shadow'], 'right-shadow'], rightTableRef, rightCols, rightTheadTrs, rightTbodyTrs, rightTfootTrs)}
       {
         (props.Loading || props.NoData || props.Fail) && 
-        <div >
-
+        <div className={commonStyle['full-mask']}  style={{ display: status !== 'have-data' ? 'block' : 'none' }} ref={fullMaskRef}>
+          {status === 'loading' && props.Loading}
+          {status === 'no-data' && props.NoData}
+          {status === 'fail' && props.Fail}
         </div>
       }
     </React.Fragment>
