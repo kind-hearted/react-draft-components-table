@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import style from './FixedSide.module.css';
+import style from './Fixed.module.css';
 import setYScrollBar from '../utils/setYScrollBar.js';
 import renderLeftRightFragments from '../utils/renderLeftRightFragments.js';
 import computedPartOfTableWidth from '../utils/computedPartOfTableWidth.js';

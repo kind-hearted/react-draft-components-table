@@ -7,8 +7,8 @@ import {
   Tbody,
   Center,
   Tfoot,
-} from './components/FixedSide.js';
-import style from './FixedSideExample.module.css';
+} from './components/Fixed.js';
+import style from './FixedExample.module.css';
 
 export default function (props) {
   const [hoverIndex, setHoverIndex] = useState('');

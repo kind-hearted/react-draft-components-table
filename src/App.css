@@ -63,3 +63,13 @@
   border-radius: 10px;
   background: #EDEDED;
 }
+.popup {
+  display: none;
+  position: absolute;
+  top: 47px;
+  right: 0;
+  z-index: 500;
+  width: 150px;
+  height: 500px;
+  background: red;
+}

@@ -13,18 +13,13 @@ export const SideTabbar = function (props) {
   const onChange = props.onChange;
   const activedName = props.activedName;
 
-  for (let i = 0, ilen = children.length; i < ilen; i++) {
-    const child = children[i];
-    const {
-      name,
-    } = child.props;
-    const descendants = child.props.children;
+  React.Children.forEach(children, function (child, index) {
+    const name = child.props.name;
 
-    for (let i = 0, ilen = descendants.length; i < ilen; i++) {
-      const child = descendants[i];
+    React.Children.forEach(child.props.children, function (child, index) {
       const type = child.type;
       const isActived = name === activedName;
-      // 使用React.cloneElement克隆元素, 并且添加额外的属性
+      // 使用React.cloneElement克隆元素，并且添加额外的属性，包装点击事件
       if (type === SideTabbarItemHeader) {
         const onClick = child.props.onClick;
         const cloned = React.cloneElement(child, {
@@ -51,8 +46,8 @@ export const SideTabbar = function (props) {
         });
         bodys.push(cloned);
       }
-    }
-  }
+    });
+  });
 
   return (
     <div className={style.tabbar}>

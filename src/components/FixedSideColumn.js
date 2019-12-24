@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import style from './FixedLeftRight.module.css';
+import style from './FixedSideColumn.module.css';
 import renderLeftRightFragments from '../utils/renderLeftRightFragments.js';
 import computedPartOfTableWidth from '../utils/computedPartOfTableWidth.js';
 import setLeftRightTrsHeight from '../utils/setLeftRightTrsHeight.js';

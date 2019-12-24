@@ -6,8 +6,8 @@ import {
   Thead,
   Tbody,
   Tfoot,
-} from './components/FixedLeftRight.js';
-import style from './FixedLeftRightExample.module.css';
+} from './components/FixedSideColumn.js';
+import style from './FixedSideColumnExample.module.css';
 
 export default function (props) {
   const [hoverIndex, setHoverIndex] = useState('');

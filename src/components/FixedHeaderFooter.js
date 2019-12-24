@@ -1,4 +1,7 @@
 import React, { useEffect, useRef } from 'react';
+import commonStyle from './common.module.css';
+import addClassName from '../utils/addClassName.js';
+import filterProps from '../utils/filterProps.js';
 import setYScrollBar from '../utils/setYScrollBar.js';
 
 /**
@@ -18,12 +21,33 @@ import setYScrollBar from '../utils/setYScrollBar.js';
   * 2、表头的更新应该和表体的更新分开, 避免更新表头时导致整个表格更新, 性能下降
   * 3、
   */
+const IGNORE_KEYS = ['scrollBarClassName'];
+
+export const TableContainer = function (props) {
+  const tableContainerRef = useRef();
+  let table = null;
+  
+  React.Children.forEach(props.children, function (child, index) {
+    if (child.type === Table) {
+      table = React.cloneElement(child, { scrollBarClassName: props.scrollBarClassName });
+    }
+  });
+
+  let tableContainerProps = addClassName(props, commonStyle['table-container']);
+  tableContainerProps = filterProps(tableContainerProps, IGNORE_KEYS);
+
+  return (
+    <div {...tableContainerProps} ref={tableContainerRef}>
+      {table}
+    </div>
+  )
+}
 
 export const Table = function Table(props) {
-  const scrollRef = useRef();
+  const scrollAreaRef = useRef();
   const headerTableRef = useRef();
   const baseTableRef = useRef();
-  const footerTableFooter = useRef();
+  const footerTableRef = useRef();
   
   let BaseColgroup = null;
   let BaseThead = null;
@@ -47,8 +71,8 @@ export const Table = function Table(props) {
       });
     }
   });
-  const setTopBottomScrollYBar = function () {
-    const scrollWidth = scrollRef.current.offsetWidth;
+  const setHeaderFooterYScrollBar = function () {
+    const scrollWidth = scrollAreaRef.current.offsetWidth;
     const baseTableWidth = baseTableRef.current.offsetWidth;
     const scrollBarWidth = scrollWidth - baseTableWidth;
 
@@ -57,46 +81,56 @@ export const Table = function Table(props) {
     }
 
     if (BaseTfoot && BaseTfoot.props.fixed === "true") {
-      setYScrollBar(scrollBarWidth, footerTableFooter, 'td');
+      setYScrollBar(scrollBarWidth, footerTableRef, 'td');
     }
   };
-  // 直接操作DOM，避免使用状态，造成整个table组件的更新，性能差
-  useEffect(setTopBottomScrollYBar);
+  const setScrollAreaHeight = function () {
+    const tableContainerHeight = scrollAreaRef.current.parentElement.offsetHeight;
+    let headerHeight = 0;
+    let footerHeight = 0;
 
-  const filterProps = {};
-  const IGNORE_KEYS = ['scrollHeight', 'scrollClassName'];
-
-  for (let key in props) {
-    if (IGNORE_KEYS.indexOf(key) === -1) {
-      filterProps[key] = props[key];
+    if (BaseThead && BaseThead.props.fixed === "true") {
+      headerHeight = headerTableRef.current.offsetHeight;
     }
-  }
 
-  filterProps.className = [filterProps.className, 'table'].join(' ');
+    if (BaseTfoot && BaseTfoot.props.fixed === "true") {
+      footerHeight = footerTableRef.current.offsetHeight;
+    }
+
+    scrollAreaRef.current.style.height = (tableContainerHeight - headerHeight - footerHeight) + 'px';
+  };
+  // 直接操作DOM，避免使用状态，造成整个table组件的更新，性能差
+  const resize = function () {
+    setScrollAreaHeight();
+    setHeaderFooterYScrollBar();
+  };
+  useEffect(resize);
+
+  const tableProps = filterProps(props, IGNORE_KEYS);
 
   return (
-    <div className="table-box">
+    <React.Fragment>
       {
         BaseThead && BaseThead.props.fixed === "true" &&
         <div className="thead">
-          <table {...filterProps} ref={headerTableRef} >
+          <table {...tableProps} ref={headerTableRef} >
             {BaseColgroup}
             {BaseThead}
           </table>
         </div>
       }
-      <div ref={scrollRef} style={{height: props.scrollHeight, overflow: 'auto'}} className={props.scrollClassName}>
+      <div ref={scrollAreaRef} className={[commonStyle['overflow-y-auto'], props.scrollBarClassName].join(' ')}>
         {
           // 不固定的表头，单独生成，因为在Edge浏览器中，会出现各列高度相差1px的情况，样式应该定义在.thead中
           BaseThead && BaseThead.props.fixed !== "true" &&
-          <div className="thead">
-            <table {...filterProps} ref={headerTableRef}>
+          <div className="header">
+            <table {...tableProps} ref={headerTableRef}>
               {BaseColgroup}
-              {BaseThead && BaseThead.props.fixed !== "true" && BaseThead}
+              {BaseThead}
             </table>
           </div>
         }
-        <table {...filterProps} ref={baseTableRef}>
+        <table {...tableProps} ref={baseTableRef}>
           {BaseColgroup}
           {BaseTbody}
           {BaseTfoot && BaseTfoot.props.fixed !== "true" && BaseTfoot}
@@ -104,14 +138,14 @@ export const Table = function Table(props) {
       </div>
       {
         BaseTfoot && BaseTfoot.props.fixed === "true" &&
-        <div>
-          <table {...filterProps} ref={footerTableFooter}>
+        <div className="footer">
+          <table {...tableProps} ref={footerTableRef}>
             {BaseColgroup}
             {BaseTfoot}
           </table>
         </div>
       }
-    </div>
+    </React.Fragment>
   )
 }
 
@@ -134,4 +168,23 @@ export const Tbody = function Tbody(props) {
 export const Tfoot = function Tbody(props) {
   return <tfoot {...props}>{props.children}</tfoot>
 }
- 
+
+export const Tr = function Tr(props) {
+  return <tr {...props}>{props.children}</tr>
+}
+
+export const Th = function Th(props) {
+  return <th {...props}>{props.children}</th>
+}
+
+export const Td = function Td(props) {
+  return <td {...props}>{props.children}</td>
+}
+
+export const Loading = function Loading(props) {
+  return <div></div>
+}
+
+export const NoData = function NoData(props) {
+  return <div></div>
+}
