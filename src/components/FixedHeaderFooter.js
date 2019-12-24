@@ -4,8 +4,6 @@ import filterProps from '../utils/filterProps.js';
 import setYScrollBar from '../utils/setYScrollBar.js';
 import tableCustomizeProps from '../utils/tableCustomizeProps.js';
 import renderTableContainer from '../utils/renderTableContainer.js';
-import { Stats } from 'fs';
-
 /**
   * 固定表头、表尾
   * 1、固定表头首先需要两个列表

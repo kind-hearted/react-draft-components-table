@@ -30,6 +30,9 @@ import setLeftRightTrsHeight from '../utils/setLeftRightTrsHeight.js';
   * 2、减少计算行高的耗时
   */
 // TODO：公开一个方式，可以让外部告知组件调用setLeftRightTrsHeight去更新固定列的行高
+export const TableContainer = function (props) {
+  return renderTableContainer(props, Table, Loading, NoData, Fail);
+}
 
 export const Table = function Table(props) {
   const leftTableRef = useRef();
@@ -160,9 +163,13 @@ export const Td = function Td(props) {
 }
 
 export const Loading = function Loading(props) {
-  return <div></div>
+  return <div {...props}>{props.children}</div>
 }
 
 export const NoData = function NoData(props) {
-  return <div></div>
+  return <div {...props}>{props.children}</div>
+}
+
+export const Fail = function Fail(props) {
+  return <div {...props}>{props.children}</div>
 }
