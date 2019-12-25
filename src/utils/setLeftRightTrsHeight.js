@@ -3,18 +3,21 @@ function setLeftRightTrsHeight(baseTableRef, leftTableRef, rightTableRef, select
 
   if (baseTableRef.current) {
     baseTrs = baseTableRef.current.querySelectorAll(selector);
+    baseTrs = filterTrs(baseTrs, baseTableRef.current);
   }
 
   let leftTrs = [];
 
   if (leftTableRef.current) {
     leftTrs = leftTableRef.current.querySelectorAll(selector);
+    leftTrs = filterTrs(leftTrs, leftTableRef.current);
   }
 
   let rightTrs = [];
 
   if (rightTableRef.current) {
     rightTrs = rightTableRef.current.querySelectorAll(selector);
+    rightTrs = filterTrs(rightTrs, rightTableRef.current);
   }
 
   for (let i = 0, ilen = baseTrs.length; i < ilen; i++) {
@@ -28,6 +31,20 @@ function setLeftRightTrsHeight(baseTableRef, leftTableRef, rightTableRef, select
       rightTrs[i].style.height = height + 'px';
     }
   }
+}
+
+function filterTrs(trs, table) {
+  const result = [];
+
+  for (let i = 0, ilen = trs.length; i < ilen; i++) {
+    const tr = trs[i];
+
+    if (tr.parentElement.parentElement === table) {
+      result.push(tr);
+    }
+  }
+
+  return result;
 }
 
 function getElementHeight(element) {
