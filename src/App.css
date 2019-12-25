@@ -44,6 +44,9 @@ tbody td {
 tbody tr:last-child td {
   border-bottom: 0;
 }
+tbody tr.last-tr td {
+  border-bottom: 0;
+}
 tfoot tr {
   height: 24px;
 }
@@ -86,13 +89,13 @@ tfoot tr {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%);
+  transform: translate(-50%, -50%);
 }
 .no-data {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%);
+  transform: translate(-50%, -50%);
 }
 .fail {
   position: absolute;
@@ -106,6 +109,6 @@ tfoot tr {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%);
+  transform: translate(-50%, -50%);
   color: red;
 }

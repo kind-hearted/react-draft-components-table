@@ -12,3 +12,7 @@
   top: 0;
   background: #fff;
 }
+.placeholder-tr {
+  height: 0px;
+  border: none;
+}

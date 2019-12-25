@@ -24,7 +24,36 @@ export default function (props) {
   return (
     <div>
       <p>说明：可选的固定两侧的列，只可能出现横向滚动条，不会出现纵向滚动条。</p>
+      <p>注意：NoData、Loading、Fail的加载有关的状态显示，Loading、Fail不能固定高度，并且其最小高度应该和NoData的高度一致。</p>
       <p>固定两侧第一列（内容宽度大可滚动）</p>
+      <button type="button" onClick={() => {
+        setStatus1('loading');
+        setTimeout(function () {
+          setStatus1('no-data');
+          setData1([]);
+        }, 2000);
+      }}>动态加载无数据</button>
+      <button type="button" onClick={() => {
+        setStatus1('loading');
+        setTimeout(function () {
+          const data = [];
+          let i = 0;
+
+          while (i < 30) {
+            data[i] = 0;
+            i++;
+          }
+
+          setStatus1('have-data');
+          setData1(data);
+        }, 2000);
+      }}>动态加载有数据</button>
+      <button type="button" onClick={() => {
+        setStatus1('loading');
+        setTimeout(function () {
+          setStatus1('fail');
+        }, 2000);
+      }}>动态加载失败</button>
       <TableContainer style={{ width: '800px' }} status={status1}>
         <Table style={{minWidth: '1200px'}} className={style['table-stripe']}>
           <Colgroup>
@@ -51,7 +80,7 @@ export default function (props) {
             {
               data1.map(function (item, index) {
                 return (
-                  <Tr className={ hoverIndex === index ? style.hover : '' }
+                  <Tr key={index} className={ hoverIndex === index ? style.hover : '' }
                     onMouseEnter={() => {
                       setHoverIndex(index);
                     }}
@@ -72,7 +101,9 @@ export default function (props) {
             }
           </Tbody>
         </Table>
+        <Loading className="loading" style={{ minHeight: '100px' }}><span>加载中...</span></Loading>
         <NoData style={{ textAlign: 'center', height: '100px', lineHeight: '100px' }}>无数据</NoData>
+        <Fail className="fail" style={{ minHeight: '100px' }}><span>加载失败...</span></Fail>
       </TableContainer>
       {/* <p>固定两侧第一列（内容宽度小无滚动）</p>
       <Table className={style['table-stripe']}>

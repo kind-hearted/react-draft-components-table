@@ -60,7 +60,7 @@ const removeNoShadow = function (ref) {
   }
 };
 
-const PLACEHOLDER_TR_CLASSNAME = 'placeholder-tr-' + Date.now();
+const PLACEHOLDER_TR_KEY = 'placeholder-tr-' + Date.now();
 
 export const Table = function Table(props) {
   const status = props.status || 'have-data';
@@ -117,40 +117,36 @@ export const Table = function Table(props) {
     }
   };
   const fillPlaceholderTr = function () {
-    if (fullMaskRef.current && status !== 'have-data') {
+    if (fullMaskRef.current) {
       const table = baseTableRef.current;
       const scrollBarHeight = table.parentElement.offsetHeight - table.offsetHeight;
       const fullMaskEl = fullMaskRef.current;
-      const contentHeight = fullMaskEl.children[0].offsetHeight;
       const tbody = baseTableRef.current.querySelector('tbody');
-      const trs = tbody.children || [];
+      const trs = tbody.children;
+      const placeholderTr = trs[trs.length - 1];
 
-      for (let i = 0, ilen = trs; i < ilen; i++) {
-        if (trs[i].className === PLACEHOLDER_TR_CLASSNAME) {
-          tbody.removeChild(trs[i]);
-          break;
+      if (status === 'have-data') {
+        fullMaskEl.style.display = 'none';
+        placeholderTr.style.height = '0px';
+      } else if (status !== 'have-data') {
+        if (fullMaskEl.children && fullMaskEl.children[0]) {
+          const contentHeight = fullMaskEl.children[0].offsetHeight;
+          const tbodyHeight = tbody.offsetHeight;
+
+          if (contentHeight > tbodyHeight) {
+            placeholderTr.style.height = (contentHeight - tbodyHeight) + 'px';
+          }
+
+          fullMaskRef.current.style.bottom = scrollBarHeight + 'px';
         }
       }
-
-      const tbodyHeight = tbody.offsetHeight;
-      
-      if (contentHeight > tbodyHeight) {
-        const tr = document.createElement('tr');
-
-        tr.className = PLACEHOLDER_TR_CLASSNAME;
-        tr.style.height = (contentHeight - tbodyHeight) + 'px';
-
-        tbody.appendChild(tr);
-      }
-
-      fullMaskRef.current.style.bottom = scrollBarHeight + 'px';
     }
   };
 
   const resize = function () {
-    setFixedTableSize();
     setFullMaskPosition();
     fillPlaceholderTr();
+    setFixedTableSize();
   };
   // 计算设置固定表格的列宽、行高，需要直接操作DOM
   useEffect(resize);
@@ -179,6 +175,26 @@ export const Table = function Table(props) {
       </div>
     )
   };
+  // 附加一个占位行，以便正常显示无数据、加载中
+  const nBaseTbodyChildren = [];
+  
+  React.Children.forEach(baseTbody.props.children, function (child, index) {
+    nBaseTbodyChildren.push(child);
+  });
+
+  if (nBaseTbodyChildren.length > 0) {
+    const lastTr = nBaseTbodyChildren[nBaseTbodyChildren.length - 1];
+  
+    nBaseTbodyChildren[nBaseTbodyChildren.length - 1] = React.cloneElement(lastTr, {
+      className: ['last-tr', lastTr.props.className].join(' ')
+    });
+  }
+  
+  nBaseTbodyChildren.push(
+    <tr key={PLACEHOLDER_TR_KEY} className={style['placeholder-tr']}></tr>
+  );
+  
+  const nBaseTbody = React.cloneElement(baseTbody, {}, nBaseTbodyChildren);
 
   return (
     <React.Fragment>
@@ -202,7 +218,7 @@ export const Table = function Table(props) {
         <table ref={baseTableRef} {...tableProps}>
           {baseColgroup}
           {baseThead}
-          {baseTbody}
+          {nBaseTbody}
           {baseTfoot}
         </table>
       </div>
