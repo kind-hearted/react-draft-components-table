@@ -41,6 +41,9 @@ tbody td {
 tbody td {
   border-bottom: 1px solid gray;
 }
+tbody td:last-child {
+  text-align: right;
+}
 tbody tr:last-child td {
   border-bottom: 0;
 }

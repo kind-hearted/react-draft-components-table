@@ -58,7 +58,6 @@ export const Table = class Table extends React.Component {
     };
 
     this._preventResize = false;
-
     this.$onResize = () => {
       if (!this._preventResize) {
         this.resize();

@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import {
+  TableContainer,
+  Loading,
+  NoData,
+  Fail,
   Table,
   Colgroup,
   Col,
   Thead,
   Tbody,
-  Center,
   Tfoot,
+  Tr,
+  Th,
+  Td,
 } from './components/Fixed.js';
 import style from './FixedExample.module.css';
 
@@ -57,15 +63,16 @@ export default function (props) {
     <div>
       <p>固定表头、表尾、第一列：水平 + 竖直方向均出现滚动条</p>
       <div style={{ position: 'relative', zIndex: 100 }}>
-        <Table scrollHeight="200px" style={{minWidth: '1400px'}} scrollClassName="small-scroll-bar">
+      <TableContainer style={{ width: '800px', height: '350px' }} scrollBarClassName="small-scroll-bar">
+        <Table style={{minWidth: '1400px'}}>
           <Colgroup>
             <Col width="300" fixed="true" />
             <Col  />
             <Col width="300" />
           </Colgroup>
           <Thead fixed="true">
-            <tr>
-              <th rowSpan="2" style={{ position: 'relative' }}>
+            <Tr>
+              <Th rowSpan="2" style={{ position: 'relative' }}>
                 <span>姓名</span>
                 <button type="button" onClick={() => {
                   setPopupDisplay(!popupDisplay);
@@ -73,106 +80,107 @@ export default function (props) {
                 <div className={style.popup} style={{ display: popupDisplay ? 'block' : 'none' }}>
                   <span>弹出窗</span>
                 </div>
-              </th>
-              <th>年龄</th>
-              <th>备注</th>
-            </tr>
-            <tr>
-              <th>年龄</th>
-              <th>备注</th>
-            </tr>
+              </Th>
+              <Th>年龄</Th>
+              <Th>备注</Th>
+            </Tr>
+            <Tr>
+              <Th>年龄</Th>
+              <Th>备注</Th>
+            </Tr>
           </Thead>
           <Tbody>
-            <tr>
-              <td rowSpan="2">姓名1 + 2</td>
-              <td>年龄1</td>
-              <td>备注1</td>
-            </tr>
-            <tr>
-              <td>年龄2</td>
-              <td>备注2</td>
-            </tr>
-            <tr>
-              <td>姓名3</td>
-              <td>年龄3</td>
-              <td>备注3</td>
-            </tr>
-            <tr>
-              <td>姓名4</td>
-              <td>年龄4</td>
-              <td>备注4</td>
-            </tr>
-            <tr>
-              <td>姓名5</td>
-              <td>年龄5</td>
-              <td>备注5</td>
-            </tr>
-            <tr>
-              <td>姓名6</td>
-              <td>年龄6</td>
-              <td>备注6</td>
-            </tr>
-            <tr>
-              <td>姓名7</td>
-              <td>年龄7</td>
-              <td>备注7</td>
-            </tr>
-            <tr>
-              <td>姓名8</td>
-              <td>年龄8</td>
-              <td>备注8</td>
-            </tr>
-            <tr>
-              <td>姓名9</td>
-              <td>年龄9</td>
-              <td>备注9</td>
-            </tr>
-            <tr>
-              <td>姓名10</td>
-              <td>年龄10</td>
-              <td>备注10</td>
-            </tr>
-            <tr>
-              <td>姓名11</td>
-              <td>年龄11</td>
-              <td>备注11</td>
-            </tr>
-            <tr>
-              <td>姓名12</td>
-              <td>年龄12</td>
-              <td>备注12</td>
-            </tr>
-            <tr>
-              <td>姓名13</td>
-              <td>年龄13</td>
-              <td>备注13</td>
-            </tr>
-            <tr>
-              <td>姓名14</td>
-              <td>年龄14</td>
-              <td>备注14</td>
-            </tr>
-            <tr>
-              <td>姓名15</td>
-              <td>年龄15</td>
-              <td>备注15</td>
-            </tr>
-            <tr>
-              <td>姓名16</td>
-              <td>年龄16</td>
-              <td>备注16</td>
-            </tr>
+            <Tr>
+              <Td rowSpan="2">姓名1 + 2</Td>
+              <Td>年龄1</Td>
+              <Td>备注1</Td>
+            </Tr>
+            <Tr>
+              <Td>年龄2</Td>
+              <Td>备注2</Td>
+            </Tr>
+            <Tr>
+              <Td>姓名3</Td>
+              <Td>年龄3</Td>
+              <Td>备注3</Td>
+            </Tr>
+            <Tr>
+              <Td>姓名4</Td>
+              <Td>年龄4</Td>
+              <Td>备注4</Td>
+            </Tr>
+            <Tr>
+              <Td>姓名5</Td>
+              <Td>年龄5</Td>
+              <Td>备注5</Td>
+            </Tr>
+            <Tr>
+              <Td>姓名6</Td>
+              <Td>年龄6</Td>
+              <Td>备注6</Td>
+            </Tr>
+            <Tr>
+              <Td>姓名7</Td>
+              <Td>年龄7</Td>
+              <Td>备注7</Td>
+            </Tr>
+            <Tr>
+              <Td>姓名8</Td>
+              <Td>年龄8</Td>
+              <Td>备注8</Td>
+            </Tr>
+            <Tr>
+              <Td>姓名9</Td>
+              <Td>年龄9</Td>
+              <Td>备注9</Td>
+            </Tr>
+            <Tr>
+              <Td>姓名10</Td>
+              <Td>年龄10</Td>
+              <Td>备注10</Td>
+            </Tr>
+            <Tr>
+              <Td>姓名11</Td>
+              <Td>年龄11</Td>
+              <Td>备注11</Td>
+            </Tr>
+            <Tr>
+              <Td>姓名12</Td>
+              <Td>年龄12</Td>
+              <Td>备注12</Td>
+            </Tr>
+            <Tr>
+              <Td>姓名13</Td>
+              <Td>年龄13</Td>
+              <Td>备注13</Td>
+            </Tr>
+            <Tr>
+              <Td>姓名14</Td>
+              <Td>年龄14</Td>
+              <Td>备注14</Td>
+            </Tr>
+            <Tr>
+              <Td>姓名15</Td>
+              <Td>年龄15</Td>
+              <Td>备注15</Td>
+            </Tr>
+            <Tr>
+              <Td>姓名16</Td>
+              <Td>年龄16</Td>
+              <Td>备注16</Td>
+            </Tr>
           </Tbody>
           <Tfoot fixed="true">
-            <tr>
-              <td>姓名</td>
-              <td>年龄</td>
-              <td>备注</td>
-            </tr>
+            <Tr>
+              <Td>姓名</Td>
+              <Td>年龄</Td>
+              <Td>备注</Td>
+            </Tr>
           </Tfoot>
         </Table>
+      </TableContainer>
       </div>
-      <p>固定表头、第一列：水平 + 竖直方向均无滚动条</p>
+      {/* <p>固定表头、第一列：水平 + 竖直方向均无滚动条</p>
       <Table scrollHeight="200px" style={{minWidth: '1400px'}}>
         <Colgroup>
           <Col width="300" fixed="true" />
@@ -180,29 +188,29 @@ export default function (props) {
           <Col width="300" />
         </Colgroup>
         <Thead fixed="true">
-          <tr>
-            <th rowSpan="2">姓名</th>
-            <th>年龄</th>
-            <th>备注</th>
-          </tr>
-          <tr>
-            <th>年龄</th>
-            <th>备注</th>
-          </tr>
+          <Tr>
+            <Th rowSpan="2">姓名</Th>
+            <Th>年龄</Th>
+            <Th>备注</Th>
+          </Tr>
+          <Tr>
+            <Th>年龄</Th>
+            <Th>备注</Th>
+          </Tr>
         </Thead>
         <Tbody>
-          <tr>
-            <td>姓名1 + 2</td>
-            <td>年龄1</td>
-            <td>备注1</td>
-          </tr>
+          <Tr>
+            <Td>姓名1 + 2</Td>
+            <Td>年龄1</Td>
+            <Td>备注1</Td>
+          </Tr>
         </Tbody>
         <Tfoot>
-          <tr>
-            <td>姓名</td>
-            <td>年龄</td>
-            <td>备注</td>
-          </tr>
+          <Tr>
+            <Td>姓名</Td>
+            <Td>年龄</Td>
+            <Td>备注</Td>
+          </Tr>
         </Tfoot>
       </Table>
       <p>固定第一列：水平 + 竖直方向均出现滚动条</p>
@@ -213,103 +221,103 @@ export default function (props) {
           <Col width="300" />
         </Colgroup>
         <Thead fixed="true">
-          <tr>
-            <th rowSpan="2">姓名</th>
-            <th>年龄</th>
-            <th>备注</th>
-          </tr>
-          <tr>
-            <th>年龄</th>
-            <th>备注</th>
-          </tr>
+          <Tr>
+            <Th rowSpan="2">姓名</Th>
+            <Th>年龄</Th>
+            <Th>备注</Th>
+          </Tr>
+          <Tr>
+            <Th>年龄</Th>
+            <Th>备注</Th>
+          </Tr>
         </Thead>
         <Tbody>
-          <tr>
-            <td rowSpan="2">姓名1 + 2</td>
-            <td>年龄1</td>
-            <td>备注1</td>
-          </tr>
-          <tr>
-            <td>年龄2</td>
-            <td>备注2</td>
-          </tr>
-          <tr>
-            <td>姓名3</td>
-            <td>年龄3</td>
-            <td>备注3</td>
-          </tr>
-          <tr>
-            <td>姓名4</td>
-            <td>年龄4</td>
-            <td>备注4</td>
-          </tr>
-          <tr>
-            <td>姓名5</td>
-            <td>年龄5</td>
-            <td>备注5</td>
-          </tr>
-          <tr>
-            <td>姓名6</td>
-            <td>年龄6</td>
-            <td>备注6</td>
-          </tr>
-          <tr>
-            <td>姓名7</td>
-            <td>年龄7</td>
-            <td>备注7</td>
-          </tr>
-          <tr>
-            <td>姓名8</td>
-            <td>年龄8</td>
-            <td>备注8</td>
-          </tr>
-          <tr>
-            <td>姓名9</td>
-            <td>年龄9</td>
-            <td>备注9</td>
-          </tr>
-          <tr>
-            <td>姓名10</td>
-            <td>年龄10</td>
-            <td>备注10</td>
-          </tr>
-          <tr>
-            <td>姓名11</td>
-            <td>年龄11</td>
-            <td>备注11</td>
-          </tr>
-          <tr>
-            <td>姓名12</td>
-            <td>年龄12</td>
-            <td>备注12</td>
-          </tr>
-          <tr>
-            <td>姓名13</td>
-            <td>年龄13</td>
-            <td>备注13</td>
-          </tr>
-          <tr>
-            <td>姓名14</td>
-            <td>年龄14</td>
-            <td>备注14</td>
-          </tr>
-          <tr>
-            <td>姓名15</td>
-            <td>年龄15</td>
-            <td>备注15</td>
-          </tr>
-          <tr>
-            <td>姓名16</td>
-            <td>年龄16</td>
-            <td>备注16</td>
-          </tr>
+          <Tr>
+            <Td rowSpan="2">姓名1 + 2</Td>
+            <Td>年龄1</Td>
+            <Td>备注1</Td>
+          </Tr>
+          <Tr>
+            <Td>年龄2</Td>
+            <Td>备注2</Td>
+          </Tr>
+          <Tr>
+            <Td>姓名3</Td>
+            <Td>年龄3</Td>
+            <Td>备注3</Td>
+          </Tr>
+          <Tr>
+            <Td>姓名4</Td>
+            <Td>年龄4</Td>
+            <Td>备注4</Td>
+          </Tr>
+          <Tr>
+            <Td>姓名5</Td>
+            <Td>年龄5</Td>
+            <Td>备注5</Td>
+          </Tr>
+          <Tr>
+            <Td>姓名6</Td>
+            <Td>年龄6</Td>
+            <Td>备注6</Td>
+          </Tr>
+          <Tr>
+            <Td>姓名7</Td>
+            <Td>年龄7</Td>
+            <Td>备注7</Td>
+          </Tr>
+          <Tr>
+            <Td>姓名8</Td>
+            <Td>年龄8</Td>
+            <Td>备注8</Td>
+          </Tr>
+          <Tr>
+            <Td>姓名9</Td>
+            <Td>年龄9</Td>
+            <Td>备注9</Td>
+          </Tr>
+          <Tr>
+            <Td>姓名10</Td>
+            <Td>年龄10</Td>
+            <Td>备注10</Td>
+          </Tr>
+          <Tr>
+            <Td>姓名11</Td>
+            <Td>年龄11</Td>
+            <Td>备注11</Td>
+          </Tr>
+          <Tr>
+            <Td>姓名12</Td>
+            <Td>年龄12</Td>
+            <Td>备注12</Td>
+          </Tr>
+          <Tr>
+            <Td>姓名13</Td>
+            <Td>年龄13</Td>
+            <Td>备注13</Td>
+          </Tr>
+          <Tr>
+            <Td>姓名14</Td>
+            <Td>年龄14</Td>
+            <Td>备注14</Td>
+          </Tr>
+          <Tr>
+            <Td>姓名15</Td>
+            <Td>年龄15</Td>
+            <Td>备注15</Td>
+          </Tr>
+          <Tr>
+            <Td>姓名16</Td>
+            <Td>年龄16</Td>
+            <Td>备注16</Td>
+          </Tr>
         </Tbody>
         <Tfoot>
-          <tr>
-            <td>姓名</td>
-            <td>年龄</td>
-            <td>备注</td>
-          </tr>
+          <Tr>
+            <Td>姓名</Td>
+            <Td>年龄</Td>
+            <Td>备注</Td>
+          </Tr>
         </Tfoot>
       </Table>
       <p>动态请求数据，数据为空、有数据时的使用</p>
@@ -347,22 +355,22 @@ export default function (props) {
           <Col width="300" />
         </Colgroup>
         <Thead fixed="true">
-          <tr>
-            <th>
+          <Tr>
+            <Th>
               <input type="checkbox" checked={allChecked1} onChange={(event) => {
                 setAllChecked1(event.target.checked);
               }} />全选
-            </th>
-            <th>姓名</th>
-            <th>年龄</th>
-            <th>备注</th>
-          </tr>
+            </Th>
+            <Th>姓名</Th>
+            <Th>年龄</Th>
+            <Th>备注</Th>
+          </Tr>
         </Thead>
         <Tbody>
           {
             data1.map(function (item, index) {
               return (
-                <tr key={index} className={ hoverIndex === index ? style.hover : '' }
+                <Tr key={index} className={ hoverIndex === index ? style.hover : '' }
                   onMouseEnter={() => {
                     setHoverIndex(index);
                   }}
@@ -372,15 +380,15 @@ export default function (props) {
                   onClick={() => {
                     console.log('点击第' + (index + 1) + '行');
                   }}>
-                  <td>
+                  <Td>
                     <input type="checkbox" checked={checkboxes1[index]} onChange={(event) => {
                       setCheckboxes1Item(index, event.target.checked);
                     }} />
-                  </td>
-                  <td>{item.name}</td>
-                  <td>{item.age}</td>
-                  <td>{item.remark}</td>
-                </tr>
+                  </Td>
+                  <Td>{item.name}</Td>
+                  <Td>{item.age}</Td>
+                  <Td>{item.remark}</Td>
+                </Tr>
               )
             })
           }
@@ -389,7 +397,7 @@ export default function (props) {
           <div style={{ display: loading1 ? 'block' : 'none' }}>加载中...</div>
           <div style={{ display: !loading1 ? 'block' : 'none' }}>暂无数据</div>
         </Center>
-      </Table>
+      </Table> */}
     </div>
   )
 }
