@@ -1,6 +1,6 @@
 import React from 'react';
 
-function renderTableFragments(props, Colgroup, Thead, Tbody, Tfoot) {
+function renderSideFragments(props, Colgroup, Thead, Tbody, Tfoot) {
   const leftCols = [];
   let leftTheadTrs = null;
   let leftTbodyTrs = null;
@@ -98,17 +98,17 @@ function renderTableFragments(props, Colgroup, Thead, Tbody, Tfoot) {
   React.Children.forEach(props.children, function (child) {
     if (child.type === Thead) {
       baseThead = child;
-      const result = renderLeftRightTrs(leftIndexes, rightIndexes, columns, child);
+      const result = renderSideTrs(leftIndexes, rightIndexes, columns, child);
       leftTheadTrs = result.leftTrs;
       rightTheadTrs = result.rightTrs;
     } else if (child.type === Tbody) {
       baseTbody = child;
-      const result = renderLeftRightTrs(leftIndexes, rightIndexes, columns, child);
+      const result = renderSideTrs(leftIndexes, rightIndexes, columns, child);
       leftTbodyTrs = result.leftTrs;
       rightTbodyTrs = result.rightTrs;
     } else if (child.type === Tfoot) {
       baseTfoot = child;
-      const result = renderLeftRightTrs(leftIndexes, rightIndexes, columns, child);
+      const result = renderSideTrs(leftIndexes, rightIndexes, columns, child);
       leftTfootTrs = result.leftTrs;
       rightTfootTrs = result.rightTrs;
     }
@@ -142,7 +142,7 @@ function renderTableFragments(props, Colgroup, Thead, Tbody, Tfoot) {
  * @param {Number} columns 表格总的列数
  * @param {Object} part Thead Tbody Tfoot
  */
-function renderLeftRightTrs(leftIndexes, rightIndexes, columns, part) {
+function renderSideTrs(leftIndexes, rightIndexes, columns, part) {
   const leftTrs = [];
   const rightTrs = [];
   let children = part.props.children;
@@ -229,9 +229,8 @@ function renderLeftRightTrs(leftIndexes, rightIndexes, columns, part) {
     });
 
     leftTrs.push(React.cloneElement(child, {
-      key: child.key || i,
-      children: lefts
-    }));
+      key: child.key || i
+    }, lefts));
 
     const rights = [];
 
@@ -240,12 +239,11 @@ function renderLeftRightTrs(leftIndexes, rightIndexes, columns, part) {
     });
 
     rightTrs.push(React.cloneElement(child, {
-      key: child.key || i,
-      children: rights
-    }));
+      key: child.key || i 
+    }, rights));
   });
 
   return { leftTrs, rightTrs };
 }
 
-export default renderTableFragments;
+export default renderSideFragments;

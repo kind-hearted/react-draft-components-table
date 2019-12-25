@@ -89,8 +89,27 @@ export const Table = function Table(props) {
     baseTfoot,
   } = renderSideFragments(props, Colgroup, Thead, Tbody, Tfoot);
 
+  const setNoShadow = function () {
+    const scrollElement = baseTableRef.current.parentElement;
+    const scrollLeft = scrollElement.scrollLeft;
+    const maxScrollLeft = scrollElement.scrollWidth - scrollElement.offsetWidth;
+
+    if (scrollLeft === 0) {
+      addNoShadow(leftTableRef);
+      if (maxScrollLeft === 0) {
+        addNoShadow(rightTableRef);
+      } else {
+        removeNoShadow(rightTableRef);
+      }
+    } else if (scrollLeft === maxScrollLeft) {
+      removeNoShadow(leftTableRef);
+      addNoShadow(rightTableRef);
+    } else {
+      removeNoShadow(leftTableRef);
+      removeNoShadow(rightTableRef);
+    }
+  };
   const setFixedTableSize = function () {
-    // TODO：放在useEffect执行，频率会非常高，需要优化
     // 计算行高，设置各行高度, 表格内部可能会嵌套表格, 所以选择器需要唯一
     setLeftRightTrsHeight(baseTableRef, leftTableRef, rightTableRef, 'thead>tr');
     setLeftRightTrsHeight(baseTableRef, leftTableRef, rightTableRef, 'tbody>tr');
@@ -116,7 +135,7 @@ export const Table = function Table(props) {
       fullMaskStyle.top = theadHeight + 'px';
     }
   };
-  const fillPlaceholderTr = function () {
+  const setPlaceholderTr = function () {
     if (fullMaskRef.current) {
       const table = baseTableRef.current;
       const scrollBarHeight = table.parentElement.offsetHeight - table.offsetHeight;
@@ -142,11 +161,12 @@ export const Table = function Table(props) {
       }
     }
   };
-
+  // TODO：放在useEffect执行，频率会非常高，需要优化
   const resize = function () {
     setFullMaskPosition();
-    fillPlaceholderTr();
+    setPlaceholderTr();
     setFixedTableSize();
+    setNoShadow();
   };
   // 计算设置固定表格的列宽、行高，需要直接操作DOM
   useEffect(resize);
@@ -179,7 +199,13 @@ export const Table = function Table(props) {
   const nBaseTbodyChildren = [];
   
   React.Children.forEach(baseTbody.props.children, function (child, index) {
-    nBaseTbodyChildren.push(child);
+    if (child.key === null) {
+      nBaseTbodyChildren.push(React.cloneElement(child, {
+        key: child.key || index
+      }));
+    } else {
+      nBaseTbodyChildren.push(child);
+    }
   });
 
   if (nBaseTbodyChildren.length > 0) {
@@ -198,22 +224,9 @@ export const Table = function Table(props) {
 
   return (
     <React.Fragment>
-      {renderSide([style.left, commonStyle['left-shadow'], 'left-shadow', commonStyle['no-shadow']], leftTableRef, leftCols, leftTheadTrs, leftTbodyTrs, leftTfootTrs)}
+      {renderSide([style.left, commonStyle['left-shadow'], 'left-shadow'], leftTableRef, leftCols, leftTheadTrs, leftTbodyTrs, leftTfootTrs)}
       <div className={[commonStyle['overflow-x-auto'], props.scrollBarClassName].join(' ')} onScroll={(event) => {
-        const target = event.target;
-        const maxScrollLeft = target.scrollWidth - target.offsetWidth;
-        const scrollLeft = target.scrollLeft;
-
-        if (scrollLeft === 0) {
-          addNoShadow(leftTableRef);
-          removeNoShadow(rightTableRef);
-        } else if (scrollLeft === maxScrollLeft) {
-          removeNoShadow(leftTableRef);
-          addNoShadow(rightTableRef);
-        } else {
-          removeNoShadow(leftTableRef);
-          removeNoShadow(rightTableRef);
-        }
+        setNoShadow();
       }}>
         <table ref={baseTableRef} {...tableProps}>
           {baseColgroup}
