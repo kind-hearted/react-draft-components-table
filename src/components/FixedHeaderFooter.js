@@ -115,6 +115,10 @@ export const Table = class Table extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    this.resize();
+  }
+
   componentWillUnmount() {
     if (this.props.event) {
       this.props.event.$off('scroll', this.$onScroll);

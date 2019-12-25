@@ -204,8 +204,7 @@ export const Table = class Table extends React.Component {
   }
 
   componentDidUpdate() {
-    this.setFullMaskPosition();
-    this.setPlaceholderTr();
+    this.resize();
   }
 
   componentWillUnmount() {
