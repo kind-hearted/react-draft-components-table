@@ -111,6 +111,7 @@ export const Table = class Table extends React.Component {
     };
 
     this.scrollBottomBarIsAbsoluted = false;
+    this.yScrollBarWidth = 0;
 
     let flag = false;
     const scrollX = (event, ref1, ref2, ref3, scrollBottomRef) => {
@@ -187,7 +188,7 @@ export const Table = class Table extends React.Component {
   setYScrollBar() {
     const scrollBodyWidth = this.scrollBodyRef.current.offsetWidth;
     const scrollBodyBoxWidth = this.scrollBodyRef.current.parentElement.parentElement.offsetWidth;
-    const yScrollBarWidth = scrollBodyBoxWidth - scrollBodyWidth;
+    const yScrollBarWidth = this.yScrollBarWidth = scrollBodyBoxWidth - scrollBodyWidth;
     const baseTableWidth = this.baseTableRef.current.offsetWidth;
 
     setPlaceholderYScrollBar(this.headerRightScrollBarRef, this.rightHeaderRef, yScrollBarWidth);
@@ -225,7 +226,7 @@ export const Table = class Table extends React.Component {
     // 滚动区域高度与有无横向滚动条相关
     if (diffWidth > 0) {
       // 设置底部单独滚动条子元素的宽度
-      scrollBottom.children[0].style.width = baseTableWidth + 'px';
+      scrollBottom.children[0].style.width = baseTableWidth + this.yScrollBarWidth + 'px';
       scrollBottom.style.display = 'block';
       // 底部单独滚动条的高度在Chrome浏览器是18px，大于17px的滚动条高度
       if (scrollBottom.offsetHeight > scrollBottomBarHeight) {
@@ -262,6 +263,7 @@ export const Table = class Table extends React.Component {
     this.setBaseScrollContainerHeight();
     this.setFixedSideWidth();
     this.setLeftRightTrsHeight();
+    // TODO：某个方向原本没有滚动条，设置另外一个方向的滚动条以后可能出现，这里可能有互斥的关系
     this.setYScrollBar();
     this.setXScrollBar();
   }
@@ -411,7 +413,7 @@ export const Table = class Table extends React.Component {
         }
         <div className={style['base-scroll-container']} ref={baseScrollContainerRef}>
           {/* base-scroll-outer的高需要设为base-scroll-container高度和滚动条高度之差 */}
-          <div className={style['base-scroll-outer'] + ' ' + props.scrollClassName} style={{ height: '100%' }}>
+          <div className={[style['base-scroll-outer'], props.scrollBarClassName].join(' ')} style={{ height: '100%' }}>
             {/* 左边固定第一列表体 */}
             <div className={style.left}>
               <table  {...tableProps} style={{ width: '100%' }} ref={leftBodyRef}>
@@ -473,7 +475,7 @@ export const Table = class Table extends React.Component {
           )
         }
         {/* 一个固定在底部的单独滚动条，用来控制左右滚动 */}
-        <div className={style['scroll-x'] + ' ' + props.scrollClassName} style={{ display: 'none' }} onScroll={this.onScrollBottom} onMouseLeave={() => {
+        <div className={[style['scroll-x'], props.scrollBarClassName].join(' ')} style={{ display: 'none' }} onScroll={this.onScrollBottom} onMouseLeave={() => {
           // Mac上的浏览器滚动条定位情况下，鼠标离开先隐藏再显示，避免一直显示滚动条
           if (this.scrollBottomBarIsAbsoluted) {
             scrollBottomRef.current.style.display = 'none';
