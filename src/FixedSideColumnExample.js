@@ -15,6 +15,9 @@ import {
   Td,
 } from './components/FixedSideColumn.js';
 import style from './FixedSideColumnExample.module.css';
+import Event from './utils/Event.js';
+
+const event1 = new Event();
 
 export default function (props) {
   const [hoverIndex, setHoverIndex] = useState('');
@@ -46,6 +49,7 @@ export default function (props) {
 
           setStatus1('have-data');
           setData1(data);
+          event1.$emit('scroll', { left: 0 });
         }, 2000);
       }}>动态加载有数据</button>
       <button type="button" onClick={() => {
@@ -54,7 +58,7 @@ export default function (props) {
           setStatus1('fail');
         }, 2000);
       }}>动态加载失败</button>
-      <TableContainer style={{ width: '800px' }} status={status1}>
+      <TableContainer style={{ width: '800px' }} status={status1} event={event1}>
         <Table style={{minWidth: '1200px'}} className={style['table-stripe']}>
           <Colgroup>
             <Col width="200" fixed="true" />

@@ -62,190 +62,256 @@ const removeNoShadow = function (ref) {
 
 const PLACEHOLDER_TR_KEY = 'placeholder-tr-' + Date.now();
 
-export const Table = function Table(props) {
-  const status = props.status || 'have-data';
-  const leftTableRef = useRef();
-  const baseTableRef = useRef();
-  const rightTableRef = useRef();
-  const fullMaskRef = useRef();
+export const Table = class Table extends React.Component {
+  constructor(props) {
+    super(props);
 
-  const {
-    leftIndexes,
-    rightIndexes,
+    this.leftTableRef = React.createRef();
+    this.baseTableRef = React.createRef();
+    this.rightTableRef = React.createRef();
+    this.fullMaskRef = React.createRef();
 
-    leftCols,
-    leftTheadTrs,
-    leftTbodyTrs,
-    leftTfootTrs,
+    this.leftIndexes = [];
+    this.rightIndexes = [];
 
-    rightCols,
-    rightTheadTrs,
-    rightTbodyTrs,
-    rightTfootTrs,
+    this.baseColgroup = null;
+    this.baseThead = null;
+    this.baseTbody = null;
+    this.baseTfoot = null;
 
-    baseColgroup,
-    baseThead,
-    baseTbody,
-    baseTfoot,
-  } = renderSideFragments(props, Colgroup, Thead, Tbody, Tfoot);
+    this._preventScroll = false;
 
-  const setNoShadow = function () {
-    const scrollElement = baseTableRef.current.parentElement;
+    this.onScroll = (event) => {
+      this.setNoShadow();
+      if (this.props.event) {
+        // 内部触发的滚动，增加标识阻止再去修改滚动条的位置
+        this._preventScroll = true;
+        this.props.event.$emit('scroll', {
+          left: event.target.scrollLeft,
+          top: 0
+        });
+      }
+    };
+    this.$onScroll = ({ left }) => {
+      if (!this._preventScroll) {
+        this.baseTableRef.current.parentElement.scrollLeft = left;
+      }
+      this._preventScroll = false;
+    };
+
+    this.$onResize = () => {
+      this.resize();
+    };
+  }
+
+  setNoShadow() {
+    const scrollElement = this.baseTableRef.current.parentElement;
     const scrollLeft = scrollElement.scrollLeft;
     const maxScrollLeft = scrollElement.scrollWidth - scrollElement.offsetWidth;
 
     if (scrollLeft === 0) {
-      addNoShadow(leftTableRef);
+      addNoShadow(this.leftTableRef);
       if (maxScrollLeft === 0) {
-        addNoShadow(rightTableRef);
+        addNoShadow(this.rightTableRef);
       } else {
-        removeNoShadow(rightTableRef);
+        removeNoShadow(this.rightTableRef);
       }
     } else if (scrollLeft === maxScrollLeft) {
-      removeNoShadow(leftTableRef);
-      addNoShadow(rightTableRef);
+      removeNoShadow(this.leftTableRef);
+      addNoShadow(this.rightTableRef);
     } else {
-      removeNoShadow(leftTableRef);
-      removeNoShadow(rightTableRef);
+      removeNoShadow(this.leftTableRef);
+      removeNoShadow(this.rightTableRef);
     }
-  };
-  const setFixedTableSize = function () {
+  }
+
+  setFixedTableSize() {
+    const leftTableRef = this.leftTableRef;
+    const baseTableRef = this.baseTableRef;
+    const rightTableRef = this.rightTableRef;
     // 计算行高，设置各行高度, 表格内部可能会嵌套表格, 所以选择器需要唯一
     setLeftRightTrsHeight(baseTableRef, leftTableRef, rightTableRef, 'thead>tr');
     setLeftRightTrsHeight(baseTableRef, leftTableRef, rightTableRef, 'tbody>tr');
     setLeftRightTrsHeight(baseTableRef, leftTableRef, rightTableRef, 'tfoot>tr');
     // 计算固定列宽，相加设置容器元素宽度
     const ths = baseTableRef.current.querySelector('thead tr').children;
-    const leftTableWidth = computedPartOfTableWidth(ths, leftIndexes);
+    const leftTableWidth = computedPartOfTableWidth(ths, this.leftIndexes);
     leftTableRef.current.parentElement.style.width = leftTableWidth + 'px';
 
-    const rightTableWidth = computedPartOfTableWidth(ths, rightIndexes);
+    const rightTableWidth = computedPartOfTableWidth(ths, this.rightIndexes);
     rightTableRef.current.parentElement.style.width = rightTableWidth + 'px';
-  };
-  const setFullMaskPosition = function () {
-    if (fullMaskRef.current) {
-      const table = baseTableRef.current;
+  }
+
+  setFullMaskPosition() {
+    const fullMask = this.fullMaskRef.current;
+
+    if (fullMask) {
+      const table = this.baseTableRef.current;
       let theadHeight = 0;
 
-      if (baseThead) {
+      if (this.baseThead) {
         theadHeight = table.querySelector('thead').offsetHeight;
       }
 
-      const fullMaskStyle = fullMaskRef.current.style;
+      const fullMaskStyle = fullMask.style;
       fullMaskStyle.top = theadHeight + 'px';
     }
-  };
-  const setPlaceholderTr = function () {
-    if (fullMaskRef.current) {
-      const table = baseTableRef.current;
+  }
+
+  setPlaceholderTr() {
+    const fullMask = this.fullMaskRef.current;
+
+    if (fullMask) {
+      const status = this.props.status;
+      const table = this.baseTableRef.current;
       const scrollBarHeight = table.parentElement.offsetHeight - table.offsetHeight;
-      const fullMaskEl = fullMaskRef.current;
-      const tbody = baseTableRef.current.querySelector('tbody');
+      const tbody = table.querySelector('tbody');
       const trs = tbody.children;
       const placeholderTr = trs[trs.length - 1];
 
       if (status === 'have-data') {
-        fullMaskEl.style.display = 'none';
+        fullMask.style.display = 'none';
         placeholderTr.style.height = '0px';
       } else if (status !== 'have-data') {
-        if (fullMaskEl.children && fullMaskEl.children[0]) {
-          const contentHeight = fullMaskEl.children[0].offsetHeight;
+        if (fullMask.children && fullMask.children[0]) {
+          const contentHeight = fullMask.children[0].offsetHeight;
           const tbodyHeight = tbody.offsetHeight;
 
           if (contentHeight > tbodyHeight) {
             placeholderTr.style.height = (contentHeight - tbodyHeight) + 'px';
           }
 
-          fullMaskRef.current.style.bottom = scrollBarHeight + 'px';
+          fullMask.style.bottom = scrollBarHeight + 'px';
         }
       }
     }
-  };
-  // TODO：放在useEffect执行，频率会非常高，需要优化
-  const resize = function () {
-    setFullMaskPosition();
-    setPlaceholderTr();
-    setFixedTableSize();
-    setNoShadow();
-  };
-  // 计算设置固定表格的列宽、行高，需要直接操作DOM
-  useEffect(resize);
-
-  const tableProps = filterProps(props, tableCustomizeProps);
-  const renderSide = function (classNames, ref, cols, theadTrs, tbodyTrs, tfootTrs) {
-    return (
-      <div className={classNames.join(' ')}>
-        <table {...tableProps} style={{ width: '100%' }} ref={ref}>
-          <colgroup {...baseColgroup.props}>
-            {cols}
-          </colgroup>
-          <thead {...baseThead.props}>
-            {theadTrs}
-          </thead>
-          <tbody {...baseTbody.props}>
-            {tbodyTrs}
-          </tbody>
-          {
-            leftTfootTrs &&
-            <tfoot {...baseTfoot.props}>
-              {tfootTrs}
-            </tfoot>
-          }
-        </table>
-      </div>
-    )
-  };
-  // 附加一个占位行，以便正常显示无数据、加载中
-  const nBaseTbodyChildren = [];
-  
-  React.Children.forEach(baseTbody.props.children, function (child, index) {
-    if (child.key === null) {
-      nBaseTbodyChildren.push(React.cloneElement(child, {
-        key: child.key || index
-      }));
-    } else {
-      nBaseTbodyChildren.push(child);
-    }
-  });
-
-  if (nBaseTbodyChildren.length > 0) {
-    const lastTr = nBaseTbodyChildren[nBaseTbodyChildren.length - 1];
-  
-    nBaseTbodyChildren[nBaseTbodyChildren.length - 1] = React.cloneElement(lastTr, {
-      className: ['last-tr', lastTr.props.className].join(' ')
-    });
   }
-  
-  nBaseTbodyChildren.push(
-    <tr key={PLACEHOLDER_TR_KEY} className={style['placeholder-tr']}></tr>
-  );
-  
-  const nBaseTbody = React.cloneElement(baseTbody, {}, nBaseTbodyChildren);
 
-  return (
-    <React.Fragment>
-      {renderSide([style.left, commonStyle['left-shadow'], 'left-shadow'], leftTableRef, leftCols, leftTheadTrs, leftTbodyTrs, leftTfootTrs)}
-      <div className={[commonStyle['overflow-x-auto'], props.scrollBarClassName].join(' ')} onScroll={(event) => {
-        setNoShadow();
-      }}>
-        <table ref={baseTableRef} {...tableProps}>
-          {baseColgroup}
-          {baseThead}
-          {nBaseTbody}
-          {baseTfoot}
-        </table>
-      </div>
-      {renderSide([style.right, commonStyle['right-shadow'], 'right-shadow'], rightTableRef, rightCols, rightTheadTrs, rightTbodyTrs, rightTfootTrs)}
-      {
-        (props.Loading || props.NoData || props.Fail) && 
-        <div className={commonStyle['full-mask']}  style={{ display: status !== 'have-data' ? 'block' : 'none' }} ref={fullMaskRef}>
-          {status === 'loading' && props.Loading}
-          {status === 'no-data' && props.NoData}
-          {status === 'fail' && props.Fail}
+  resize() {
+    this.setFullMaskPosition();
+    this.setPlaceholderTr();
+    this.setFixedTableSize();
+    this.setNoShadow();
+  }
+
+  componentDidMount() {
+    this.resize();
+
+    if (this.props.event) {
+      this.props.event.$on('scroll', this.$onScroll);
+      this.props.event.$on('resize', this.$onResize);
+    }
+  }
+
+  componentDidUpdate() {
+    this.setFullMaskPosition();
+    this.setPlaceholderTr();
+  }
+
+  componentWillUnmount() {
+    if (this.props.event) {
+      this.props.event.$off('scroll', this.$onScroll);
+      this.props.event.$off('resize', this.$onResize);
+    }
+  }
+
+  render() {
+    const props = this.props;
+    const status = props.status || 'have-data';
+    const leftTableRef = this.leftTableRef;
+    const baseTableRef = this.baseTableRef;
+    const rightTableRef = this.rightTableRef;
+    const fullMaskRef = this.fullMaskRef;
+
+    const {
+      leftIndexes, rightIndexes,
+      leftCols, leftTheadTrs, leftTbodyTrs, leftTfootTrs,
+      rightCols, rightTheadTrs, rightTbodyTrs, rightTfootTrs,
+      baseColgroup, baseThead, baseTbody, baseTfoot,
+    } = renderSideFragments(props, Colgroup, Thead, Tbody, Tfoot);
+
+    this.leftIndexes = leftIndexes;
+    this.rightIndexes = rightIndexes;
+
+    this.baseColgroup = baseColgroup;
+    this.baseThead = baseThead;
+    this.baseTbody = baseTbody;
+    this.baseTfoot = baseTfoot;
+
+    const tableProps = filterProps(props, tableCustomizeProps);
+    const renderSide = function (classNames, ref, cols, theadTrs, tbodyTrs, tfootTrs) {
+      return (
+        <div className={classNames.join(' ')}>
+          <table {...tableProps} style={{ width: '100%' }} ref={ref}>
+            <colgroup {...baseColgroup.props}>
+              {cols}
+            </colgroup>
+            <thead {...baseThead.props}>
+              {theadTrs}
+            </thead>
+            <tbody {...baseTbody.props}>
+              {tbodyTrs}
+            </tbody>
+            {
+              leftTfootTrs &&
+              <tfoot {...baseTfoot.props}>
+                {tfootTrs}
+              </tfoot>
+            }
+          </table>
         </div>
+      )
+    };
+    // 附加一个占位行，以便正常显示无数据、加载中
+    const nBaseTbodyChildren = [];
+    
+    React.Children.forEach(baseTbody.props.children, function (child, index) {
+      if (child.key === null) {
+        nBaseTbodyChildren.push(React.cloneElement(child, {
+          key: child.key || index
+        }));
+      } else {
+        nBaseTbodyChildren.push(child);
       }
-    </React.Fragment>
-  )
+    });
+
+    if (nBaseTbodyChildren.length > 0) {
+      const lastTr = nBaseTbodyChildren[nBaseTbodyChildren.length - 1];
+    
+      nBaseTbodyChildren[nBaseTbodyChildren.length - 1] = React.cloneElement(lastTr, {
+        className: ['last-tr', lastTr.props.className].join(' ')
+      });
+    }
+    
+    nBaseTbodyChildren.push(
+      <tr key={PLACEHOLDER_TR_KEY} className={style['placeholder-tr']}></tr>
+    );
+    
+    const nBaseTbody = React.cloneElement(baseTbody, {}, nBaseTbodyChildren);
+
+    return (
+      <React.Fragment>
+        {renderSide([style.left, commonStyle['left-shadow'], 'left-shadow'], leftTableRef, leftCols, leftTheadTrs, leftTbodyTrs, leftTfootTrs)}
+        <div className={[commonStyle['overflow-x-auto'], props.scrollBarClassName].join(' ')} onScroll={this.onScroll}>
+          <table ref={baseTableRef} {...tableProps}>
+            {baseColgroup}
+            {baseThead}
+            {nBaseTbody}
+            {baseTfoot}
+          </table>
+        </div>
+        {renderSide([style.right, commonStyle['right-shadow'], 'right-shadow'], rightTableRef, rightCols, rightTheadTrs, rightTbodyTrs, rightTfootTrs)}
+        {
+          (props.Loading || props.NoData || props.Fail) && 
+          <div className={commonStyle['full-mask']}  style={{ display: status !== 'have-data' ? 'block' : 'none' }} ref={fullMaskRef}>
+            {status === 'loading' && props.Loading}
+            {status === 'no-data' && props.NoData}
+            {status === 'fail' && props.Fail}
+          </div>
+        }
+      </React.Fragment>
+    )
+  }
 }
 
 export const Colgroup = function Colgroup(props) {

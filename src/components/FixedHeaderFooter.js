@@ -39,7 +39,14 @@ export const Table = class Table extends React.Component {
     this.BaseTfoot = null;
 
     this.onScroll = (event) => {
-      this.$emitScroll(event.target.scrollTop);
+      if (this.props.event) {
+        // 内部触发的滚动，增加标识阻止再去修改滚动条的位置
+        this._preventScroll = true;
+        this.props.event.$emit('scroll', {
+          left: 0,
+          top: event.target.scrollTop
+        });
+      }
     };
 
     this._preventScroll = false;
@@ -58,17 +65,6 @@ export const Table = class Table extends React.Component {
       }
       this._preventResize = false;
     };
-  }
-
-  $emitScroll(scrollTop) {
-    if (this.props.event) {
-      // 内部触发的滚动，增加标识阻止再去修改滚动条的位置
-      this._preventScroll = true;
-      this.props.event.$emit('scroll', {
-        left: 0,
-        top: scrollTop
-      });
-    }
   }
 
   setHeaderFooterYScrollBar() {
