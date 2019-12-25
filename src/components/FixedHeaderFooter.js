@@ -25,107 +25,170 @@ export const TableContainer = function (props) {
   return renderTableContainer(props, Table, Loading, NoData, Fail);
 }
 
-export const Table = function Table(props) {
-  const scrollAreaRef = useRef();
-  const headerTableRef = useRef();
-  const baseTableRef = useRef();
-  const footerTableRef = useRef();
-  
-  let BaseColgroup = null;
-  let BaseThead = null;
-  let BaseTbody = null;
-  let BaseTfoot = null;
+export const Table = class Table extends React.Component {
+  constructor(props) {
+    super(props);
+    this.scrollAreaRef = React.createRef();
+    this.headerTableRef = React.createRef();
+    this.baseTableRef = React.createRef();
+    this.footerTableRef = React.createRef();
 
-  React.Children.forEach(props.children, function (child) {
-    if (child.type === Colgroup) {
-      BaseColgroup = child;
-    } else if (child.type === Thead) {
-      BaseThead = child;
-    } else if (child.type === Tbody) {
-      BaseTbody = child;
-    } else if (child.type === Tfoot) {
-      BaseTfoot = child;
-    }
-  });
-  const setHeaderFooterYScrollBar = function () {
-    const scrollWidth = scrollAreaRef.current.offsetWidth;
-    const baseTableWidth = baseTableRef.current.offsetWidth;
+    this.BaseColgroup = null;
+    this.BaseThead = null;
+    this.BaseTbody = null;
+    this.BaseTfoot = null;
+
+    this.onScroll = (event) => {
+      if (this.props.duplexEvent) {
+        this.props.duplexEvent.downstream.$emit('scroll', {
+          left: 0,
+          top: event.target.scrollTop
+        });
+      }
+    };
+  }
+
+  setHeaderFooterYScrollBar() {
+    const scrollWidth = this.scrollAreaRef.current.offsetWidth;
+    const baseTableWidth = this.baseTableRef.current.offsetWidth;
     const scrollBarWidth = scrollWidth - baseTableWidth;
 
+    const BaseThead = this.BaseThead;
     if (BaseThead && BaseThead.props.fixed === "true") {
-      setYScrollBar(scrollBarWidth, headerTableRef, 'th');
+      setYScrollBar(scrollBarWidth, this.headerTableRef, 'th');
     }
 
+    const BaseTfoot = this.BaseTfoot;
     if (BaseTfoot && BaseTfoot.props.fixed === "true") {
-      setYScrollBar(scrollBarWidth, footerTableRef, 'td');
+      setYScrollBar(scrollBarWidth, this.footerTableRef, 'td');
     }
-  };
-  const setScrollAreaHeight = function () {
-    const tableContainerHeight = scrollAreaRef.current.parentElement.parentElement.clientHeight;
+  }
+
+  setScrollAreaHeight() {
+    const tableContainerHeight = this.scrollAreaRef.current.parentElement.parentElement.clientHeight;
     let headerHeight = 0;
     let footerHeight = 0;
 
+    const BaseThead = this.BaseThead;
     if (BaseThead && BaseThead.props.fixed === "true") {
-      headerHeight = headerTableRef.current.offsetHeight;
+      headerHeight = this.headerTableRef.current.offsetHeight;
     }
 
+    const BaseTfoot = this.BaseTfoot;
     if (BaseTfoot && BaseTfoot.props.fixed === "true") {
-      footerHeight = footerTableRef.current.offsetHeight;
+      footerHeight = this.footerTableRef.current.offsetHeight;
     }
 
-    scrollAreaRef.current.style.height = (tableContainerHeight - headerHeight - footerHeight) + 'px';
-  };
+    this.scrollAreaRef.current.style.height = (tableContainerHeight - headerHeight - footerHeight) + 'px';
+  }
   // 直接操作DOM，避免使用状态，造成整个table组件的更新，性能差
-  const resize = function () {
-    setScrollAreaHeight();
-    setHeaderFooterYScrollBar();
-  };
-  useEffect(resize);
+  resize() {
+    this.setScrollAreaHeight();
+    this.setHeaderFooterYScrollBar();
+  }
 
-  const tableProps = filterProps(props, tableCustomizeProps);
-  const status = props.status || 'have-data';
+  componentDidMount() {
+    this.resize();
 
-  return (
-    <React.Fragment>
-      {
-        BaseThead && BaseThead.props.fixed === "true" &&
-        <div className="header">
-          <table {...tableProps} ref={headerTableRef} >
-            {BaseColgroup}
-            {BaseThead}
-          </table>
-        </div>
+    if (this.props.duplexEvent) {
+      this.props.duplexEvent.upstream.$on('scroll', ({ left, top }) => {
+        this.scrollAreaRef.current.scrollTop = top;
+      });
+    }
+  }
+
+  componentDidUpdate() {
+    this.resize();
+  }
+
+  componentWillUnmount() {
+    if (this.props.duplexEvent) {
+      this.props.duplexEvent.$remove();
+    }
+  }
+
+  render() {
+    const scrollAreaRef = this.scrollAreaRef;
+    const headerTableRef = this.headerTableRef;
+    const baseTableRef = this.baseTableRef;
+    const footerTableRef = this.footerTableRef;
+
+    let BaseColgroup = null;
+    let BaseThead = null;
+    let BaseTbody = null;
+    let BaseTfoot = null;
+
+    const props = this.props;
+
+    React.Children.forEach(props.children, function (child) {
+      if (child.type === Colgroup) {
+        BaseColgroup = child;
+      } else if (child.type === Thead) {
+        BaseThead = child;
+      } else if (child.type === Tbody) {
+        BaseTbody = child;
+      } else if (child.type === Tfoot) {
+        BaseTfoot = child;
       }
-      <div style={{ position: 'relative' }}>
-        <div ref={scrollAreaRef} className={[commonStyle['overflow-y-auto'], props.scrollBarClassName].join(' ')} style={{ height: '0px' }}>
-          <table {...tableProps} ref={baseTableRef}>
-            {BaseColgroup}
-            {BaseThead && BaseThead.props.fixed !== "true" && BaseThead}
-            {BaseTbody}
-            {BaseTfoot && BaseTfoot.props.fixed !== "true" && BaseTfoot}
-          </table>
-        </div>
-        {/* 组件外传入Loading、NoData、Fail其中一个时，才显示full-mask */}
+    });
+
+    this.BaseColgroup = BaseColgroup;
+    this.BaseThead = BaseThead;
+    this.BaseTbody = BaseTbody;
+    this.BaseTfoot = BaseTfoot;
+
+    const tableProps = filterProps(props, tableCustomizeProps);
+    const status = props.status || 'have-data';
+
+    return (
+      <React.Fragment>
         {
-          (props.Loading || props.NoData || props.Fail) && 
-          <div className={commonStyle['full-mask']} style={{ display: status !== 'have-data' ? 'block' : 'none' }}>
-            {status === 'loading' && props.Loading}
-            {status === 'no-data' && props.NoData}
-            {status === 'fail' && props.Fail}
+          BaseThead && BaseThead.props.fixed === "true" &&
+          <div className="header">
+            <table {...tableProps} ref={headerTableRef} >
+              {BaseColgroup}
+              {BaseThead}
+            </table>
           </div>
         }
-      </div>
-      {
-        BaseTfoot && BaseTfoot.props.fixed === "true" &&
-        <div className="footer">
-          <table {...tableProps} ref={footerTableRef}>
-            {BaseColgroup}
-            {BaseTfoot}
-          </table>
+        <div style={{ position: 'relative' }}>
+          <div ref={scrollAreaRef} onScroll={(event) => {
+            if (props.duplexEvent) {
+              props.duplexEvent.downstream.$emit('scroll', {
+                left: 0,
+                top: event.target.scrollTop,
+              });
+            }
+          }} className={[commonStyle['overflow-y-auto'], props.scrollBarClassName].join(' ')} style={{ height: '0px' }}>
+            <table {...tableProps} ref={baseTableRef}>
+              {BaseColgroup}
+              {BaseThead && BaseThead.props.fixed !== "true" && BaseThead}
+              {BaseTbody}
+              {BaseTfoot && BaseTfoot.props.fixed !== "true" && BaseTfoot}
+            </table>
+          </div>
+          {/* 组件外传入Loading、NoData、Fail其中一个时，才显示full-mask */}
+          {
+            (props.Loading || props.NoData || props.Fail) && 
+            <div className={commonStyle['full-mask']} style={{ display: status !== 'have-data' ? 'block' : 'none' }}>
+              {status === 'loading' && props.Loading}
+              {status === 'no-data' && props.NoData}
+              {status === 'fail' && props.Fail}
+            </div>
+          }
         </div>
-      }
-    </React.Fragment>
-  )
+        {
+          BaseTfoot && BaseTfoot.props.fixed === "true" &&
+          <div className="footer">
+            <table {...tableProps} ref={footerTableRef}>
+              {BaseColgroup}
+              {BaseTfoot}
+            </table>
+          </div>
+        }
+      </React.Fragment>
+    )
+  }
 }
 
 export const Colgroup = function Colgroup(props) {
