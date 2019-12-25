@@ -14,9 +14,9 @@ import {
   Th,
   Td,
 } from './components/FixedHeaderFooter.js';
-import DuplexEvent from './utils/DuplexEvent.js';
+import Event from './utils/Event.js';
 
-const duplexEvent1 = new DuplexEvent();
+const event1 = new Event();
 
 export default function (props) {
   const popupRef = useRef();
@@ -33,6 +33,7 @@ export default function (props) {
         setTimeout(function () {
           setStatus1('no-data');
           setData1([]);
+          event1.$emit('resize');
         }, 2000);
       }}>动态加载无数据</button>
       <button type="button" onClick={() => {
@@ -48,7 +49,8 @@ export default function (props) {
 
           setStatus1('have-data');
           setData1(data);
-          duplexEvent1.upstream.$emit('scroll', { top: 0 });
+          event1.$emit('scroll', { top: 0 });
+          event1.$emit('resize');
         }, 2000);
       }}>动态加载有数据</button>
       <button type="button" onClick={() => {
@@ -57,7 +59,7 @@ export default function (props) {
           setStatus1('fail');
         }, 2000);
       }}>动态加载失败</button>
-      <TableContainer style={{ height: '350px' }} scrollBarClassName="small-scroll-bar" status={status1} duplexEvent={duplexEvent1}>
+      <TableContainer style={{ height: '350px' }} scrollBarClassName="small-scroll-bar" status={status1} event={event1}>
         <Table className="table">
           <Colgroup className="colgroup">
             <Col width="200" className="col1"/>

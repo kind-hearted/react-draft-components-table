@@ -39,13 +39,36 @@ export const Table = class Table extends React.Component {
     this.BaseTfoot = null;
 
     this.onScroll = (event) => {
-      if (this.props.duplexEvent) {
-        this.props.duplexEvent.downstream.$emit('scroll', {
-          left: 0,
-          top: event.target.scrollTop
-        });
-      }
+      this.$emitScroll(event.target.scrollTop);
     };
+
+    this._preventScroll = false;
+    this.$onScroll = ({ top }) => {
+      if (!this._preventScroll) {
+        this.scrollAreaRef.current.scrollTop = top;
+      }
+      this._preventScroll = false;
+    };
+
+    this._preventResize = false;
+
+    this.$onResize = () => {
+      if (!this._preventResize) {
+        this.resize();
+      }
+      this._preventResize = false;
+    };
+  }
+
+  $emitScroll(scrollTop) {
+    if (this.props.event) {
+      // 内部触发的滚动，增加标识阻止再去修改滚动条的位置
+      this._preventScroll = true;
+      this.props.event.$emit('scroll', {
+        left: 0,
+        top: scrollTop
+      });
+    }
   }
 
   setHeaderFooterYScrollBar() {
@@ -90,20 +113,16 @@ export const Table = class Table extends React.Component {
   componentDidMount() {
     this.resize();
 
-    if (this.props.duplexEvent) {
-      this.props.duplexEvent.upstream.$on('scroll', ({ left, top }) => {
-        this.scrollAreaRef.current.scrollTop = top;
-      });
+    if (this.props.event) {
+      this.props.event.$on('scroll', this.$onScroll);
+      this.props.event.$on('resize', this.$onResize);
     }
   }
 
-  componentDidUpdate() {
-    this.resize();
-  }
-
   componentWillUnmount() {
-    if (this.props.duplexEvent) {
-      this.props.duplexEvent.$remove();
+    if (this.props.event) {
+      this.props.event.$off('scroll', this.$onScroll);
+      this.props.event.$off('resize', this.$onResize);
     }
   }
 
@@ -152,14 +171,7 @@ export const Table = class Table extends React.Component {
           </div>
         }
         <div style={{ position: 'relative' }}>
-          <div ref={scrollAreaRef} onScroll={(event) => {
-            if (props.duplexEvent) {
-              props.duplexEvent.downstream.$emit('scroll', {
-                left: 0,
-                top: event.target.scrollTop,
-              });
-            }
-          }} className={[commonStyle['overflow-y-auto'], props.scrollBarClassName].join(' ')} style={{ height: '0px' }}>
+          <div ref={scrollAreaRef} onScroll={this.onScroll} className={[commonStyle['overflow-y-auto'], props.scrollBarClassName].join(' ')} style={{ height: '0px' }}>
             <table {...tableProps} ref={baseTableRef}>
               {BaseColgroup}
               {BaseThead && BaseThead.props.fixed !== "true" && BaseThead}

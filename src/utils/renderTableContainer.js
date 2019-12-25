@@ -24,7 +24,7 @@ function renderTableContainer(props, Table, Loading, NoData, Fail) {
 
   table = React.cloneElement(table, { 
     scrollBarClassName: props.scrollBarClassName,
-    duplexEvent: props.duplexEvent,
+    event: props.event,
     status: props.status,
     Loading: loading,
     NoData: noData,

@@ -18,7 +18,7 @@ class Event {
     }
   }
 
-  $remove(type, callback) {
+  $off(type, callback) {
     if (type && typeof type === 'string') {
       if (typeof callback === 'function') {
         const callbacks = this.events[type];
@@ -39,16 +39,4 @@ class Event {
   }
 }
 
-class DuplexEvent {
-  constructor() {
-    this.upstream = new Event();
-    this.downstream = new Event();
-  }
-
-  $remove() {
-    this.upstream.$remove();
-    this.downstream.$remove();
-  }
-}
-
-export default DuplexEvent;
+export default Event;
