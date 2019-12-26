@@ -180,40 +180,42 @@ export default function (props) {
         </Table>
       </TableContainer>
       </div>
-      {/* <p>固定表头、第一列：水平 + 竖直方向均无滚动条</p>
-      <Table scrollHeight="200px" style={{minWidth: '1400px'}}>
-        <Colgroup>
-          <Col width="300" fixed="true" />
-          <Col  />
-          <Col width="300" />
-        </Colgroup>
-        <Thead fixed="true">
-          <Tr>
-            <Th rowSpan="2">姓名</Th>
-            <Th>年龄</Th>
-            <Th>备注</Th>
-          </Tr>
-          <Tr>
-            <Th>年龄</Th>
-            <Th>备注</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          <Tr>
-            <Td>姓名1 + 2</Td>
-            <Td>年龄1</Td>
-            <Td>备注1</Td>
-          </Tr>
-        </Tbody>
-        <Tfoot>
-          <Tr>
-            <Td>姓名</Td>
-            <Td>年龄</Td>
-            <Td>备注</Td>
-          </Tr>
-        </Tfoot>
-      </Table>
-      <p>固定第一列：水平 + 竖直方向均出现滚动条</p>
+      <p>固定表头、第一列：水平 + 竖直方向均无滚动条</p>
+      <TableContainer style={{ width: '800px', height: '350px' }}>
+        <Table style={{minWidth: '1400px'}}>
+          <Colgroup>
+            <Col width="300" fixed="true" />
+            <Col  />
+            <Col width="300" />
+          </Colgroup>
+          <Thead fixed="true">
+            <Tr>
+              <Th rowSpan="2">姓名</Th>
+              <Th>年龄</Th>
+              <Th>备注</Th>
+            </Tr>
+            <Tr>
+              <Th>年龄</Th>
+              <Th>备注</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            <Tr>
+              <Td>姓名1</Td>
+              <Td>年龄1</Td>
+              <Td>备注1</Td>
+            </Tr>
+          </Tbody>
+          <Tfoot>
+            <Tr>
+              <Td>姓名</Td>
+              <Td>年龄</Td>
+              <Td>备注</Td>
+            </Tr>
+          </Tfoot>
+        </Table>
+      </TableContainer>
+      {/* <p>固定第一列：水平 + 竖直方向均出现滚动条</p>
       <Table scrollHeight="200px" style={{minWidth: '1400px'}}>
         <Colgroup>
           <Col width="300" fixed="true" />
@@ -319,8 +321,8 @@ export default function (props) {
             <Td>备注</Td>
           </Tr>
         </Tfoot>
-      </Table>
-      <p>动态请求数据，数据为空、有数据时的使用</p>
+      </Table> */}
+      {/* <p>动态请求数据，数据为空、有数据时的使用</p>
       <button type="button" onClick={() => {
         setLoading1(true);
         setTimeout(function () {
@@ -393,10 +395,6 @@ export default function (props) {
             })
           }
         </Tbody>
-        <Center style={{ display: loading1 || data1.length === 0 ? 'block' : 'none' }}>
-          <div style={{ display: loading1 ? 'block' : 'none' }}>加载中...</div>
-          <div style={{ display: !loading1 ? 'block' : 'none' }}>暂无数据</div>
-        </Center>
       </Table> */}
     </div>
   )
