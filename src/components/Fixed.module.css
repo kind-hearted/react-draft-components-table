@@ -41,6 +41,7 @@
 }
 .base-scroll-inner {
   overflow-y: auto;
+  overflow-x: hidden;
 }
 .scroll-x {
   /* 不能设置overflow auto，IE9及以下会不显示此滚动条 */
