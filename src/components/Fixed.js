@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
+import commonStyle from './common.module.css';
 import style from './Fixed.module.css';
 import setYScrollBar from '../utils/setYScrollBar.js';
 import renderSideFragments from '../utils/renderSideFragments.js';
@@ -301,6 +302,7 @@ export const Table = class Table extends React.Component {
 
   render() {
     const props = this.props;
+    const status = props.status || 'have-data';
     const tableProps = filterProps(props, tableCustomizeProps);
     const {
       leftIndexes, rightIndexes,
@@ -472,6 +474,15 @@ export const Table = class Table extends React.Component {
               </div>
             </div>
           </div>
+          {/* 组件外传入Loading、NoData、Fail其中一个时，才显示full-mask */}
+          {
+            (props.Loading || props.NoData || props.Fail) && 
+            <div className={commonStyle['full-mask']} style={{ display: status !== 'have-data' ? 'block' : 'none' }}>
+              {status === 'loading' && props.Loading}
+              {status === 'no-data' && props.NoData}
+              {status === 'fail' && props.Fail}
+            </div>
+          }
         </div>
         {/* 表尾固定 */}
         {

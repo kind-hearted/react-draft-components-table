@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import commonStyle from './common.module.css';
 import style from './FixedSideColumn.module.css';
 import renderSideFragments from '../utils/renderSideFragments.js';

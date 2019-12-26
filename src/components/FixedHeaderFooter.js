@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import commonStyle from './common.module.css';
 import filterProps from '../utils/filterProps.js';
 import setYScrollBar from '../utils/setYScrollBar.js';
