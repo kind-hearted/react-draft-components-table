@@ -177,7 +177,7 @@ export default function (props) {
           </Table>
         </TableContainer>
       </div>
-      {/* <p>固定表头、第一列：水平 + 竖直方向均无滚动条</p>
+      <p>固定表头、第一列：水平 + 竖直方向均无滚动条</p>
       <TableContainer style={{ width: '800px', height: '350px' }}>
         <Table style={{minWidth: '1400px'}}>
           <Colgroup>
@@ -211,8 +211,8 @@ export default function (props) {
             </Tr>
           </Tfoot>
         </Table>
-      </TableContainer> */}
-      {/* <p>固定第一列：水平 + 竖直方向均出现滚动条</p>
+      </TableContainer>
+      <p>固定第一列：水平 + 竖直方向均出现滚动条</p>
       <TableContainer style={{ width: '800px', height: '350px' }}>
         <Table style={{minWidth: '1400px'}}>
           <Colgroup>
@@ -320,7 +320,7 @@ export default function (props) {
             </Tr>
           </Tfoot>
         </Table>
-      </TableContainer> */}
+      </TableContainer>
       <p>动态请求数据，数据为空、有数据时的使用</p>
       <button type="button" onClick={() => {
         setStatus1('loading');

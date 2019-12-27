@@ -3,7 +3,7 @@ import commonStyle from './common.module.css';
 import style from './FixedSideColumn.module.css';
 import renderSideFragments from '../utils/renderSideFragments.js';
 import computedPartOfTableWidth from '../utils/computedPartOfTableWidth.js';
-import setLeftRightTrsHeight from '../utils/setLeftRightTrsHeight.js';
+import setSideTrsHeight from '../utils/setSideTrsHeight.js';
 import filterProps from '../utils/filterProps.js';
 import tableCustomizeProps from '../utils/tableCustomizeProps.js';
 import renderTableContainer from '../utils/renderTableContainer.js';
@@ -32,7 +32,7 @@ import renderTableContainer from '../utils/renderTableContainer.js';
   * 1、尽量不生成多余的元素
   * 2、减少计算行高的耗时
   */
-// TODO：公开一个方式，可以让外部告知组件调用setLeftRightTrsHeight去更新固定列的行高
+// TODO：公开一个方式，可以让外部告知组件调用setSideTrsHeight去更新固定列的行高
 export const TableContainer = function (props) {
   return renderTableContainer(props, Table, Loading, NoData, Fail);
 }
@@ -130,9 +130,9 @@ export const Table = class Table extends React.Component {
     const baseTableRef = this.baseTableRef;
     const rightTableRef = this.rightTableRef;
     // 计算行高，设置各行高度, 表格内部可能会嵌套表格, 所以选择器需要唯一
-    setLeftRightTrsHeight(baseTableRef, leftTableRef, rightTableRef, 'thead>tr');
-    setLeftRightTrsHeight(baseTableRef, leftTableRef, rightTableRef, 'tbody>tr');
-    setLeftRightTrsHeight(baseTableRef, leftTableRef, rightTableRef, 'tfoot>tr');
+    setSideTrsHeight(baseTableRef, leftTableRef, rightTableRef, 'thead>tr');
+    setSideTrsHeight(baseTableRef, leftTableRef, rightTableRef, 'tbody>tr');
+    setSideTrsHeight(baseTableRef, leftTableRef, rightTableRef, 'tfoot>tr');
     // 计算固定列宽，相加设置容器元素宽度
     const ths = baseTableRef.current.querySelector('thead tr').children;
     const leftTableWidth = computedPartOfTableWidth(ths, this.leftIndexes);

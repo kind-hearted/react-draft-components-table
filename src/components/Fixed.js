@@ -4,7 +4,7 @@ import style from './Fixed.module.css';
 import setYScrollBar from '../utils/setYScrollBar.js';
 import renderSideFragments from '../utils/renderSideFragments.js';
 import computedPartOfTableWidth from '../utils/computedPartOfTableWidth.js';
-import setLeftRightTrsHeight from '../utils/setLeftRightTrsHeight.js';
+import setSideTrsHeight from '../utils/setSideTrsHeight.js';
 import filterProps from '../utils/filterProps.js';
 import tableCustomizeProps from '../utils/tableCustomizeProps.js';
 import renderTableContainer from '../utils/renderTableContainer.js';
@@ -57,6 +57,29 @@ const setMarginBottom = function (element, xScrollBarHeight) {
 const setPaddingBottom = function (element, xScrollBarHeight) {
   if (element) {
     element.style.paddingBottom = xScrollBarHeight + 'px';
+  }
+};
+
+const noShadowClassName = ' ' + commonStyle['no-shadow'];
+const addNoShadow = function (ref) {
+  if (ref.current) {
+    const element = ref.current.parentElement;
+    let className = element.className;
+
+    if (className.indexOf(noShadowClassName) === -1) {
+      element.className = className + noShadowClassName;
+    }
+  }
+};
+
+const removeNoShadow = function (ref) {
+  if (ref.current) {
+    const element = ref.current.parentElement;
+    let className = element.className;
+
+    if (className.indexOf(noShadowClassName) > -1) {
+      element.className = className.replace(noShadowClassName, '');
+    }
   }
 };
 
@@ -131,6 +154,8 @@ export const Table = class Table extends React.Component {
         if (this.scrollBottomBarIsAbsoluted && xScrollBottomRef && xScrollBottomRef.current) {
           xScrollBottomRef.current.style.display = 'block';
         }
+
+        this.setNoShadow();
       }
 
       flag = false;
@@ -179,10 +204,10 @@ export const Table = class Table extends React.Component {
     setFixedSideWidth(ths, this.rightIndexes, this.rightHeaderRef, this.rightBodyRef, this.rightFooterRef);
   }
 
-  setLeftRightTrsHeight() {
-    setLeftRightTrsHeight(this.baseHeaderRef, this.leftHeaderRef, this.rightHeaderRef, 'thead>tr');
-    setLeftRightTrsHeight(this.baseTableRef, this.leftBodyRef, this.rightBodyRef, 'tbody>tr');
-    setLeftRightTrsHeight(this.baseTableRef, this.leftFooterRef, this.rightFooterRef, 'tfoot>tr');
+  setSideTrsHeight() {
+    setSideTrsHeight(this.baseHeaderRef, this.leftHeaderRef, this.rightHeaderRef, 'thead>tr');
+    setSideTrsHeight(this.baseTableRef, this.leftBodyRef, this.rightBodyRef, 'tbody>tr');
+    setSideTrsHeight(this.baseTableRef, this.leftFooterRef, this.rightFooterRef, 'tfoot>tr');
   }
 
   setYScrollBar(yScrollBarWidth) {
@@ -264,10 +289,46 @@ export const Table = class Table extends React.Component {
     this.setXScrollBar(xScrollBarHeight, yScrollBarWidth);
   }
 
+  setNoShadow() {
+    const xScrollElement = this.xScrollBottomRef.current;
+    const xScrollLeft = xScrollElement.scrollLeft;
+    const maxXScrollLeft = xScrollElement.scrollWidth - xScrollElement.offsetWidth;
+
+    if (xScrollLeft === 0) {
+      addNoShadow(this.leftHeaderRef);
+      addNoShadow(this.leftBodyRef);
+      addNoShadow(this.leftFooterRef);
+      if (maxXScrollLeft === 0) {
+        addNoShadow(this.rightHeaderRef);
+        addNoShadow(this.rightBodyRef);
+        addNoShadow(this.rightFooterRef);
+      } else {
+        removeNoShadow(this.rightHeaderRef);
+        removeNoShadow(this.rightBodyRef);
+        removeNoShadow(this.rightFooterRef);
+      }
+    } else if (xScrollLeft === maxXScrollLeft) {
+      removeNoShadow(this.leftHeaderRef);
+      removeNoShadow(this.leftBodyRef);
+      removeNoShadow(this.leftFooterRef);
+      addNoShadow(this.rightHeaderRef);
+      addNoShadow(this.rightBodyRef);
+      addNoShadow(this.rightFooterRef);
+    } else {
+      removeNoShadow(this.leftHeaderRef);
+      removeNoShadow(this.leftBodyRef);
+      removeNoShadow(this.leftFooterRef);
+      removeNoShadow(this.rightHeaderRef);
+      removeNoShadow(this.rightBodyRef);
+      removeNoShadow(this.rightFooterRef);
+    }
+  }
+
   resize() {
     this.setFixedSideWidth();
-    this.setLeftRightTrsHeight();
+    this.setSideTrsHeight();
     this.setScrollBar();
+    this.setNoShadow();
   }
 
   componentDidMount() {
@@ -334,9 +395,9 @@ export const Table = class Table extends React.Component {
       if (trs === null) {
         return null;
       }
-  
+
       return (
-        <div className={className + ' ' + style['fixed-header-z-index']} style={{ width: '0px' }}>
+        <div className={[className, style['fixed-header-z-index']].join(' ')} style={{ width: '0px' }}>
           <table {...tableProps} style={{ width: '100%' }} ref={ref}>
             <colgroup {...baseColgroup.props}>
               {cols}
@@ -355,7 +416,7 @@ export const Table = class Table extends React.Component {
       }
   
       return (
-        <div className={className + ' ' + style['fixed-footer-z-index']} style={{ width: '0px' }}>
+        <div className={[className, style['fixed-footer-z-index']].join(' ')} style={{ width: '0px' }}>
           <table {...tableProps} style={{ width: '100%' }} ref={ref}>
             <colgroup {...baseColgroup.props}>
               {cols}
@@ -390,11 +451,12 @@ export const Table = class Table extends React.Component {
         </div>
       );
     };
-  
-    const leftSideHeader = renderSideHeader(style.left, leftHeaderRef, leftCols, leftTheadTrs);
-    const rightSideHeader = renderSideHeader(style.right, rightHeaderRef, rightCols, rightTheadTrs);
-    const leftSideFooter = renderSideFooter(style.left, leftFooterRef, leftCols, leftTfootTrs);
-    const rightSideFooter = renderSideFooter(style.right, rightFooterRef, rightCols, rightTfootTrs);
+    const leftClassName = [style.left, commonStyle['left-shadow'], 'left-shadow'].join(' ');
+    const rightClassName = [style.right, commonStyle['right-shadow'], 'right-shadow'].join(' ');
+    const leftSideHeader = renderSideHeader(leftClassName, leftHeaderRef, leftCols, leftTheadTrs);
+    const rightSideHeader = renderSideHeader(rightClassName, rightHeaderRef, rightCols, rightTheadTrs);
+    const leftSideFooter = renderSideFooter(leftClassName, leftFooterRef, leftCols, leftTfootTrs);
+    const rightSideFooter = renderSideFooter(rightClassName, rightFooterRef, rightCols, rightTfootTrs);
   
     if (!baseThead || baseThead.props.fixed !== 'true') {
       throw new Error('必须存在Thead，且Thead的props.fixed = "true"');
@@ -418,7 +480,7 @@ export const Table = class Table extends React.Component {
           {/* base-scroll-outer的高需要设为base-scroll-container高度和滚动条高度之差 */}
           <div className={[style['base-scroll-outer'], props.scrollBarClassName].join(' ')} style={{ height: '100%' }}>
             {/* 左边固定第一列表体 */}
-            <div className={style.left}>
+            <div className={leftClassName}>
               <table  {...tableProps} style={{ width: '100%' }} ref={leftBodyRef}>
                 <colgroup {...baseColgroup.props}>
                   {leftCols}
@@ -435,7 +497,7 @@ export const Table = class Table extends React.Component {
               </table>
             </div>
             {/* 右边固定第一列表体 */}
-            <div className={style.right}>
+            <div className={rightClassName}>
               <table {...tableProps} style={{ width: '100%' }} ref={rightBodyRef}>
                 <colgroup {...baseColgroup.props}>
                   {rightCols}
