@@ -174,7 +174,7 @@ export default function (props) {
                 <Td>备注16</Td>
               </Tr>
             </Tbody>
-            <Tfoot fixed="false">
+            <Tfoot fixed="true">
               <Tr>
                 <Td>姓名</Td>
                 <Td>年龄</Td>
