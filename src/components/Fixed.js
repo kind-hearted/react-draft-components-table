@@ -107,6 +107,7 @@ export const Table = class Table extends React.Component {
     this.xScrollContainerRef = React.createRef();
     this.xScrollFooterRef = React.createRef();
     this.xScrollBottomRef = React.createRef();
+    this.xScrollTransparentRef = React.createRef();
 
     this.yScrollContainerRef = React.createRef();
 
@@ -236,34 +237,35 @@ export const Table = class Table extends React.Component {
     // 根据头部来判断是否需要横向滚动条，因为内容区可能没有内容
     const baseTable = this.baseTableRef.current;
     const xScrollHeader = this.xScrollHeaderRef.current;
-    const xScrollBottom = this.xScrollBottomRef.current;
     const xScrollContainer = this.xScrollContainerRef.current;
     const xScrollFooter = this.xScrollFooterRef.current;
-    
+    const xScrollBottom = this.xScrollBottomRef.current;
+
     const baseTableWidth = baseTable.offsetWidth;
     const diffWidth = baseTableWidth - baseTable.parentElement.offsetWidth;
     // 滚动区域高度与有无横向滚动条相关
     if (diffWidth > 0) {
       // 设置底部单独滚动条子元素的宽度
       xScrollBottom.children[0].style.width = baseTableWidth + yScrollBarWidth + 'px';
+      xScrollBottom.style.height = xScrollBarHeight + 'px';
       xScrollBottom.style.display = 'block';
     } else {
       xScrollBottom.style.display = 'none';
     }
     // 设置横向滚动区域的margin bottom为负的滚动条高度，达到隐藏滚动条的目的
-    setMarginBottom(xScrollHeader, xScrollBarHeight);
+    // setMarginBottom(xScrollHeader, xScrollBarHeight);
     setMarginBottom(xScrollContainer, xScrollBarHeight);
-    setMarginBottom(xScrollFooter, xScrollBarHeight);
+    // setMarginBottom(xScrollFooter, xScrollBarHeight);
     // mac电脑上的浏览器，滚动条设置为滑动显示时，滚动条不占宽度，定位处理显示在底部，以便手势滑动时可以显示
     if (diffWidth > 0 && xScrollBarHeight === 0) {
-      setMarginBottom(xScrollHeader, 15);
-      setPaddingBottom(xScrollHeader, 15);
+      // setMarginBottom(xScrollHeader, 15);
+      // setPaddingBottom(xScrollHeader, 15);
 
       setMarginBottom(xScrollContainer, 15);
       setPaddingBottom(xScrollContainer, 15);
 
-      setMarginBottom(xScrollFooter, 15);
-      setPaddingBottom(xScrollFooter, 15);
+      // setMarginBottom(xScrollFooter, 15);
+      // setPaddingBottom(xScrollFooter, 15);
 
       if (!this.scrollBottomBarIsAbsoluted) {
         this.scrollBottomBarIsAbsoluted = true;
@@ -273,20 +275,19 @@ export const Table = class Table extends React.Component {
   }
 
   setScrollBar() {
-    // 使用表头判断水平方向是否出现滚动条，设置滚动区域高度需要减去滚动条高度
-    const xScrollHeader = this.xScrollHeaderRef.current;
-    let xScrollBarHeight = xScrollHeader.offsetHeight - xScrollHeader.children[0].offsetHeight;
+    // 使用透明占位的滚动条来判断水平方向是否出现滚动条，设置滚动区域高度需要减去滚动条高度
+    const xScrollTransparent = this.xScrollTransparentRef.current;
+    const xScrollTransparentInner = xScrollTransparent.children[0];
+
+    xScrollTransparentInner.style.width = this.baseHeaderRef.current.offsetWidth + 'px';
+
+    let xScrollBarHeight = xScrollTransparent.offsetHeight - 1;
+
     this.setBaseScrollContainerHeight(xScrollBarHeight);
     // 判断y滚动区域是否出现滚动条
     const xScrollContainer = this.xScrollContainerRef.current;
     const yScrollBarWidth = xScrollContainer.parentElement.parentElement.offsetWidth - xScrollContainer.parentElement.offsetWidth;
     this.setYScrollBar(yScrollBarWidth);
-    // 设置完y滚动条宽度后，如果x滚动区域设置前没有出现滚动条，设置后是否出现滚动条
-    if (xScrollBarHeight === 0) {
-      xScrollBarHeight = xScrollHeader.offsetHeight - xScrollHeader.children[0].offsetHeight;
-      this.setBaseScrollContainerHeight(xScrollBarHeight);
-    }
-
     this.setXScrollBar(xScrollBarHeight, yScrollBarWidth);
   }
 
@@ -391,6 +392,7 @@ export const Table = class Table extends React.Component {
     const xScrollContainerRef = this.xScrollContainerRef;
     const xScrollFooterRef = this.xScrollFooterRef;
     const xScrollBottomRef = this.xScrollBottomRef;
+    const xScrollTransparentRef = this.xScrollTransparentRef;
 
     const yScrollContainerRef = this.yScrollContainerRef;
 
@@ -444,7 +446,7 @@ export const Table = class Table extends React.Component {
           {/* 可滚动的base表头。加上可能出现的滚动条 */}
           {/* 包裹一个overflow: hidden的div, 隐藏滚动条 */}
           <div style={{ overflow: 'hidden' }}>
-            <div style={{ overflowX: 'auto', overflowY: 'hidden' }} className={props.scrollBarClassName} onScroll={onScroll} ref={scrollRef}>
+            <div style={{ overflowX: 'hidden', overflowY: 'hidden' }} className={props.scrollBarClassName} onScroll={onScroll} ref={scrollRef}>
               <table {...tableProps} ref={tableRef}>
                 {baseColgroup}
                 {body}
@@ -564,6 +566,10 @@ export const Table = class Table extends React.Component {
         }} ref={xScrollBottomRef}>
           {/* 计算: 计算宽度, 加上滚动条的宽度 */}
           <div className={style['scroll-x-inner']}></div>
+        </div>
+        {/* 不可见的滚动条，用来判断是否是定位的滚动条 */}
+        <div className={style['scroll-x-transparent']} ref={xScrollTransparentRef}>
+          <div style={{ height: '1px' }}></div>
         </div>
       </React.Fragment>
     )

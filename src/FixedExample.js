@@ -70,7 +70,7 @@ export default function (props) {
     <div>
       <p>固定表头、表尾、第一列：水平 + 竖直方向均出现滚动条</p>
       <div style={{ position: 'relative', zIndex: 100 }}>
-        <TableContainer style={{ width: '800px', height: '350px' }} scrollBarClassName="small-scroll-bar">
+        <TableContainer style={{ width: '800px', height: '350px' }} scrollBarClassName="small-scroll-bar1">
           <Table style={{minWidth: '1400px'}} name="table1">
             <Colgroup>
               <Col width="300" fixed="true" />
@@ -184,7 +184,7 @@ export default function (props) {
           </Table>
         </TableContainer>
       </div>
-      <p>固定表头、第一列：水平 + 竖直方向均无滚动条</p>
+      {/* <p>固定表头、第一列：水平 + 竖直方向均无滚动条</p>
       <TableContainer style={{ width: '800px', height: '350px' }}>
         <Table style={{minWidth: '1400px'}}>
           <Colgroup>
@@ -218,8 +218,8 @@ export default function (props) {
             </Tr>
           </Tfoot>
         </Table>
-      </TableContainer>
-      <p>固定第一列：水平 + 竖直方向均出现滚动条</p>
+      </TableContainer> */}
+      {/* <p>固定第一列：水平 + 竖直方向均出现滚动条</p>
       <TableContainer style={{ width: '800px', height: '350px' }}>
         <Table style={{minWidth: '1400px'}}>
           <Colgroup>
@@ -327,8 +327,8 @@ export default function (props) {
             </Tr>
           </Tfoot>
         </Table>
-      </TableContainer>
-      <p>动态请求数据，数据为空、有数据时的使用</p>
+      </TableContainer> */}
+      {/* <p>动态请求数据，数据为空、有数据时的使用</p>
       <button type="button" onClick={() => {
         setStatus1('loading');
         setTimeout(function () {
@@ -406,7 +406,7 @@ export default function (props) {
         <Loading className="loading"><span>加载中...</span></Loading>
         <NoData className="no-data">无数据</NoData>
         <Fail className="fail"><span>加载失败...</span></Fail>
-      </TableContainer>
+      </TableContainer> */}
     </div>
   )
 }
