@@ -20,12 +20,38 @@
 }
 .fixed-header-or-footer {
   position: relative;
+  display: flex;
+  flex-direction: row;
 }
-.right-scroll-bar {
+.fixed-header-or-footer-scroll-outer {
+  position: relative;
+  overflow: hidden;
+}
+.fixed-header-or-footer-scroll {
+  overflow: hidden;
+  flex: 1;
+}
+.y-scroll-bar-flexed {
+  position: relative;
+}
+.y-scroll-bar-flexed::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #f1f1f1;
+}
+.y-scroll-bar-absoluted {
   position: absolute;
   right: 0;
   top: 0;
   bottom: 0;
+}
+.y-scroll-bar {
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 .base-scroll-container {
   position: relative;
@@ -59,4 +85,5 @@
   opacity: 0;
   overflow-x: scroll;
   overflow-y: hidden;
+  z-index: -100;
 }

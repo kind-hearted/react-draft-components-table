@@ -8,6 +8,7 @@ import setSideTrsHeight from '../utils/setSideTrsHeight.js';
 import filterProps from '../utils/filterProps.js';
 import tableCustomizeProps from '../utils/tableCustomizeProps.js';
 import renderTableContainer from '../utils/renderTableContainer.js';
+import isEdgeOrIE from '../utils/isEdgeOrIE.js';
 /**
   * 固定表头、表尾、表列
   */
@@ -139,22 +140,20 @@ export const Table = class Table extends React.Component {
     this.scrollBottomBarIsAbsoluted = false;
 
     let flag = false;
-    const scrollX = (event, ref1, ref2, ref3, xScrollBottomRef) => {
+    const scrollX = (event, ref) => {
       if (!flag) {
         const scrollLeft = event.target.scrollLeft;
 
-        if (ref1.current) {
-          ref1.current.scrollLeft = scrollLeft;
-        }
-        if (ref2.current) {
-          ref2.current.scrollLeft = scrollLeft;
-        }
-        if (ref3.current) {
-          ref3.current.scrollLeft = scrollLeft;
+        if (ref.current) {
+          ref.current.scrollLeft = scrollLeft;
         }
 
-        if (this.scrollBottomBarIsAbsoluted && xScrollBottomRef && xScrollBottomRef.current) {
-          xScrollBottomRef.current.style.display = 'block';
+        if (this.xScrollHeaderRef.current) {
+          this.xScrollHeaderRef.current.scrollLeft = scrollLeft;
+        }
+
+        if (this.xScrollFooterRef.current) {
+          this.xScrollFooterRef.current.scrollLeft = scrollLeft;
         }
 
         this.setNoShadow();
@@ -163,20 +162,13 @@ export const Table = class Table extends React.Component {
       flag = false;
     };
 
-    this.onScrollHeader = (event) => {
-      scrollX(event, this.xScrollBottomRef, this.xScrollContainerRef, this.xScrollFooterRef, this.xScrollBottomRef);
-    };
-
     this.onXScrollContainer = (event) => {
-      scrollX(event, this.xScrollHeaderRef, this.xScrollBottomRef, this.xScrollFooterRef, this.xScrollBottomRef);
-    };
-
-    this.onScrollFooter = (event) => {
-      scrollX(event, this.xScrollHeaderRef, this.xScrollContainerRef, this.xScrollBottomRef, this.xScrollBottomRef);
+      scrollX(event, this.xScrollBottomRef);
+      this.xScrollBottomRef.current.style.display = 'block';
     };
 
     this.onXScrollBottom = (event) => {
-      scrollX(event, this.xScrollHeaderRef, this.xScrollContainerRef, this.xScrollFooterRef);
+      scrollX(event, this.xScrollContainerRef);
     };
   }
 
@@ -213,32 +205,53 @@ export const Table = class Table extends React.Component {
   }
 
   setYScrollBar(yScrollBarWidth) {
-    const baseTableWidth = this.baseTableRef.current.offsetWidth;
+    if (isEdgeOrIE()) {
+      const baseTableWidth = this.baseTableRef.current.offsetWidth;
 
-    setPlaceholderYScrollBar(this.headerRightScrollBarRef, this.rightHeaderRef, yScrollBarWidth);
-    setPlaceholderYScrollBar(this.footerRightScrollBarRef, this.rightFooterRef, yScrollBarWidth);
-    // 设置头部的右侧滚动条
-    const baseThead = this.baseThead;
-    if (baseThead && baseThead.props.fixed === "true") {
-      setYScrollBar(yScrollBarWidth, this.baseHeaderRef, 'th');
-      // 固定表格的宽度等于基础表格的宽度加上滚动条宽度
-      this.baseHeaderRef.current.style.width = (baseTableWidth + yScrollBarWidth) + 'px';
-    }
-    // 设置尾部的右侧滚动条
-    const baseTfoot = this.baseTfoot;
-    if (baseTfoot && baseTfoot.props.fixed === "true") {
-      setYScrollBar(yScrollBarWidth, this.baseFooterRef, 'th');
-      // 固定表格的宽度等于基础表格的宽度加上滚动条宽度
-      this.baseFooterRef.current.style.width = (baseTableWidth + yScrollBarWidth) + 'px';
+      setPlaceholderYScrollBar(this.headerRightScrollBarRef, this.rightHeaderRef, yScrollBarWidth);
+      setPlaceholderYScrollBar(this.footerRightScrollBarRef, this.rightFooterRef, yScrollBarWidth);
+      // 设置头部的右侧滚动条
+      const baseThead = this.baseThead;
+      if (baseThead && baseThead.props.fixed === "true") {
+        setYScrollBar(yScrollBarWidth, this.baseHeaderRef, 'th');
+        // 固定表格的宽度等于基础表格的宽度加上滚动条宽度
+        this.baseHeaderRef.current.style.width = (baseTableWidth + yScrollBarWidth) + 'px';
+      }
+      // 设置尾部的右侧滚动条
+      const baseTfoot = this.baseTfoot;
+      if (baseTfoot && baseTfoot.props.fixed === "true") {
+        setYScrollBar(yScrollBarWidth, this.baseFooterRef, 'th');
+        // 固定表格的宽度等于基础表格的宽度加上滚动条宽度
+        this.baseFooterRef.current.style.width = (baseTableWidth + yScrollBarWidth) + 'px';
+      }
+    } else {
+      const display = yScrollBarWidth === 0 ? 'none' : 'block';
+      const headerRightScrollBar = this.headerRightScrollBarRef.current;
+
+      if (headerRightScrollBar) {
+        if (display === 'block') {
+          headerRightScrollBar.children[0].style.height = this.xScrollHeaderRef.current.offsetHeight + 'px';
+        }
+
+        headerRightScrollBar.style.display = display;
+      }
+
+      const footerRightScrollBar = this.footerRightScrollBarRef.current;
+
+      if (footerRightScrollBar) {
+        if (display === 'block') {
+          footerRightScrollBar.children[0].style.height = this.xScrollFooterRef.current.offsetHeight + 'px';
+        }
+
+        footerRightScrollBar.style.display = display;
+      }
     }
   }
 
   setXScrollBar(xScrollBarHeight, yScrollBarWidth) {
     // 根据头部来判断是否需要横向滚动条，因为内容区可能没有内容
     const baseTable = this.baseTableRef.current;
-    const xScrollHeader = this.xScrollHeaderRef.current;
     const xScrollContainer = this.xScrollContainerRef.current;
-    const xScrollFooter = this.xScrollFooterRef.current;
     const xScrollBottom = this.xScrollBottomRef.current;
 
     const baseTableWidth = baseTable.offsetWidth;
@@ -246,26 +259,24 @@ export const Table = class Table extends React.Component {
     // 滚动区域高度与有无横向滚动条相关
     if (diffWidth > 0) {
       // 设置底部单独滚动条子元素的宽度
-      xScrollBottom.children[0].style.width = baseTableWidth + yScrollBarWidth + 'px';
+      if (isEdgeOrIE()) {
+        xScrollBottom.children[0].style.width = baseTableWidth + yScrollBarWidth + 'px';
+      } else {
+        xScrollBottom.children[0].style.width = baseTableWidth + 'px';
+      }
+      
       xScrollBottom.style.height = xScrollBarHeight + 'px';
       xScrollBottom.style.display = 'block';
     } else {
       xScrollBottom.style.display = 'none';
     }
     // 设置横向滚动区域的margin bottom为负的滚动条高度，达到隐藏滚动条的目的
-    // setMarginBottom(xScrollHeader, xScrollBarHeight);
     setMarginBottom(xScrollContainer, xScrollBarHeight);
-    // setMarginBottom(xScrollFooter, xScrollBarHeight);
+
     // mac电脑上的浏览器，滚动条设置为滑动显示时，滚动条不占宽度，定位处理显示在底部，以便手势滑动时可以显示
     if (diffWidth > 0 && xScrollBarHeight === 0) {
-      // setMarginBottom(xScrollHeader, 15);
-      // setPaddingBottom(xScrollHeader, 15);
-
       setMarginBottom(xScrollContainer, 15);
       setPaddingBottom(xScrollContainer, 15);
-
-      // setMarginBottom(xScrollFooter, 15);
-      // setPaddingBottom(xScrollFooter, 15);
 
       if (!this.scrollBottomBarIsAbsoluted) {
         this.scrollBottomBarIsAbsoluted = true;
@@ -434,21 +445,37 @@ export const Table = class Table extends React.Component {
       );
     };
   
-    const renderFixedHeaderOrFooter = function (left, right, body, rightScrollBarRef, scrollRef, tableRef, onScroll) {
+    const renderFixedHeaderOrFooter = function (left, right, body, rightScrollBarRef, scrollRef, tableRef) {
+      let yScrollBar = null;
+
+      if (isEdgeOrIE()) {
+        yScrollBar = (
+          <div className={style['y-scroll-bar-absoluted']} ref={rightScrollBarRef}></div>
+        );
+      } else {
+        yScrollBar = (
+          <div className={style['y-scroll-bar-flexed']} ref={rightScrollBarRef}>
+            <div className={style['y-scroll-bar']}></div>
+          </div>
+        );
+      }
+      
       return (
         <div className={[style['fixed-header-or-footer'], 'fixed-header-or-footer'].join(' ')}>
-          {/* 固定左侧 */}
-          {left}
-          {/* 固定右侧 */}
-          {right}
-          {/* 定位一个y scroll bar */}
-          <div className={'y-scroll-bar ' + style['right-scroll-bar']} ref={rightScrollBarRef}></div>
-          <div style={{ overflow: 'hidden' }} className={props.scrollBarClassName} onScroll={onScroll} ref={scrollRef}>
-            <table {...tableProps} ref={tableRef}>
-              {baseColgroup}
-              {body}
-            </table>
+          <div className={style['fixed-header-or-footer-scroll-outer']}>
+            {/* 固定左侧 */}
+            {left}
+            <div className={[style['fixed-header-or-footer-scroll'], props.scrollBarClassName].join(' ')} ref={scrollRef}>
+              <table {...tableProps} ref={tableRef}>
+                {baseColgroup}
+                {body}
+              </table>
+            </div>
+            {/* 固定右侧 */}
+            {right}
           </div>
+          {/* 占位的y-scroll-bar，Edge、IE下是定位的 */}
+          {yScrollBar}
         </div>
       );
     };
@@ -473,8 +500,7 @@ export const Table = class Table extends React.Component {
             baseThead,
             headerRightScrollBarRef, 
             xScrollHeaderRef, 
-            baseHeaderRef, 
-            this.onScrollHeader,
+            baseHeaderRef,
           )
         }
         <div className={style['base-scroll-container']} ref={baseScrollContainerRef}>
@@ -545,8 +571,7 @@ export const Table = class Table extends React.Component {
             baseTfoot,
             footerRightScrollBarRef, 
             xScrollFooterRef, 
-            baseFooterRef, 
-            this.onScrollFooter,
+            baseFooterRef,
           )
         }
         {/* 一个固定在底部的单独滚动条，用来控制左右滚动 */}

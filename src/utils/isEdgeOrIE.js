@@ -12,3 +12,8 @@
 
 // IE8 window.navigator.userAgent
 // Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 10.0; WOW64; Trident/7.0; .NET4.0C; .NET4.0E)
+
+export default function () {
+  const ua = window.navigator.userAgent;
+  return ua.indexOf(' Trident') > -1 || ua.indexOf(' Edge') > -1;
+}
