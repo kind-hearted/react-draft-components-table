@@ -444,7 +444,7 @@ export const Table = class Table extends React.Component {
           {/* 可滚动的base表头。加上可能出现的滚动条 */}
           {/* 包裹一个overflow: hidden的div, 隐藏滚动条 */}
           <div style={{ overflow: 'hidden' }}>
-            <div style={{ overflowX: 'auto', overflowY: 'hidden' }} onScroll={onScroll} ref={scrollRef}>
+            <div style={{ overflowX: 'auto', overflowY: 'hidden' }} className={props.scrollBarClassName} onScroll={onScroll} ref={scrollRef}>
               <table {...tableProps} ref={tableRef}>
                 {baseColgroup}
                 {body}
