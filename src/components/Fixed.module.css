@@ -18,6 +18,9 @@
 .fixed-footer-z-index {
   z-index: 20;
 }
+.fixed-header-or-footer {
+  position: relative;
+}
 .right-scroll-bar {
   position: absolute;
   right: 0;

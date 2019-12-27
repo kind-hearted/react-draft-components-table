@@ -436,22 +436,18 @@ export const Table = class Table extends React.Component {
   
     const renderFixedHeaderOrFooter = function (left, right, body, rightScrollBarRef, scrollRef, tableRef, onScroll) {
       return (
-        <div className="fixed-header-or-footer" style={{ position: 'relative' }}>
+        <div className={[style['fixed-header-or-footer'], 'fixed-header-or-footer'].join(' ')}>
           {/* 固定左侧 */}
           {left}
           {/* 固定右侧 */}
           {right}
           {/* 定位一个y scroll bar */}
           <div className={'y-scroll-bar ' + style['right-scroll-bar']} ref={rightScrollBarRef}></div>
-          {/* 可滚动的base表头。加上可能出现的滚动条 */}
-          {/* 包裹一个overflow: hidden的div, 隐藏滚动条 */}
-          <div style={{ overflow: 'hidden' }}>
-            <div style={{ overflowX: 'hidden', overflowY: 'hidden' }} className={props.scrollBarClassName} onScroll={onScroll} ref={scrollRef}>
-              <table {...tableProps} ref={tableRef}>
-                {baseColgroup}
-                {body}
-              </table>
-            </div>
+          <div style={{ overflow: 'hidden' }} className={props.scrollBarClassName} onScroll={onScroll} ref={scrollRef}>
+            <table {...tableProps} ref={tableRef}>
+              {baseColgroup}
+              {body}
+            </table>
           </div>
         </div>
       );

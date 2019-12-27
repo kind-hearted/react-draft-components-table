@@ -68,7 +68,7 @@ export default function (props) {
 
   return (
     <div>
-      <p>固定表头、表尾、第一列：水平 + 竖直方向均出现滚动条</p>
+      <p>固定表头、表尾、两侧第一列：水平 + 竖直方向均出现滚动条</p>
       <div style={{ position: 'relative', zIndex: 100 }}>
         <TableContainer style={{ width: '800px', height: '350px' }} scrollBarClassName="small-scroll-bar1">
           <Table style={{minWidth: '1400px'}} name="table1">
@@ -76,6 +76,7 @@ export default function (props) {
               <Col width="300" fixed="true" />
               <Col  />
               <Col width="300" />
+              <Col width="100" fixed="true" />
             </Colgroup>
             <Thead fixed="true">
               <Tr>
@@ -90,6 +91,7 @@ export default function (props) {
                 </Th>
                 <Th>年龄</Th>
                 <Th>备注</Th>
+                <Th>操作</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -97,81 +99,97 @@ export default function (props) {
                 <Td>姓名1</Td>
                 <Td>年龄1</Td>
                 <Td>备注1</Td>
+                <Td>删除1</Td>
               </Tr>
               <Tr>
                 <Td>姓名2</Td>
                 <Td>年龄2</Td>
                 <Td>备注2</Td>
+                <Td>删除2</Td>
               </Tr>
               <Tr>
                 <Td>姓名3</Td>
                 <Td>年龄3</Td>
                 <Td>备注3</Td>
+                <Td>删除3</Td>
               </Tr>
               <Tr>
                 <Td>姓名4</Td>
                 <Td>年龄4</Td>
                 <Td>备注4</Td>
+                <Td>删除4</Td>
               </Tr>
               <Tr>
                 <Td>姓名5</Td>
                 <Td>年龄5</Td>
                 <Td>备注5</Td>
+                <Td>删除5</Td>
               </Tr>
               <Tr>
                 <Td>姓名6</Td>
                 <Td>年龄6</Td>
                 <Td>备注6</Td>
+                <Td>删除6</Td>
               </Tr>
               <Tr>
                 <Td>姓名7</Td>
                 <Td>年龄7</Td>
                 <Td>备注7</Td>
+                <Td>删除7</Td>
               </Tr>
               <Tr>
                 <Td>姓名8</Td>
                 <Td>年龄8</Td>
                 <Td>备注8</Td>
+                <Td>删除8</Td>
               </Tr>
               <Tr>
                 <Td>姓名9</Td>
                 <Td>年龄9</Td>
                 <Td>备注9</Td>
+                <Td>删除9</Td>
               </Tr>
               <Tr>
                 <Td>姓名10</Td>
                 <Td>年龄10</Td>
                 <Td>备注10</Td>
+                <Td>删除10</Td>
               </Tr>
               <Tr>
                 <Td>姓名11</Td>
                 <Td>年龄11</Td>
                 <Td>备注11</Td>
+                <Td>删除11</Td>
               </Tr>
               <Tr>
                 <Td>姓名12</Td>
                 <Td>年龄12</Td>
                 <Td>备注12</Td>
+                <Td>删除12</Td>
               </Tr>
               <Tr>
                 <Td>姓名13</Td>
                 <Td>年龄13</Td>
                 <Td>备注13</Td>
+                <Td>删除13</Td>
               </Tr>
               <Tr>
                 <Td>姓名14</Td>
                 <Td>年龄14</Td>
                 <Td>备注14</Td>
+                <Td>删除14</Td>
               </Tr>
               <Tr>
                 <Td>姓名15</Td>
                 <Td>年龄15</Td>
                 <Td>备注15</Td>
+                <Td>删除15</Td>
               </Tr>
               <Tr>
                 <Td>姓名16</Td>
                 <Td>年龄16</Td>
                 <Td>备注16</Td>
+                <Td>删除16</Td>
               </Tr>
             </Tbody>
             <Tfoot fixed="true">
@@ -179,6 +197,7 @@ export default function (props) {
                 <Td>姓名</Td>
                 <Td>年龄</Td>
                 <Td>备注</Td>
+                <Td></Td>
               </Tr>
             </Tfoot>
           </Table>
