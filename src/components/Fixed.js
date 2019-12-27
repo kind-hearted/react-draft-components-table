@@ -225,9 +225,8 @@ export const Table = class Table extends React.Component {
       xScrollBottom.style.display = 'none';
     }
     // 设置横向滚动区域的margin bottom为负的滚动条高度，达到隐藏滚动条的目的
-    // BUG：滚动区域里面设置margin bottom，在火狐、IE浏览器下，滑动到底部的时候，鼠标移入另外一个有滚动的元素，滚动条发生跳动
     setMarginBottom(scrollHeader, xScrollBarHeight);
-    // setMarginBottom(yScrollContainer, xScrollBarHeight);
+    setMarginBottom(yScrollContainer, xScrollBarHeight);
     setMarginBottom(scrollFooter, xScrollBarHeight);
     // mac电脑上的浏览器，滚动条设置为滑动显示时，滚动条不占宽度，定位处理显示在底部，以便手势滑动时可以显示
     if (diffWidth > 0 && xScrollBarHeight === 0) {
@@ -261,21 +260,11 @@ export const Table = class Table extends React.Component {
       xScrollBarHeight = scrollHeader.offsetHeight - scrollHeader.children[0].offsetHeight;
       this.setBaseScrollContainerHeight(xScrollBarHeight);
     }
-    
-    this.setXScrollBar(xScrollBarHeight, yScrollBarWidth);
 
-    const xScrollBottomHeight = this.xScrollBottomRef.current.offsetHeight;
-    // 底部单独滚动条的高度在Chrome浏览器是18px，大于17px的滚动条高度
-    if (xScrollBottomHeight > xScrollBarHeight) {
-      this.setBaseScrollContainerHeight(xScrollBottomHeight);
-    }
-    // 设置滚动表体最小高度等于滚动容器高度，避免高度小于滚动高度时，产生空白区域，该空白区域手势滚动无效
-    const baseScrollContainer = this.baseScrollContainerRef.current;
-    yScrollContainer.style.minHeight = baseScrollContainer.offsetHeight + 'px';
+    this.setXScrollBar(xScrollBarHeight, yScrollBarWidth);
   }
 
   resize() {
-    this.setBaseScrollContainerHeight();
     this.setFixedSideWidth();
     this.setLeftRightTrsHeight();
     this.setScrollBar();

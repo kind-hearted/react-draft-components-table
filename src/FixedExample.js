@@ -63,119 +63,119 @@ export default function (props) {
     <div>
       <p>固定表头、表尾、第一列：水平 + 竖直方向均出现滚动条</p>
       <div style={{ position: 'relative', zIndex: 100 }}>
-      <TableContainer style={{ width: '800px', height: '350px' }} scrollBarClassName="small-scroll-bar1">
-        <Table style={{minWidth: '1400px'}}>
-          <Colgroup>
-            <Col width="300" fixed="true" />
-            <Col  />
-            <Col width="300" />
-          </Colgroup>
-          <Thead fixed="true">
-            <Tr>
-              <Th style={{ position: 'relative' }}>
-                <span>姓名</span>
-                <button type="button" onClick={() => {
-                  setPopupDisplay(!popupDisplay);
-                }}>弹窗</button>
-                <div className={style.popup} style={{ display: popupDisplay ? 'block' : 'none', top: '100%' }}>
-                  <span>弹出窗</span>
-                </div>
-              </Th>
-              <Th>年龄</Th>
-              <Th>备注</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            <Tr>
-              <Td>姓名1</Td>
-              <Td>年龄1</Td>
-              <Td>备注1</Td>
-            </Tr>
-            <Tr>
-              <Td>姓名2</Td>
-              <Td>年龄2</Td>
-              <Td>备注2</Td>
-            </Tr>
-            <Tr>
-              <Td>姓名3</Td>
-              <Td>年龄3</Td>
-              <Td>备注3</Td>
-            </Tr>
-            <Tr>
-              <Td>姓名4</Td>
-              <Td>年龄4</Td>
-              <Td>备注4</Td>
-            </Tr>
-            <Tr>
-              <Td>姓名5</Td>
-              <Td>年龄5</Td>
-              <Td>备注5</Td>
-            </Tr>
-            <Tr>
-              <Td>姓名6</Td>
-              <Td>年龄6</Td>
-              <Td>备注6</Td>
-            </Tr>
-            <Tr>
-              <Td>姓名7</Td>
-              <Td>年龄7</Td>
-              <Td>备注7</Td>
-            </Tr>
-            <Tr>
-              <Td>姓名8</Td>
-              <Td>年龄8</Td>
-              <Td>备注8</Td>
-            </Tr>
-            <Tr>
-              <Td>姓名9</Td>
-              <Td>年龄9</Td>
-              <Td>备注9</Td>
-            </Tr>
-            <Tr>
-              <Td>姓名10</Td>
-              <Td>年龄10</Td>
-              <Td>备注10</Td>
-            </Tr>
-            <Tr>
-              <Td>姓名11</Td>
-              <Td>年龄11</Td>
-              <Td>备注11</Td>
-            </Tr>
-            <Tr>
-              <Td>姓名12</Td>
-              <Td>年龄12</Td>
-              <Td>备注12</Td>
-            </Tr>
-            <Tr>
-              <Td>姓名13</Td>
-              <Td>年龄13</Td>
-              <Td>备注13</Td>
-            </Tr>
-            <Tr>
-              <Td>姓名14</Td>
-              <Td>年龄14</Td>
-              <Td>备注14</Td>
-            </Tr>
-            <Tr>
-              <Td>姓名15</Td>
-              <Td>年龄15</Td>
-              <Td>备注15</Td>
-            </Tr>
-            <Tr>
-              <Td>姓名16</Td>
-              <Td>年龄16</Td>
-              <Td>备注16</Td>
-            </Tr>
-          </Tbody>
-          <Tfoot fixed="true">
-            <Tr>
-              <Td>姓名</Td>
-              <Td>年龄</Td>
-              <Td>备注</Td>
-            </Tr>
-          </Tfoot>
-        </Table>
-      </TableContainer>
+        <TableContainer style={{ width: '800px', height: '350px' }} scrollBarClassName="small-scroll-bar1">
+          <Table style={{minWidth: '1400px'}} name="table1">
+            <Colgroup>
+              <Col width="300" fixed="true" />
+              <Col  />
+              <Col width="300" />
+            </Colgroup>
+            <Thead fixed="true">
+              <Tr>
+                <Th style={{ position: 'relative' }}>
+                  <span>姓名</span>
+                  <button type="button" onClick={() => {
+                    setPopupDisplay(!popupDisplay);
+                  }}>弹窗</button>
+                  <div className={style.popup} style={{ display: popupDisplay ? 'block' : 'none', top: '100%' }}>
+                    <span>弹出窗</span>
+                  </div>
+                </Th>
+                <Th>年龄</Th>
+                <Th>备注</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              <Tr>
+                <Td>姓名1</Td>
+                <Td>年龄1</Td>
+                <Td>备注1</Td>
+              </Tr>
+              <Tr>
+                <Td>姓名2</Td>
+                <Td>年龄2</Td>
+                <Td>备注2</Td>
+              </Tr>
+              <Tr>
+                <Td>姓名3</Td>
+                <Td>年龄3</Td>
+                <Td>备注3</Td>
+              </Tr>
+              <Tr>
+                <Td>姓名4</Td>
+                <Td>年龄4</Td>
+                <Td>备注4</Td>
+              </Tr>
+              <Tr>
+                <Td>姓名5</Td>
+                <Td>年龄5</Td>
+                <Td>备注5</Td>
+              </Tr>
+              <Tr>
+                <Td>姓名6</Td>
+                <Td>年龄6</Td>
+                <Td>备注6</Td>
+              </Tr>
+              <Tr>
+                <Td>姓名7</Td>
+                <Td>年龄7</Td>
+                <Td>备注7</Td>
+              </Tr>
+              <Tr>
+                <Td>姓名8</Td>
+                <Td>年龄8</Td>
+                <Td>备注8</Td>
+              </Tr>
+              <Tr>
+                <Td>姓名9</Td>
+                <Td>年龄9</Td>
+                <Td>备注9</Td>
+              </Tr>
+              <Tr>
+                <Td>姓名10</Td>
+                <Td>年龄10</Td>
+                <Td>备注10</Td>
+              </Tr>
+              <Tr>
+                <Td>姓名11</Td>
+                <Td>年龄11</Td>
+                <Td>备注11</Td>
+              </Tr>
+              <Tr>
+                <Td>姓名12</Td>
+                <Td>年龄12</Td>
+                <Td>备注12</Td>
+              </Tr>
+              <Tr>
+                <Td>姓名13</Td>
+                <Td>年龄13</Td>
+                <Td>备注13</Td>
+              </Tr>
+              <Tr>
+                <Td>姓名14</Td>
+                <Td>年龄14</Td>
+                <Td>备注14</Td>
+              </Tr>
+              <Tr>
+                <Td>姓名15</Td>
+                <Td>年龄15</Td>
+                <Td>备注15</Td>
+              </Tr>
+              <Tr>
+                <Td>姓名16</Td>
+                <Td>年龄16</Td>
+                <Td>备注16</Td>
+              </Tr>
+            </Tbody>
+            <Tfoot fixed="false">
+              <Tr>
+                <Td>姓名</Td>
+                <Td>年龄</Td>
+                <Td>备注</Td>
+              </Tr>
+            </Tfoot>
+          </Table>
+        </TableContainer>
       </div>
       {/* <p>固定表头、第一列：水平 + 竖直方向均无滚动条</p>
       <TableContainer style={{ width: '800px', height: '350px' }}>
@@ -321,7 +321,7 @@ export default function (props) {
           </Tfoot>
         </Table>
       </TableContainer> */}
-      {/* <p>动态请求数据，数据为空、有数据时的使用</p>
+      <p>动态请求数据，数据为空、有数据时的使用</p>
       <button type="button" onClick={() => {
         setStatus1('loading');
         setTimeout(function () {
@@ -349,7 +349,7 @@ export default function (props) {
         }, 2000);
       }}>异步请求存在数据</button>
       <TableContainer style={{ width: '800px', height: '350px' }} status={status1}>
-        <Table className={style['table-stripe']} style={{minWidth: '1400px'}}>
+        <Table className={style['table-stripe']} style={{minWidth: '1400px'}}  name="table2">
           <Colgroup>
             <Col width="100" fixed="true" />
             <Col width="300" fixed="true" />
@@ -399,7 +399,7 @@ export default function (props) {
         <Loading className="loading"><span>加载中...</span></Loading>
         <NoData className="no-data">无数据</NoData>
         <Fail className="fail"><span>加载失败...</span></Fail>
-      </TableContainer> */}
+      </TableContainer>
     </div>
   )
 }

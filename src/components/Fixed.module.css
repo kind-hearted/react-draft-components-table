@@ -40,11 +40,11 @@
   overflow-y: auto;
 }
 .base-scroll-inner {
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: auto;
 }
 .scroll-x {
   /* 不能设置overflow auto，IE9及以下会不显示此滚动条 */
+  position: relative;
   overflow-x: scroll;
   overflow-y: hidden;
 }
@@ -57,5 +57,8 @@
   z-index: 40;
 }
 .scroll-x-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 1px;
 }
