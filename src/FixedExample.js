@@ -15,6 +15,9 @@ import {
   Td,
 } from './components/Fixed.js';
 import style from './FixedExample.module.css';
+import Event from './utils/Event.js';
+
+const event1 = new Event();
 
 export default function (props) {
   const [hoverIndex, setHoverIndex] = useState('');
@@ -57,6 +60,10 @@ export default function (props) {
     _setCheckboxes1(checkboxes);
     setData1(data);
     _setAllChecked1(false);
+    event1.$emit('scroll', {
+      top: 0,
+      left: 0
+    });
   };
 
   return (
@@ -348,7 +355,7 @@ export default function (props) {
           update1(data);
         }, 2000);
       }}>异步请求存在数据</button>
-      <TableContainer style={{ width: '800px', height: '350px' }} status={status1}>
+      <TableContainer style={{ width: '800px', height: '350px' }} status={status1} event={event1}>
         <Table className={style['table-stripe']} style={{minWidth: '1400px'}}  name="table2">
           <Colgroup>
             <Col width="100" fixed="true" />

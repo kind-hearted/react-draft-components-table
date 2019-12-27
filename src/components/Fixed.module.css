@@ -24,21 +24,9 @@
   top: 0;
   bottom: 0;
 }
-.hide-scroll-bar-wraper {
-  position: relative;
-  /* overflow: hidden; */
-}
 .base-scroll-container {
   position: relative;
   overflow: hidden;
-}
-.base-scroll-outer {
-  position: relative;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-.base-scroll-inner {
-  overflow: auto;
 }
 .scroll-x {
   /* 不能设置overflow auto，IE9及以下会不显示此滚动条 */

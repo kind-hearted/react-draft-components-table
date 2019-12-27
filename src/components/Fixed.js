@@ -103,10 +103,12 @@ export const Table = class Table extends React.Component {
     this.rightBodyRef = React.createRef();
     this.rightFooterRef = React.createRef();
 
-    this.scrollHeaderRef = React.createRef();
-    this.yScrollContainerRef = React.createRef();
-    this.scrollFooterRef = React.createRef();
+    this.xScrollHeaderRef = React.createRef();
+    this.xScrollContainerRef = React.createRef();
+    this.xScrollFooterRef = React.createRef();
     this.xScrollBottomRef = React.createRef();
+
+    this.yScrollContainerRef = React.createRef();
 
     this.leftIndexes = [];
     this.rightIndexes = [];
@@ -119,9 +121,8 @@ export const Table = class Table extends React.Component {
     this._preventScroll = false;
     this.$onScroll = ({ top, left }) => {
       if (!this._preventScroll) {
-        const baseScrollContainer = this.baseScrollContainerRef.current;
-        baseScrollContainer.scrollLeft = left;
-        baseScrollContainer.scrollTop = top;
+        this.xScrollBottomRef.current.scrollLeft = left;
+        this.yScrollContainerRef.current.scrollTop = top;
       }
       this._preventScroll = false;
     };
@@ -162,19 +163,19 @@ export const Table = class Table extends React.Component {
     };
 
     this.onScrollHeader = (event) => {
-      scrollX(event, this.xScrollBottomRef, this.yScrollContainerRef, this.scrollFooterRef, this.xScrollBottomRef);
+      scrollX(event, this.xScrollBottomRef, this.xScrollContainerRef, this.xScrollFooterRef, this.xScrollBottomRef);
     };
 
-    this.onYScrollContainer = (event) => {
-      scrollX(event, this.scrollHeaderRef, this.xScrollBottomRef, this.scrollFooterRef, this.xScrollBottomRef);
+    this.onXScrollContainer = (event) => {
+      scrollX(event, this.xScrollHeaderRef, this.xScrollBottomRef, this.xScrollFooterRef, this.xScrollBottomRef);
     };
 
     this.onScrollFooter = (event) => {
-      scrollX(event, this.scrollHeaderRef, this.yScrollContainerRef, this.xScrollBottomRef, this.xScrollBottomRef);
+      scrollX(event, this.xScrollHeaderRef, this.xScrollContainerRef, this.xScrollBottomRef, this.xScrollBottomRef);
     };
 
     this.onXScrollBottom = (event) => {
-      scrollX(event, this.scrollHeaderRef, this.yScrollContainerRef, this.scrollFooterRef);
+      scrollX(event, this.xScrollHeaderRef, this.xScrollContainerRef, this.xScrollFooterRef);
     };
   }
 
@@ -234,10 +235,10 @@ export const Table = class Table extends React.Component {
   setXScrollBar(xScrollBarHeight, yScrollBarWidth) {
     // 根据头部来判断是否需要横向滚动条，因为内容区可能没有内容
     const baseTable = this.baseTableRef.current;
-    const scrollHeader = this.scrollHeaderRef.current;
+    const xScrollHeader = this.xScrollHeaderRef.current;
     const xScrollBottom = this.xScrollBottomRef.current;
-    const yScrollContainer = this.yScrollContainerRef.current;
-    const scrollFooter = this.scrollFooterRef.current;
+    const xScrollContainer = this.xScrollContainerRef.current;
+    const xScrollFooter = this.xScrollFooterRef.current;
     
     const baseTableWidth = baseTable.offsetWidth;
     const diffWidth = baseTableWidth - baseTable.parentElement.offsetWidth;
@@ -250,19 +251,19 @@ export const Table = class Table extends React.Component {
       xScrollBottom.style.display = 'none';
     }
     // 设置横向滚动区域的margin bottom为负的滚动条高度，达到隐藏滚动条的目的
-    setMarginBottom(scrollHeader, xScrollBarHeight);
-    setMarginBottom(yScrollContainer, xScrollBarHeight);
-    setMarginBottom(scrollFooter, xScrollBarHeight);
+    setMarginBottom(xScrollHeader, xScrollBarHeight);
+    setMarginBottom(xScrollContainer, xScrollBarHeight);
+    setMarginBottom(xScrollFooter, xScrollBarHeight);
     // mac电脑上的浏览器，滚动条设置为滑动显示时，滚动条不占宽度，定位处理显示在底部，以便手势滑动时可以显示
     if (diffWidth > 0 && xScrollBarHeight === 0) {
-      setMarginBottom(scrollHeader, 15);
-      setPaddingBottom(scrollHeader, 15);
+      setMarginBottom(xScrollHeader, 15);
+      setPaddingBottom(xScrollHeader, 15);
 
-      setMarginBottom(yScrollContainer, 15);
-      setPaddingBottom(yScrollContainer, 15);
+      setMarginBottom(xScrollContainer, 15);
+      setPaddingBottom(xScrollContainer, 15);
 
-      setMarginBottom(scrollFooter, 15);
-      setPaddingBottom(scrollFooter, 15);
+      setMarginBottom(xScrollFooter, 15);
+      setPaddingBottom(xScrollFooter, 15);
 
       if (!this.scrollBottomBarIsAbsoluted) {
         this.scrollBottomBarIsAbsoluted = true;
@@ -273,16 +274,16 @@ export const Table = class Table extends React.Component {
 
   setScrollBar() {
     // 使用表头判断水平方向是否出现滚动条，设置滚动区域高度需要减去滚动条高度
-    const scrollHeader = this.scrollHeaderRef.current;
-    let xScrollBarHeight = scrollHeader.offsetHeight - scrollHeader.children[0].offsetHeight;
+    const xScrollHeader = this.xScrollHeaderRef.current;
+    let xScrollBarHeight = xScrollHeader.offsetHeight - xScrollHeader.children[0].offsetHeight;
     this.setBaseScrollContainerHeight(xScrollBarHeight);
     // 判断y滚动区域是否出现滚动条
-    const yScrollContainer = this.yScrollContainerRef.current;
-    const yScrollBarWidth = yScrollContainer.parentElement.parentElement.offsetWidth - yScrollContainer.parentElement.offsetWidth;
+    const xScrollContainer = this.xScrollContainerRef.current;
+    const yScrollBarWidth = xScrollContainer.parentElement.parentElement.offsetWidth - xScrollContainer.parentElement.offsetWidth;
     this.setYScrollBar(yScrollBarWidth);
     // 设置完y滚动条宽度后，如果x滚动区域设置前没有出现滚动条，设置后是否出现滚动条
     if (xScrollBarHeight === 0) {
-      xScrollBarHeight = scrollHeader.offsetHeight - scrollHeader.children[0].offsetHeight;
+      xScrollBarHeight = xScrollHeader.offsetHeight - xScrollHeader.children[0].offsetHeight;
       this.setBaseScrollContainerHeight(xScrollBarHeight);
     }
 
@@ -386,10 +387,12 @@ export const Table = class Table extends React.Component {
     const rightBodyRef = this.rightBodyRef;
     const rightFooterRef = this.rightFooterRef;
 
-    const scrollHeaderRef = this.scrollHeaderRef;
-    const yScrollContainerRef = this.yScrollContainerRef;
-    const scrollFooterRef = this.scrollFooterRef;
+    const xScrollHeaderRef = this.xScrollHeaderRef;
+    const xScrollContainerRef = this.xScrollContainerRef;
+    const xScrollFooterRef = this.xScrollFooterRef;
     const xScrollBottomRef = this.xScrollBottomRef;
+
+    const yScrollContainerRef = this.yScrollContainerRef;
 
     const renderSideHeader = function (className, ref, cols, trs) {
       if (trs === null) {
@@ -431,7 +434,7 @@ export const Table = class Table extends React.Component {
   
     const renderFixedHeaderOrFooter = function (left, right, body, rightScrollBarRef, scrollRef, tableRef, onScroll) {
       return (
-        <div className={style['hide-scroll-bar-wraper']}>
+        <div className="fixed-header-or-footer" style={{ position: 'relative' }}>
           {/* 固定左侧 */}
           {left}
           {/* 固定右侧 */}
@@ -471,14 +474,14 @@ export const Table = class Table extends React.Component {
             rightSideHeader, 
             baseThead,
             headerRightScrollBarRef, 
-            scrollHeaderRef, 
+            xScrollHeaderRef, 
             baseHeaderRef, 
             this.onScrollHeader,
           )
         }
         <div className={style['base-scroll-container']} ref={baseScrollContainerRef}>
           {/* base-scroll-outer的高需要设为base-scroll-container高度和滚动条高度之差 */}
-          <div className={[style['base-scroll-outer'], props.scrollBarClassName].join(' ')} style={{ height: '100%' }}>
+          <div ref={yScrollContainerRef} className={[commonStyle['overflow-y-auto'], props.scrollBarClassName].join(' ')} style={{ position: 'relative', height: '100%' }}>
             {/* 左边固定第一列表体 */}
             <div className={leftClassName}>
               <table  {...tableProps} style={{ width: '100%' }} ref={leftBodyRef}>
@@ -516,7 +519,7 @@ export const Table = class Table extends React.Component {
             {/* 包裹一个overflow: hidden的div, 隐藏滚动条 */}
             <div style={{ overflow: 'hidden' }}>
               {/* base-scroll-inner需要设置一个margin-bottom为负的滚动条高度，以便可以隐藏这个滚动条 */}
-              <div className={[style['base-scroll-inner'], props.scrollBarClassName].join(' ')} ref={yScrollContainerRef} onScroll={this.onYScrollContainer}>
+              <div className={[commonStyle['overflow-x-auto'], props.scrollBarClassName].join(' ')} ref={xScrollContainerRef} onScroll={this.onXScrollContainer}>
                 <table {...tableProps} ref={baseTableRef}>
                   {baseColgroup}
                   {baseTbody}
@@ -543,7 +546,7 @@ export const Table = class Table extends React.Component {
             rightSideFooter, 
             baseTfoot,
             footerRightScrollBarRef, 
-            scrollFooterRef, 
+            xScrollFooterRef, 
             baseFooterRef, 
             this.onScrollFooter,
           )
