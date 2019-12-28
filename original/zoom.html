@@ -4,8 +4,68 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover">
     <title>放大界面</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      table {
+        border-spacing: 0;
+      }
+    </style>
   </head>
   <body>
+    <table style="width: 1000px;border: 1px solid red; table-layout: fixed;">
+      <colgroup>
+        <col width="100%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th style="background: blue;">
+            <div style="position: relative;">
+              <table style="min-width: 100%; width: 1400px;">
+                <colgroup>
+                  <col />
+                  <col />
+                  <col />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th style="background: gray;">
+                      <span>1111</span>
+                      <div style="position: absolute; width: 200px; height: 200px; background: red;">
+
+                      </div>
+                    </th>
+                    <th style="background: green;">222</th style="background: gray;">
+                    <th style="background: goldenrod;">3333</th style="background: gray;">
+                  </tr>
+                </thead>
+              </table>
+              <div style="position: absolute; right: 0; top: 0;">aaa</div>
+            </div>
+          </th>
+          <th style="background: yellow;">
+            <div style="overflow-y: scroll;"></div>
+          </th>
+        </tr>
+      </thead>
+    </table>
+    <div style="display: flex;flex-direction: row;width: 1000px;">
+      <div style="flex-grow: 1; flex-shrink: 1;border: 1px solid red;">
+        <div>
+          <div style="width: 1200px;">1</div>
+        </div>
+      </div>
+      <div style="flex-shrink: 0;width: 200px;border: 1px solid yellow;">2</div>
+    </div>
+    <div style="width: 1000px;border: 1px solid red;margin-top: 10px;">
+      <div style="float: left;border: 1px solid blue;width: 100%;">1111</div>
+      <div style="float: right;border: 1px solid yellow;">
+        <div style="overflow-y: scroll;"></div>
+      </div>
+      <div style="clear: both;"></div>
+    </div>
 <script>
 window.addEventListener('resize', function () {
   console.log('resize:', window.devicePixelRatio);

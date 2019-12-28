@@ -68,6 +68,7 @@ export default function (props) {
 
   return (
     <div>
+      <p>注意：固定表头、表尾，使用了overflow hidden，表内定位的元素，会被隐藏，需要将弹窗挂载到body上。之所以表头、表尾不用overflow auto，主要是chrome、firefox、safari等浏览器放大缩小的时候，滚动条不会放大缩小，但使用了滚动条计算高度设置了其他元素的样式时，其他元素在放大缩小又会有BUG。</p>
       <p>固定表头、表尾、两侧第一列：水平 + 竖直方向均出现滚动条</p>
       <div style={{ position: 'relative', zIndex: 100 }}>
         <TableContainer style={{ width: '800px', height: '350px' }} scrollBarClassName="small-scroll-bar1">
@@ -203,7 +204,7 @@ export default function (props) {
           </Table>
         </TableContainer>
       </div>
-      {/* <p>固定表头、第一列：水平 + 竖直方向均无滚动条</p>
+      <p>固定表头、第一列：水平 + 竖直方向均无滚动条</p>
       <TableContainer style={{ width: '800px', height: '350px' }}>
         <Table style={{minWidth: '1400px'}}>
           <Colgroup>
@@ -237,8 +238,8 @@ export default function (props) {
             </Tr>
           </Tfoot>
         </Table>
-      </TableContainer> */}
-      {/* <p>固定第一列：水平 + 竖直方向均出现滚动条</p>
+      </TableContainer>
+      <p>固定第一列：水平 + 竖直方向均出现滚动条</p>
       <TableContainer style={{ width: '800px', height: '350px' }}>
         <Table style={{minWidth: '1400px'}}>
           <Colgroup>
@@ -346,8 +347,8 @@ export default function (props) {
             </Tr>
           </Tfoot>
         </Table>
-      </TableContainer> */}
-      {/* <p>动态请求数据，数据为空、有数据时的使用</p>
+      </TableContainer>
+      <p>动态请求数据，数据为空、有数据时的使用</p>
       <button type="button" onClick={() => {
         setStatus1('loading');
         setTimeout(function () {
@@ -425,7 +426,7 @@ export default function (props) {
         <Loading className="loading"><span>加载中...</span></Loading>
         <NoData className="no-data">无数据</NoData>
         <Fail className="fail"><span>加载失败...</span></Fail>
-      </TableContainer> */}
+      </TableContainer>
     </div>
   )
 }
